@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TripMate — Share the Ride, Share the Road</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0B1426;
+    --navy-mid: #131F38;
+    --navy-card: #1A2840;
+    --navy-border: #243350;
+    --cyan: #00D4FF;
+    --cyan-dim: #00A8CC;
+    --cyan-glow: rgba(0, 212, 255, 0.12);
+    --blue-accent: #3B82F6;
+    --text-primary: #F0F6FF;
+    --text-secondary: #8CA8C8;
+    --text-muted: #4A6480;
+    --white: #FFFFFF;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--navy);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ──────────────── NAV ──────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 5%;
+    height: 68px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(11, 20, 38, 0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+    transition: all 0.3s;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    font-family: var(--font-display); font-size: 22px; font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.3px;
+  }
+  .nav-logo span { color: var(--cyan); }
+  .logo-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--blue-accent) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none; color: var(--text-secondary);
+    font-size: 14px; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta {
+    background: var(--cyan); color: var(--navy) !important;
+    padding: 8px 20px; border-radius: 8px;
+    font-weight: 600 !important;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: #00BBEE !important; transform: translateY(-1px); }
+  .nav-hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+  .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; }
+
+  /* ──────────────── HERO ──────────────── */
+  #hero {
+    min-height: 100vh;
+    padding: 120px 5% 80px;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%);
+  }
+  .hero-glow {
+    position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(0,212,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content {
+    max-width: 1140px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    position: relative;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.25);
+    padding: 6px 14px; border-radius: 100px; font-size: 13px;
+    color: var(--cyan); font-weight: 500; margin-bottom: 24px;
+    letter-spacing: 0.3px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 6px; height: 6px; background: var(--cyan);
+    border-radius: 50%; animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(38px, 5vw, 58px);
+    font-weight: 700; line-height: 1.1;
+    color: var(--white); margin-bottom: 20px;
+    letter-spacing: -1px;
+  }
+  h1 .accent { color: var(--cyan); }
+  .hero-sub {
+    font-size: 17px; color: var(--text-secondary); max-width: 480px;
+    line-height: 1.75; margin-bottom: 36px;
+  }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+  .btn-primary {
+    background: var(--cyan); color: var(--navy);
+    padding: 14px 28px; border-radius: var(--radius-sm);
+    font-weight: 700; font-size: 15px; text-decoration: none;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { background: #00BBEE; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,212,255,0.3); }
+  .btn-outline {
+    background: transparent; color: var(--text-primary);
+    padding: 14px 28px; border-radius: var(--radius-sm);
+    font-weight: 600; font-size: 15px; text-decoration: none;
+    border: 1px solid var(--navy-border); transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
+  .hero-stats {
+    display: flex; gap: 32px; flex-wrap: wrap;
+  }
+  .hero-stat { }
+  .hero-stat .num {
+    font-family: var(--font-display); font-size: 28px; font-weight: 700;
+    color: var(--white); display: block;
+  }
+  .hero-stat .lbl { font-size: 13px; color: var(--text-muted); }
+
+  /* hero app mockup */
+  .hero-visual {
+    position: relative; display: flex; justify-content: center;
+  }
+  .phone-mockup {
+    width: 280px; height: 560px; background: var(--navy-card);
+    border-radius: 36px; border: 2px solid var(--navy-border);
+    overflow: hidden; position: relative;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.1);
+  }
+  .phone-status {
+    height: 44px; background: var(--navy-mid);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; font-size: 12px; color: var(--text-muted);
+  }
+  .phone-content { padding: 16px; }
+  .phone-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+  }
+  .phone-header .greeting { font-size: 13px; color: var(--text-secondary); }
+  .phone-header .username { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+  .phone-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan), var(--blue-accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--navy);
+  }
+  .search-bar-mock {
+    background: var(--navy-mid); border-radius: 10px; padding: 10px 14px;
+    font-size: 13px; color: var(--text-muted); margin-bottom: 16px;
+    border: 1px solid var(--navy-border);
+  }
+  .trip-card-mock {
+    background: var(--navy-mid); border-radius: 12px; padding: 12px;
+    margin-bottom: 10px; border: 1px solid var(--navy-border);
+    position: relative; overflow: hidden;
+  }
+  .trip-card-mock::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--cyan);
+  }
+  .trip-route { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+  .trip-city { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .trip-arrow { font-size: 11px; color: var(--text-muted); }
+  .trip-meta { display: flex; gap: 10px; }
+  .trip-tag {
+    font-size: 10px; background: rgba(0,212,255,0.1); color: var(--cyan);
+    padding: 2px 7px; border-radius: 4px;
+  }
+  .trip-price { font-size: 12px; font-weight: 700; color: var(--cyan); }
+
+  /* floating badge */
+  .float-badge {
+    position: absolute; background: var(--navy-card);
+    border: 1px solid var(--navy-border); border-radius: 12px;
+    padding: 10px 14px; font-size: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    animation: float 3s ease-in-out infinite;
+  }
+  .float-badge.left { left: -60px; top: 25%; }
+  .float-badge.right { right: -50px; bottom: 30%; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .badge-label { color: var(--text-muted); font-size: 10px; margin-bottom: 2px; }
+  .badge-value { color: var(--text-primary); font-weight: 600; }
+
+  /* ──────────────── SECTION COMMONS ──────────────── */
+  section { padding: 100px 5%; position: relative; }
+  .section-inner { max-width: 1140px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 700; color: var(--white); margin-bottom: 16px;
+    letter-spacing: -0.5px; line-height: 1.15;
+  }
+  h2 .accent { color: var(--cyan); }
+  .section-desc { font-size: 16px; color: var(--text-secondary); max-width: 560px; line-height: 1.75; }
+
+  /* ──────────────── HOW IT WORKS ──────────────── */
+  #how {
+    background: var(--navy-mid);
+    border-top: 1px solid var(--navy-border);
+    border-bottom: 1px solid var(--navy-border);
+  }
+  .how-header { text-align: center; margin-bottom: 64px; }
+  .how-header .section-desc { margin: 0 auto; }
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+    position: relative;
+  }
+  .steps-grid::before {
+    content: ''; position: absolute;
+    top: 40px; left: calc(12.5%); right: calc(12.5%);
+    height: 1px; background: linear-gradient(90deg, transparent, var(--cyan-dim), transparent);
+    pointer-events: none;
+  }
+  .step-item { padding: 32px 24px; text-align: center; }
+  .step-num {
+    width: 64px; height: 64px; border-radius: 50%;
+    border: 2px solid var(--navy-border);
+    background: var(--navy-card);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 22px; font-weight: 700;
+    color: var(--cyan); margin: 0 auto 20px;
+    position: relative; z-index: 1;
+  }
+  .step-item.active .step-num {
+    background: var(--cyan); color: var(--navy);
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 8px rgba(0,212,255,0.15);
+  }
+  .step-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--white); margin-bottom: 10px; }
+  .step-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+
+  /* ──────────────── FEATURES ──────────────── */
+  #features .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .features-text { }
+  .features-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px;
+  }
+  .feature-card {
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: var(--radius-md); padding: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .feature-card:hover { border-color: rgba(0,212,255,0.4); transform: translateY(-2px); }
+  .feature-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--cyan-glow); border: 1px solid rgba(0,212,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 12px;
+  }
+  .feature-card h3 { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
+  .feature-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* feature visual side */
+  .features-visual {
+    background: var(--navy-card); border-radius: var(--radius-xl);
+    border: 1px solid var(--navy-border); padding: 32px;
+    overflow: hidden; position: relative;
+  }
+  .map-mock {
+    height: 220px; background: var(--navy-mid); border-radius: var(--radius-md);
+    margin-bottom: 20px; position: relative; overflow: hidden;
+    border: 1px solid var(--navy-border);
+  }
+  .map-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0,212,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .map-route {
+    position: absolute; top: 50%; left: 15%; right: 15%;
+    height: 2px; background: var(--cyan);
+  }
+  .map-dot {
+    position: absolute; top: 50%; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--cyan);
+    transform: translateY(-50%);
+    box-shadow: 0 0 12px var(--cyan);
+  }
+  .map-dot.start { left: 15%; }
+  .map-dot.end { right: 15%; }
+  .map-label {
+    position: absolute; font-size: 11px; color: var(--text-secondary);
+    background: var(--navy-card); padding: 2px 8px; border-radius: 4px;
+    top: calc(50% - 22px); white-space: nowrap;
+  }
+  .map-label.start { left: 8%; }
+  .map-label.end { right: 6%; }
+  .rider-list { display: flex; flex-direction: column; gap: 10px; }
+  .rider-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--navy-mid); border-radius: 10px; padding: 10px 14px;
+    border: 1px solid var(--navy-border);
+  }
+  .rider-avatar {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .rider-info { flex: 1; }
+  .rider-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .rider-sub { font-size: 11px; color: var(--text-muted); }
+  .rider-fare { font-size: 13px; font-weight: 700; color: var(--cyan); }
+
+  /* ──────────────── APP DOWNLOAD ──────────────── */
+  #app {
+    background: var(--navy-mid);
+    border-top: 1px solid var(--navy-border);
+    border-bottom: 1px solid var(--navy-border);
+  }
+  .app-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  }
+  .app-badges { display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+  .store-badge {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: var(--radius-sm); padding: 12px 20px;
+    text-decoration: none; transition: border-color 0.2s, transform 0.2s;
+  }
+  .store-badge:hover { border-color: var(--cyan); transform: translateY(-2px); }
+  .store-badge .store-icon { font-size: 28px; }
+  .store-badge .store-text { }
+  .store-badge .store-sub { font-size: 11px; color: var(--text-muted); display: block; }
+  .store-badge .store-name { font-size: 16px; font-weight: 700; color: var(--white); display: block; }
+  .screenshot-row {
+    display: flex; gap: 16px; justify-content: center;
+  }
+  .screenshot {
+    width: 140px; height: 280px; background: var(--navy-card);
+    border-radius: 24px; border: 2px solid var(--navy-border);
+    overflow: hidden; flex-shrink: 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .screenshot:nth-child(2) { transform: translateY(-20px); }
+  .screenshot-bar { height: 8px; background: var(--navy-mid); }
+  .ss-content { padding: 12px; }
+  .ss-heading { height: 12px; background: var(--navy-border); border-radius: 4px; margin-bottom: 8px; }
+  .ss-line { height: 8px; background: var(--navy-mid); border-radius: 4px; margin-bottom: 6px; }
+  .ss-line.short { width: 60%; }
+  .ss-line.cyan { background: rgba(0,212,255,0.25); }
+  .ss-card { height: 60px; background: var(--navy-mid); border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--navy-border); }
+
+  /* ──────────────── ABOUT / FOUNDER ──────────────── */
+  #about .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .about-text { }
+  .about-text p { font-size: 15px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+  .values-list { margin-top: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .value-item { display: flex; gap: 14px; }
+  .value-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--cyan);
+    flex-shrink: 0; margin-top: 7px;
+  }
+  .value-item .v-title { font-size: 14px; font-weight: 600; color: var(--white); }
+  .value-item .v-desc { font-size: 13px; color: var(--text-secondary); }
+
+  .founder-card {
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: var(--radius-xl); padding: 36px; text-align: center;
+  }
+  .founder-photo {
+    width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--cyan), var(--blue-accent));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 32px; font-weight: 700;
+    color: var(--navy); border: 3px solid rgba(0,212,255,0.3);
+  }
+  .founder-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--white); }
+  .founder-role { font-size: 13px; color: var(--cyan); margin-bottom: 16px; margin-top: 4px; }
+  .founder-bio { font-size: 14px; color: var(--text-secondary); line-height: 1.75; text-align: left; margin-bottom: 20px; }
+  .founder-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .tag {
+    font-size: 12px; padding: 4px 12px; border-radius: 100px;
+    background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
+    color: var(--cyan);
+  }
+
+  /* team cards */
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+  .team-card {
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: var(--radius-md); padding: 24px; text-align: center;
+    transition: border-color 0.2s;
+  }
+  .team-card:hover { border-color: rgba(0,212,255,0.3); }
+  .team-avatar {
+    width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 18px; font-weight: 700;
+  }
+  .team-name { font-size: 15px; font-weight: 600; color: var(--white); }
+  .team-role { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* ──────────────── TESTIMONIALS ──────────────── */
+  #testimonials { background: var(--navy-mid); border-top: 1px solid var(--navy-border); border-bottom: 1px solid var(--navy-border); }
+  .testimonials-header { text-align: center; margin-bottom: 52px; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .tcard {
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: var(--radius-lg); padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .tcard:hover { border-color: rgba(0,212,255,0.25); transform: translateY(-3px); }
+  .tcard .stars { color: #F59E0B; font-size: 14px; margin-bottom: 14px; }
+  .tcard .quote { font-size: 14px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 20px; font-style: italic; }
+  .tcard .user { display: flex; align-items: center; gap: 10px; }
+  .tcard .user-ava {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+  }
+  .tcard .user-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .tcard .user-loc { font-size: 12px; color: var(--text-muted); }
+  .tcard .route-tag {
+    font-size: 11px; background: rgba(0,212,255,0.08); color: var(--cyan);
+    padding: 3px 8px; border-radius: 4px; margin-left: auto;
+  }
+
+  /* ──────────────── CONTACT ──────────────── */
+  #contact .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+  .contact-info h2 { margin-bottom: 12px; }
+  .contact-info p { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 32px; }
+  .contact-items { display: flex; flex-direction: column; gap: 18px; }
+  .contact-item { display: flex; align-items: flex-start; gap: 14px; }
+  .ci-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--cyan-glow); border: 1px solid rgba(0,212,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .ci-label { font-size: 12px; color: var(--text-muted); }
+  .ci-val { font-size: 15px; color: var(--text-primary); font-weight: 500; }
+
+  .contact-form {
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: var(--radius-xl); padding: 36px;
+  }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { font-size: 13px; font-weight: 500; color: var(--text-secondary); display: block; margin-bottom: 8px; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; background: var(--navy-mid); border: 1px solid var(--navy-border);
+    border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text-primary);
+    font-family: var(--font-body); font-size: 14px; outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: rgba(0,212,255,0.5);
+  }
+  .form-group textarea { height: 100px; resize: vertical; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-submit {
+    width: 100%; padding: 14px; background: var(--cyan); color: var(--navy);
+    border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: var(--font-body); transition: all 0.2s;
+    letter-spacing: 0.2px;
+  }
+  .form-submit:hover { background: #00BBEE; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
+  .success-msg {
+    display: none; text-align: center; padding: 20px;
+    color: var(--cyan); font-weight: 600; font-size: 16px;
+  }
+
+  /* ──────────────── FOOTER ──────────────── */
+  footer {
+    background: var(--navy-mid); border-top: 1px solid var(--navy-border);
+    padding: 60px 5% 32px;
+  }
+  .footer-grid {
+    max-width: 1140px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    margin-bottom: 48px;
+  }
+  .footer-brand .nav-logo { margin-bottom: 12px; display: inline-flex; }
+  .footer-brand p { font-size: 14px; color: var(--text-muted); line-height: 1.75; max-width: 280px; margin-bottom: 20px; }
+  .social-links { display: flex; gap: 10px; }
+  .social-link {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none; color: var(--text-muted); font-size: 16px;
+    transition: all 0.2s;
+  }
+  .social-link:hover { border-color: var(--cyan); color: var(--cyan); }
+  .footer-col h4 { font-size: 13px; font-weight: 600; color: var(--white); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul a { text-decoration: none; font-size: 14px; color: var(--text-muted); transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--cyan); }
+  .footer-bottom {
+    max-width: 1140px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 28px; border-top: 1px solid var(--navy-border);
+    font-size: 13px; color: var(--text-muted); flex-wrap: wrap; gap: 10px;
+  }
+
+  /* ──────────────── SCROLL ANIMATIONS ──────────────── */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ──────────────── MOBILE ──────────────── */
+  @media (max-width: 900px) {
+    .hero-content { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    #features .section-inner { grid-template-columns: 1fr; }
+    .features-visual { display: none; }
+    .app-inner { grid-template-columns: 1fr; }
+    .screenshot-row { display: none; }
+    #about .section-inner { grid-template-columns: 1fr; }
+    #contact .section-inner { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid::before { display: none; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    nav { padding: 0 4%; }
+    section { padding: 72px 4%; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 20px; }
+    .float-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ────────── NAV ────────── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="logo-icon">🚗</div>
+    Trip<span>Mate</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#app" class="nav-cta">Download App</a></li>
+  </ul>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- mobile menu -->
+<div id="mobileMenu" style="display:none; position:fixed; top:68px; left:0; right:0; background:rgba(11,20,38,0.97); backdrop-filter:blur(20px); padding:24px 5%; z-index:999; border-bottom:1px solid var(--navy-border);">
+  <ul style="list-style:none; display:flex; flex-direction:column; gap:18px;">
+    <li><a href="#how" onclick="toggleMenu()" style="color:var(--text-secondary);text-decoration:none;font-size:16px;font-weight:500">How it works</a></li>
+    <li><a href="#features" onclick="toggleMenu()" style="color:var(--text-secondary);text-decoration:none;font-size:16px;font-weight:500">Features</a></li>
+    <li><a href="#about" onclick="toggleMenu()" style="color:var(--text-secondary);text-decoration:none;font-size:16px;font-weight:500">About</a></li>
+    <li><a href="#contact" onclick="toggleMenu()" style="color:var(--text-secondary);text-decoration:none;font-size:16px;font-weight:500">Contact</a></li>
+    <li><a href="#app" onclick="toggleMenu()" style="color:var(--cyan);text-decoration:none;font-size:16px;font-weight:700">Download App →</a></li>
+  </ul>
+</div>
+
+<!-- ────────── HERO ────────── -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-text fade-up">
+      <div class="hero-eyebrow">🇮🇳 Built for India's roads</div>
+      <h1>Share the ride,<br><span class="accent">split the cost.</span></h1>
+      <p class="hero-sub">
+        TripMate connects drivers and passengers across Indian cities. Save money, meet people, and reduce traffic — one trip at a time.
+      </p>
+      <div class="hero-btns">
+        <a href="#app" class="btn-primary">📱 Download App</a>
+        <a href="#how" class="btn-outline">See how it works →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="num">50K+</span><span class="lbl">Active Riders</span></div>
+        <div class="hero-stat"><span class="num">120+</span><span class="lbl">Indian Cities</span></div>
+        <div class="hero-stat"><span class="num">4.8★</span><span class="lbl">App Rating</span></div>
+        <div class="hero-stat"><span class="num">₹0</span><span class="lbl">Commission Fee</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual fade-up" style="animation-delay:0.2s">
+      <div class="phone-mockup">
+        <div class="phone-status">
+          <span>9:41</span><span>📶 🔋</span>
+        </div>
+        <div class="phone-content">
+          <div class="phone-header">
+            <div>
+              <div class="greeting">Good morning,</div>
+              <div class="username">Arjun 👋</div>
+            </div>
+            <div class="phone-avatar">AK</div>
+          </div>
+          <div class="search-bar-mock">🔍  Where are you heading?</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;font-weight:600;letter-spacing:0.5px;">TODAY'S TRIPS</div>
+          <div class="trip-card-mock">
+            <div class="trip-route">
+              <span class="trip-city">Hyderabad</span>
+              <span class="trip-arrow">→</span>
+              <span class="trip-city">Tirupati</span>
+            </div>
+            <div class="trip-meta">
+              <span class="trip-tag">⏰ 7:00 AM</span>
+              <span class="trip-tag">3 seats</span>
+              <span class="trip-price">₹450/seat</span>
+            </div>
+          </div>
+          <div class="trip-card-mock">
+            <div class="trip-route">
+              <span class="trip-city">Bangalore</span>
+              <span class="trip-arrow">→</span>
+              <span class="trip-city">Mysuru</span>
+            </div>
+            <div class="trip-meta">
+              <span class="trip-tag">⏰ 9:30 AM</span>
+              <span class="trip-tag">2 seats</span>
+              <span class="trip-price">₹320/seat</span>
+            </div>
+          </div>
+          <div class="trip-card-mock">
+            <div class="trip-route">
+              <span class="trip-city">Chennai</span>
+              <span class="trip-arrow">→</span>
+              <span class="trip-city">Pondicherry</span>
+            </div>
+            <div class="trip-meta">
+              <span class="trip-tag">⏰ 8:00 AM</span>
+              <span class="trip-tag">1 seat</span>
+              <span class="trip-price">₹280/seat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="float-badge left">
+        <div class="badge-label">Saved this month</div>
+        <div class="badge-value">₹2,400 💰</div>
+      </div>
+      <div class="float-badge right">
+        <div class="badge-label">Trip verified</div>
+        <div class="badge-value">✅ ID Checked</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── HOW IT WORKS ────────── -->
+<section id="how">
+  <div class="section-inner">
+    <div class="how-header fade-up">
+      <div class="section-eyebrow">Simple process</div>
+      <h2>Go from booking to boarding<br>in <span class="accent">under 2 minutes</span></h2>
+      <p class="section-desc">No complicated forms, no waiting on calls. TripMate gets you moving fast.</p>
+    </div>
+    <div class="steps-grid fade-up">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-title">Sign up with Google</div>
+        <div class="step-desc">One-tap Google login. Your profile is verified and ready to go in seconds.</div>
+      </div>
+      <div class="step-item active">
+        <div class="step-num">02</div>
+        <div class="step-title">Find or post a trip</div>
+        <div class="step-desc">Search trips by city, date, and time — or list your own ride and earn.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-title">Pay securely</div>
+        <div class="step-desc">UPI, card, or wallet — pay safely in-app with instant confirmations.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-title">Hit the road</div>
+        <div class="step-desc">Meet, ride, and review. Build trust in the community trip by trip.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── FEATURES ────────── -->
+<section id="features">
+  <div class="section-inner">
+    <div class="features-text fade-up">
+      <div class="section-eyebrow">Everything you need</div>
+      <h2>Built for real<br><span class="accent">Indian travellers</span></h2>
+      <p class="section-desc">From UPI payments to in-app chat in regional languages — TripMate is designed for how Indians actually travel.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>In-app messaging</h3>
+          <p>Chat with drivers or co-passengers before the trip. Coordinate pickup points easily.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Verified profiles</h3>
+          <p>Aadhaar-linked ID verification and Digilocker integration for safe rides.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">₹</div>
+          <h3>UPI & wallet pay</h3>
+          <p>Pay via UPI, PhonePe, Google Pay, debit/credit card, or TripMate wallet.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⭐</div>
+          <h3>Ratings & reviews</h3>
+          <p>Build your reputation. High-rated drivers and riders get priority listings.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3>Smart notifications</h3>
+          <p>Real-time alerts for booking confirmations, trip updates, and new requests.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>SOS & safety tools</h3>
+          <p>One-tap SOS, live location sharing with trusted contacts during every trip.</p>
+        </div>
+      </div>
+    </div>
+    <div class="features-visual fade-up">
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">LIVE ROUTE PREVIEW</div>
+      <div class="map-mock">
+        <div class="map-grid"></div>
+        <div class="map-route"></div>
+        <div class="map-dot start"></div>
+        <div class="map-dot end"></div>
+        <div class="map-label start">Hyderabad</div>
+        <div class="map-label end">Tirupati</div>
+        <div style="position:absolute;top:30%;left:45%;width:10px;height:10px;border-radius:50%;background:var(--cyan);opacity:0.6;animation:float 2s ease-in-out infinite;"></div>
+      </div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">PASSENGERS ON THIS TRIP</div>
+      <div class="rider-list">
+        <div class="rider-item">
+          <div class="rider-avatar" style="background:rgba(59,130,246,0.2);color:#3B82F6;">PK</div>
+          <div class="rider-info">
+            <div class="rider-name">Priya Krishnan</div>
+            <div class="rider-sub">⭐ 4.9 · 47 trips</div>
+          </div>
+          <div class="rider-fare">₹450</div>
+        </div>
+        <div class="rider-item">
+          <div class="rider-avatar" style="background:rgba(0,212,255,0.15);color:var(--cyan);">RM</div>
+          <div class="rider-info">
+            <div class="rider-name">Ravi Mohan</div>
+            <div class="rider-sub">⭐ 4.7 · 23 trips</div>
+          </div>
+          <div class="rider-fare">₹450</div>
+        </div>
+        <div class="rider-item" style="border-style:dashed;opacity:0.5;">
+          <div class="rider-avatar" style="background:var(--navy-mid);color:var(--text-muted);">+1</div>
+          <div class="rider-info">
+            <div class="rider-name" style="color:var(--text-muted)">1 seat open</div>
+            <div class="rider-sub">Join this trip</div>
+          </div>
+          <div style="font-size:12px;background:rgba(0,212,255,0.1);color:var(--cyan);padding:4px 10px;border-radius:6px;border:1px dashed rgba(0,212,255,0.3);">Book</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── APP DOWNLOAD ────────── -->
+<section id="app">
+  <div class="section-inner app-inner">
+    <div class="fade-up">
+      <div class="section-eyebrow">Mobile app</div>
+      <h2>Your rides,<br><span class="accent">in your pocket.</span></h2>
+      <p style="font-size:15px;color:var(--text-secondary);line-height:1.75;margin-top:12px;max-width:420px;">
+        Available on Android and iOS. Lightweight, fast, and designed for low-bandwidth networks across India. Offline mode included.
+      </p>
+      <div class="app-badges">
+        <a href="#" class="store-badge">
+          <div class="store-icon">🤖</div>
+          <div class="store-text">
+            <span class="store-sub">Get it on</span>
+            <span class="store-name">Google Play</span>
+          </div>
+        </a>
+        <a href="#" class="store-badge">
+          <div class="store-icon">🍎</div>
+          <div class="store-text">
+            <span class="store-sub">Download on the</span>
+            <span class="store-name">App Store</span>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="screenshot-row fade-up">
+      <div class="screenshot">
+        <div class="screenshot-bar"></div>
+        <div class="ss-content">
+          <div class="ss-heading"></div>
+          <div class="ss-line cyan"></div>
+          <div class="ss-line short"></div>
+          <div class="ss-card"></div>
+          <div class="ss-card"></div>
+          <div class="ss-line short"></div>
+          <div class="ss-line"></div>
+        </div>
+      </div>
+      <div class="screenshot">
+        <div class="screenshot-bar" style="background:rgba(0,212,255,0.15)"></div>
+        <div class="ss-content">
+          <div class="ss-heading"></div>
+          <div class="ss-line"></div>
+          <div class="ss-card" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.2)"></div>
+          <div class="ss-line short cyan"></div>
+          <div class="ss-line"></div>
+          <div class="ss-card"></div>
+          <div class="ss-line short"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── ABOUT + FOUNDER ────────── -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-text fade-up">
+      <div class="section-eyebrow">Our story</div>
+      <h2>Born in a traffic jam<br>on <span class="accent">NH-65</span></h2>
+      <p>TripMate started when our founder was stuck in bumper-to-bumper traffic between Hyderabad and Tirupati — and realised that three empty seats next to him could have carried three people making the exact same journey.</p>
+      <p>We built TripMate to solve India's intercity mobility gap: buses are full, trains are booked, and taxis are expensive. Carpooling is the natural answer — but it needed a trustworthy platform.</p>
+      <p>Today, TripMate operates across South India with a growing community of verified drivers and passengers who share not just rides, but stories.</p>
+      <div class="values-list">
+        <div class="value-item">
+          <div class="value-dot"></div>
+          <div><div class="v-title">Safety first</div><div class="v-desc">Every user is ID-verified. SOS, live tracking, and trusted contacts built-in.</div></div>
+        </div>
+        <div class="value-item">
+          <div class="value-dot"></div>
+          <div><div class="v-title">Zero profiteering</div><div class="v-desc">Drivers share actual costs — no surge pricing, no hidden commissions.</div></div>
+        </div>
+        <div class="value-item">
+          <div class="value-dot"></div>
+          <div><div class="v-title">Community over platform</div><div class="v-desc">Built on trust, not algorithms. Ratings are earned, not bought.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-up">
+      <div class="founder-card">
+        <div class="founder-photo">M</div>
+        <div class="founder-name">Mohith Kumar</div>
+        <div class="founder-role">Founder & CEO</div>
+        <p class="founder-bio">
+          Full-stack developer and product builder from Tirupati, Andhra Pradesh. Mohith built TripMate's first prototype in Django and React while interning at BR Concepts — a side project that quickly turned into a mission. He's passionate about solving real Indian mobility problems with simple, reliable technology.
+        </p>
+        <div class="founder-tags">
+          <span class="tag">Django / Python</span>
+          <span class="tag">React</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Firebase</span>
+          <span class="tag">UPI APIs</span>
+        </div>
+      </div>
+
+      <div class="team-grid" style="margin-top:24px;">
+        <div class="team-card">
+          <div class="team-avatar" style="background:rgba(59,130,246,0.15);color:#3B82F6;">PD</div>
+          <div class="team-name">Priya Devi</div>
+          <div class="team-role">Head of Design</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:rgba(0,212,255,0.12);color:var(--cyan);">RS</div>
+          <div class="team-name">Rajan Sharma</div>
+          <div class="team-role">Backend Engineer</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:rgba(245,158,11,0.12);color:#F59E0B;">AR</div>
+          <div class="team-name">Anitha Rao</div>
+          <div class="team-role">Growth & Ops</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── TESTIMONIALS ────────── -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="testimonials-header fade-up">
+      <div class="section-eyebrow">Real riders</div>
+      <h2>What India's commuters are <span class="accent">saying</span></h2>
+    </div>
+    <div class="testimonials-grid fade-up">
+      <div class="tcard">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"I travel from Hyderabad to Tirupati almost every weekend. TripMate saves me ₹800 every single trip. The co-passengers have become friends now!"</p>
+        <div class="user">
+          <div class="user-ava" style="background:rgba(59,130,246,0.15);color:#3B82F6;">SK</div>
+          <div><div class="user-name">Suresh K.</div><div class="user-loc">Hyderabad</div></div>
+          <div class="route-tag">HYD → TIR</div>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"As a woman traveller, safety was my concern. The ID verification and live tracking features gave me confidence. I've done 30+ trips without any issues."</p>
+        <div class="user">
+          <div class="user-ava" style="background:rgba(0,212,255,0.12);color:var(--cyan);">MN</div>
+          <div><div class="user-name">Meena N.</div><div class="user-loc">Bangalore</div></div>
+          <div class="route-tag">BLR → MYS</div>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="stars">★★★★☆</div>
+        <p class="quote">"I'm a driver who lists my weekend trips. I recover my full fuel cost and meet interesting people. TripMate's UPI payout is instant — love that."</p>
+        <div class="user">
+          <div class="user-ava" style="background:rgba(245,158,11,0.12);color:#F59E0B;">VR</div>
+          <div><div class="user-name">Venkat R.</div><div class="user-loc">Chennai</div></div>
+          <div class="route-tag">MAA → PDY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── CONTACT ────────── -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-info fade-up">
+      <div class="section-eyebrow">Get in touch</div>
+      <h2>We'd love to<br><span class="accent">hear from you.</span></h2>
+      <p>Partnership enquiries, press coverage, or just a question about how TripMate works — reach out anytime. We're a small team and we personally read every message.</p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="ci-icon">📧</div>
+          <div><div class="ci-label">Email us</div><div class="ci-val">supporttripmate1@gmail.com</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📍</div>
+          <div><div class="ci-label">Headquarters</div><div class="ci-val">Tirupati, Andhra Pradesh, India</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📱</div>
+          <div><div class="ci-label">WhatsApp support</div><div class="ci-val">+91 9951994651</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">⏰</div>
+          <div><div class="ci-label">Support hours</div><div class="ci-val">Mon – Sat, 9 AM – 8 PM IST</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form fade-up" id="contactForm">
+      <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--white);margin-bottom:24px;">Send us a message</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First name</label>
+          <input type="text" placeholder="Arjun" id="fname" />
+        </div>
+        <div class="form-group">
+          <label>Last name</label>
+          <input type="text" placeholder="Kumar" id="lname" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" placeholder="arjun@example.com" id="femail" />
+      </div>
+      <div class="form-group">
+        <label>I'm reaching out about</label>
+        <select id="fsubject">
+          <option value="">Select a topic…</option>
+          <option>Partnership / Business</option>
+          <option>Press inquiry</option>
+          <option>Driver registration</option>
+          <option>App bug or feedback</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us what's on your mind…" id="fmessage"></textarea>
+      </div>
+      <button class="form-submit" onclick="handleSubmit()">Send message →</button>
+      <div class="success-msg" id="successMsg">✅ Thanks! We'll get back to you within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── FOOTER ────────── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#hero" class="nav-logo" style="font-size:20px;">
+        <div class="logo-icon" style="width:32px;height:32px;font-size:16px;">🚗</div>
+        Trip<span>Mate</span>
+      </a>
+      <p>Making India's roads more human. Share rides, cut costs, and travel with people you can trust.</p>
+      <div class="social-links">
+        <a href="#" class="social-link" title="Twitter">𝕏</a>
+        <a href="#" class="social-link" title="Instagram">ig</a>
+        <a href="#" class="social-link" title="LinkedIn">in</a>
+        <a href="#" class="social-link" title="WhatsApp">wa</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#app">Download app</a></li>
+        <li><a href="#">Safety centre</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About us</a></li>
+        <li><a href="#about">Team</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Terms of service</a></li>
+        <li><a href="#">Community guidelines</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 TripMate Technologies Pvt. Ltd. — Tirupati, India 🇮🇳</span>
+    <span>Made with ❤️ for India's travellers</span>
+  </div>
+</footer>
+
+<script>
+  // mobile menu
+  function toggleMenu() {
+    const m = document.getElementById('mobileMenu');
+    m.style.display = m.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // navbar scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.style.borderBottomColor = window.scrollY > 40
+      ? 'rgba(0,212,255,0.15)' : 'rgba(0,212,255,0.08)';
+  });
+
+  // form submit
+  function handleSubmit() {
+    const name = document.getElementById('fname').value;
+    const email = document.getElementById('femail').value;
+    const msg = document.getElementById('fmessage').value;
+    if (!name || !email || !msg) {
+      alert('Please fill in your name, email, and message.');
+      return;
+    }
+    document.querySelector('.form-submit').style.display = 'none';
+    document.querySelectorAll('.form-group').forEach(g => g.style.opacity = '0.4');
+    document.getElementById('successMsg').style.display = 'block';
+  }
+
+  // hero stats animated count
+  const stats = [
+    { el: null, target: 50000, prefix: '', suffix: 'K+', div: 1000 },
+    { el: null, target: 120, prefix: '', suffix: '+', div: 1 },
+  ];
+</script>
+</body>
+</html>
