@@ -1,1126 +1,1174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>tripride — Share the Ride, Share the Road</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="description" content="TripRide — find rides, share trips, connect with travellers and manage your journey in one simple app." />
+  <title>TripRide — Travel. Share. Connect.</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23197EA7'/><circle cx='50' cy='56' r='16' fill='none' stroke='white' stroke-width='9'/><path d='M50 72V92M26 59C18 43 25 23 43 16V31L50 39L57 31L65 39L73 31C78 44 73 60 62 67' fill='none' stroke='white' stroke-width='8'/></svg>" />
 
-  :root {
-    --navy: #0B1426;
-    --navy-mid: #131F38;
-    --navy-card: #1A2840;
-    --navy-border: #243350;
-    --cyan: #00D4FF;
-    --cyan-dim: #00A8CC;
-    --cyan-glow: rgba(0, 212, 255, 0.12);
-    --blue-accent: #3B82F6;
-    --text-primary: #F0F6FF;
-    --text-secondary: #8CA8C8;
-    --text-muted: #4A6480;
-    --white: #FFFFFF;
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-body: 'Inter', sans-serif;
-    --radius-sm: 8px;
-    --radius-md: 14px;
-    --radius-lg: 20px;
-    --radius-xl: 28px;
-  }
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: #0b1728;
+      --card: rgba(255,255,255,.065);
+      --card-strong: #0f1d30;
+      --line: rgba(255,255,255,.10);
+      --text: #f8fbff;
+      --muted: #9eafc3;
+      --primary: #16c8f3;
+      --primary-2: #4ee0ff;
+      --green: #55e6a5;
+      --shadow: 0 28px 80px rgba(0,0,0,.34);
+      --radius: 28px;
+      --max: 1180px;
+    }
 
-  html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 80% 8%, rgba(22,200,243,.13), transparent 28%),
+        radial-gradient(circle at 10% 28%, rgba(85,230,165,.06), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-  body {
-    font-family: var(--font-body);
-    background: var(--navy);
-    color: var(--text-primary);
-    overflow-x: hidden;
-    line-height: 1.6;
-  }
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
 
-  /* ──────────────── NAV ──────────────── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    padding: 0 5%;
-    height: 68px;
-    display: flex; align-items: center; justify-content: space-between;
-    background: rgba(11, 20, 38, 0.88);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(0, 212, 255, 0.08);
-    transition: all 0.3s;
-  }
-  .nav-logo {
-    display: flex; align-items: center; gap: 10px;
-    text-decoration: none;
-    font-family: var(--font-display); font-size: 22px; font-weight: 700;
-    color: var(--white);
-    letter-spacing: -0.3px;
-  }
-  .nav-logo span { color: var(--cyan); }
-  .logo-icon {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--cyan) 0%, var(--blue-accent) 100%);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-  }
-  .nav-links {
-    display: flex; align-items: center; gap: 32px;
-    list-style: none;
-  }
-  .nav-links a {
-    text-decoration: none; color: var(--text-secondary);
-    font-size: 14px; font-weight: 500;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--cyan); }
-  .nav-cta {
-    background: var(--cyan); color: var(--navy) !important;
-    padding: 8px 20px; border-radius: 8px;
-    font-weight: 600 !important;
-    transition: background 0.2s, transform 0.2s !important;
-  }
-  .nav-cta:hover { background: #00BBEE !important; transform: translateY(-1px); }
-  .nav-hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
-  .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(7,17,31,.78);
+      border-bottom: 1px solid var(--line);
+    }
 
-  /* ──────────────── HERO ──────────────── */
-  #hero {
-    min-height: 100vh;
-    padding: 120px 5% 80px;
-    display: flex; align-items: center;
-    position: relative; overflow: hidden;
-  }
-  .hero-grid {
-    position: absolute; inset: 0; pointer-events: none;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%);
-  }
-  .hero-glow {
-    position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 400px;
-    background: radial-gradient(ellipse, rgba(0,212,255,0.1) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-content {
-    max-width: 1140px; margin: 0 auto; width: 100%;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
-    position: relative;
-  }
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.25);
-    padding: 6px 14px; border-radius: 100px; font-size: 13px;
-    color: var(--cyan); font-weight: 500; margin-bottom: 24px;
-    letter-spacing: 0.3px;
-  }
-  .hero-eyebrow::before {
-    content: ''; width: 6px; height: 6px; background: var(--cyan);
-    border-radius: 50%; animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+    .nav-inner {
+      width: min(calc(100% - 40px), var(--max));
+      min-height: 76px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
 
-  h1 {
-    font-family: var(--font-display);
-    font-size: clamp(38px, 5vw, 58px);
-    font-weight: 700; line-height: 1.1;
-    color: var(--white); margin-bottom: 20px;
-    letter-spacing: -1px;
-  }
-  h1 .accent { color: var(--cyan); }
-  .hero-sub {
-    font-size: 17px; color: var(--text-secondary); max-width: 480px;
-    line-height: 1.75; margin-bottom: 36px;
-  }
-  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
-  .btn-primary {
-    background: var(--cyan); color: var(--navy);
-    padding: 14px 28px; border-radius: var(--radius-sm);
-    font-weight: 700; font-size: 15px; text-decoration: none;
-    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
-    border: none; cursor: pointer;
-  }
-  .btn-primary:hover { background: #00BBEE; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,212,255,0.3); }
-  .btn-outline {
-    background: transparent; color: var(--text-primary);
-    padding: 14px 28px; border-radius: var(--radius-sm);
-    font-weight: 600; font-size: 15px; text-decoration: none;
-    border: 1px solid var(--navy-border); transition: all 0.2s;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
-  .hero-stats {
-    display: flex; gap: 32px; flex-wrap: wrap;
-  }
-  .hero-stat { }
-  .hero-stat .num {
-    font-family: var(--font-display); font-size: 28px; font-weight: 700;
-    color: var(--white); display: block;
-  }
-  .hero-stat .lbl { font-size: 13px; color: var(--text-muted); }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 900; font-size: 21px; }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--primary-2), var(--primary));
+      color: #04111b; font-weight: 1000;
+      box-shadow: 0 8px 28px rgba(22,200,243,.25);
+    }
+    .brand span { color: var(--primary); }
 
-  /* hero app mockup */
-  .hero-visual {
-    position: relative; display: flex; justify-content: center;
-  }
-  .phone-mockup {
-    width: 280px; height: 560px; background: var(--navy-card);
-    border-radius: 36px; border: 2px solid var(--navy-border);
-    overflow: hidden; position: relative;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.1);
-  }
-  .phone-status {
-    height: 44px; background: var(--navy-mid);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px; font-size: 12px; color: var(--text-muted);
-  }
-  .phone-content { padding: 16px; }
-  .phone-header {
-    display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
-  }
-  .phone-header .greeting { font-size: 13px; color: var(--text-secondary); }
-  .phone-header .username { font-size: 15px; font-weight: 600; color: var(--text-primary); }
-  .phone-avatar {
-    width: 34px; height: 34px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--cyan), var(--blue-accent));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: var(--navy);
-  }
-  .search-bar-mock {
-    background: var(--navy-mid); border-radius: 10px; padding: 10px 14px;
-    font-size: 13px; color: var(--text-muted); margin-bottom: 16px;
-    border: 1px solid var(--navy-border);
-  }
-  .trip-card-mock {
-    background: var(--navy-mid); border-radius: 12px; padding: 12px;
-    margin-bottom: 10px; border: 1px solid var(--navy-border);
-    position: relative; overflow: hidden;
-  }
-  .trip-card-mock::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-    width: 3px; background: var(--cyan);
-  }
-  .trip-route { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-  .trip-city { font-size: 13px; font-weight: 600; color: var(--text-primary); }
-  .trip-arrow { font-size: 11px; color: var(--text-muted); }
-  .trip-meta { display: flex; gap: 10px; }
-  .trip-tag {
-    font-size: 10px; background: rgba(0,212,255,0.1); color: var(--cyan);
-    padding: 2px 7px; border-radius: 4px;
-  }
-  .trip-price { font-size: 12px; font-weight: 700; color: var(--cyan); }
+    .nav-links { display: flex; align-items: center; gap: 30px; color: #c8d4e1; font-size: 14px; font-weight: 650; }
+    .nav-links a:hover { color: white; }
 
-  /* floating badge */
-  .float-badge {
-    position: absolute; background: var(--navy-card);
-    border: 1px solid var(--navy-border); border-radius: 12px;
-    padding: 10px 14px; font-size: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    animation: float 3s ease-in-out infinite;
-  }
-  .float-badge.left { left: -60px; top: 25%; }
-  .float-badge.right { right: -50px; bottom: 30%; }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-  .badge-label { color: var(--text-muted); font-size: 10px; margin-bottom: 2px; }
-  .badge-value { color: var(--text-primary); font-weight: 600; }
+    .nav-cta, .primary-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary-2), var(--primary));
+      color: #04111b;
+      font-weight: 850;
+      border: 0;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .nav-cta { padding: 11px 17px; }
+    .primary-btn { min-height: 54px; padding: 0 24px; }
+    .nav-cta:hover, .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(22,200,243,.2); }
 
-  /* ──────────────── SECTION COMMONS ──────────────── */
-  section { padding: 100px 5%; position: relative; }
-  .section-inner { max-width: 1140px; margin: 0 auto; }
-  .section-eyebrow {
-    font-size: 12px; font-weight: 600; letter-spacing: 2px;
-    text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
-  }
-  h2 {
-    font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 42px);
-    font-weight: 700; color: var(--white); margin-bottom: 16px;
-    letter-spacing: -0.5px; line-height: 1.15;
-  }
-  h2 .accent { color: var(--cyan); }
-  .section-desc { font-size: 16px; color: var(--text-secondary); max-width: 560px; line-height: 1.75; }
+    .hero {
+      width: min(calc(100% - 40px), var(--max));
+      margin: auto;
+      min-height: calc(100vh - 76px);
+      display: grid;
+      grid-template-columns: 1.03fr .97fr;
+      align-items: center;
+      gap: 72px;
+      padding: 70px 0 90px;
+    }
 
-  /* ──────────────── HOW IT WORKS ──────────────── */
-  #how {
-    background: var(--navy-mid);
-    border-top: 1px solid var(--navy-border);
-    border-bottom: 1px solid var(--navy-border);
-  }
-  .how-header { text-align: center; margin-bottom: 64px; }
-  .how-header .section-desc { margin: 0 auto; }
-  .steps-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
-    position: relative;
-  }
-  .steps-grid::before {
-    content: ''; position: absolute;
-    top: 40px; left: calc(12.5%); right: calc(12.5%);
-    height: 1px; background: linear-gradient(90deg, transparent, var(--cyan-dim), transparent);
-    pointer-events: none;
-  }
-  .step-item { padding: 32px 24px; text-align: center; }
-  .step-num {
-    width: 64px; height: 64px; border-radius: 50%;
-    border: 2px solid var(--navy-border);
-    background: var(--navy-card);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-size: 22px; font-weight: 700;
-    color: var(--cyan); margin: 0 auto 20px;
-    position: relative; z-index: 1;
-  }
-  .step-item.active .step-num {
-    background: var(--cyan); color: var(--navy);
-    border-color: var(--cyan);
-    box-shadow: 0 0 0 8px rgba(0,212,255,0.15);
-  }
-  .step-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--white); margin-bottom: 10px; }
-  .step-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 8px 12px;
+      border: 1px solid rgba(22,200,243,.25);
+      background: rgba(22,200,243,.07);
+      border-radius: 999px;
+      color: #bcefff;
+      font-size: 12px; font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .eyebrow-dot { width: 7px; height: 7px; background: var(--primary); border-radius: 50%; }
 
-  /* ──────────────── FEATURES ──────────────── */
-  #features .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .features-text { }
-  .features-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px;
-  }
-  .feature-card {
-    background: var(--navy-card); border: 1px solid var(--navy-border);
-    border-radius: var(--radius-md); padding: 20px;
-    transition: border-color 0.2s, transform 0.2s;
-    cursor: default;
-  }
-  .feature-card:hover { border-color: rgba(0,212,255,0.4); transform: translateY(-2px); }
-  .feature-icon {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--cyan-glow); border: 1px solid rgba(0,212,255,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; margin-bottom: 12px;
-  }
-  .feature-card h3 { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
-  .feature-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    h1 {
+      margin-top: 22px;
+      font-size: clamp(48px, 6vw, 82px);
+      line-height: .98;
+      letter-spacing: -.055em;
+      max-width: 760px;
+    }
+    h1 .accent { color: var(--primary); }
 
-  /* feature visual side */
-  .features-visual {
-    background: var(--navy-card); border-radius: var(--radius-xl);
-    border: 1px solid var(--navy-border); padding: 32px;
-    overflow: hidden; position: relative;
-  }
-  .map-mock {
-    height: 220px; background: var(--navy-mid); border-radius: var(--radius-md);
-    margin-bottom: 20px; position: relative; overflow: hidden;
-    border: 1px solid var(--navy-border);
-  }
-  .map-grid {
-    position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(0,212,255,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.05) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-  .map-route {
-    position: absolute; top: 50%; left: 15%; right: 15%;
-    height: 2px; background: var(--cyan);
-  }
-  .map-dot {
-    position: absolute; top: 50%; width: 12px; height: 12px;
-    border-radius: 50%; background: var(--cyan);
-    transform: translateY(-50%);
-    box-shadow: 0 0 12px var(--cyan);
-  }
-  .map-dot.start { left: 15%; }
-  .map-dot.end { right: 15%; }
-  .map-label {
-    position: absolute; font-size: 11px; color: var(--text-secondary);
-    background: var(--navy-card); padding: 2px 8px; border-radius: 4px;
-    top: calc(50% - 22px); white-space: nowrap;
-  }
-  .map-label.start { left: 8%; }
-  .map-label.end { right: 6%; }
-  .rider-list { display: flex; flex-direction: column; gap: 10px; }
-  .rider-item {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--navy-mid); border-radius: 10px; padding: 10px 14px;
-    border: 1px solid var(--navy-border);
-  }
-  .rider-avatar {
-    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700;
-  }
-  .rider-info { flex: 1; }
-  .rider-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
-  .rider-sub { font-size: 11px; color: var(--text-muted); }
-  .rider-fare { font-size: 13px; font-weight: 700; color: var(--cyan); }
+    .hero-copy {
+      margin-top: 25px;
+      max-width: 610px;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 19px);
+    }
 
-  /* ──────────────── APP DOWNLOAD ──────────────── */
-  #app {
-    background: var(--navy-mid);
-    border-top: 1px solid var(--navy-border);
-    border-bottom: 1px solid var(--navy-border);
-  }
-  .app-inner {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
-  }
-  .app-badges { display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
-  .store-badge {
-    display: flex; align-items: center; gap: 10px;
-    background: var(--navy-card); border: 1px solid var(--navy-border);
-    border-radius: var(--radius-sm); padding: 12px 20px;
-    text-decoration: none; transition: border-color 0.2s, transform 0.2s;
-  }
-  .store-badge:hover { border-color: var(--cyan); transform: translateY(-2px); }
-  .store-badge .store-icon { font-size: 28px; }
-  .store-badge .store-text { }
-  .store-badge .store-sub { font-size: 11px; color: var(--text-muted); display: block; }
-  .store-badge .store-name { font-size: 16px; font-weight: 700; color: var(--white); display: block; }
-  .screenshot-row {
-    display: flex; gap: 16px; justify-content: center;
-  }
-  .screenshot {
-    width: 140px; height: 280px; background: var(--navy-card);
-    border-radius: 24px; border: 2px solid var(--navy-border);
-    overflow: hidden; flex-shrink: 0;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  }
-  .screenshot:nth-child(2) { transform: translateY(-20px); }
-  .screenshot-bar { height: 8px; background: var(--navy-mid); }
-  .ss-content { padding: 12px; }
-  .ss-heading { height: 12px; background: var(--navy-border); border-radius: 4px; margin-bottom: 8px; }
-  .ss-line { height: 8px; background: var(--navy-mid); border-radius: 4px; margin-bottom: 6px; }
-  .ss-line.short { width: 60%; }
-  .ss-line.cyan { background: rgba(0,212,255,0.25); }
-  .ss-card { height: 60px; background: var(--navy-mid); border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--navy-border); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .secondary-btn {
+      min-height: 54px; padding: 0 23px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      font-weight: 800;
+      color: white;
+    }
 
-  /* ──────────────── ABOUT / FOUNDER ──────────────── */
-  #about .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-  .about-text { }
-  .about-text p { font-size: 15px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
-  .values-list { margin-top: 28px; display: flex; flex-direction: column; gap: 14px; }
-  .value-item { display: flex; gap: 14px; }
-  .value-dot {
-    width: 8px; height: 8px; border-radius: 50%; background: var(--cyan);
-    flex-shrink: 0; margin-top: 7px;
-  }
-  .value-item .v-title { font-size: 14px; font-weight: 600; color: var(--white); }
-  .value-item .v-desc { font-size: 13px; color: var(--text-secondary); }
+    .hero-note {
+      margin-top: 20px;
+      color: #8295aa;
+      font-size: 12px;
+    }
 
-  .founder-card {
-    background: var(--navy-card); border: 1px solid var(--navy-border);
-    border-radius: var(--radius-xl); padding: 36px; text-align: center;
-  }
-  .founder-photo {
-    width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 20px;
-    background: linear-gradient(135deg, var(--cyan), var(--blue-accent));
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-size: 32px; font-weight: 700;
-    color: var(--navy); border: 3px solid rgba(0,212,255,0.3);
-  }
-  .founder-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--white); }
-  .founder-role { font-size: 13px; color: var(--cyan); margin-bottom: 16px; margin-top: 4px; }
-  .founder-bio { font-size: 14px; color: var(--text-secondary); line-height: 1.75; text-align: left; margin-bottom: 20px; }
-  .founder-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-  .tag {
-    font-size: 12px; padding: 4px 12px; border-radius: 100px;
-    background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
-    color: var(--cyan);
-  }
+    .visual { position: relative; min-height: 600px; display: grid; place-items: center; }
+    .glow {
+      position: absolute;
+      width: 420px; height: 420px; border-radius: 50%;
+      background: rgba(22,200,243,.14);
+      filter: blur(70px);
+    }
 
-  /* team cards */
-  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
-  .team-card {
-    background: var(--navy-card); border: 1px solid var(--navy-border);
-    border-radius: var(--radius-md); padding: 24px; text-align: center;
-    transition: border-color 0.2s;
-  }
-  .team-card:hover { border-color: rgba(0,212,255,0.3); }
-  .team-avatar {
-    width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-size: 18px; font-weight: 700;
-  }
-  .team-name { font-size: 15px; font-weight: 600; color: var(--white); }
-  .team-role { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .phone {
+      position: relative;
+      width: min(330px, 78vw);
+      aspect-ratio: .51;
+      border-radius: 46px;
+      padding: 11px;
+      background: linear-gradient(145deg, #26364a, #09111d);
+      border: 1px solid rgba(255,255,255,.2);
+      box-shadow: var(--shadow);
+      transform: rotate(4deg);
+    }
+    .screen {
+      height: 100%;
+      overflow: hidden;
+      border-radius: 37px;
+      background:
+        radial-gradient(circle at 80% 0, rgba(22,200,243,.22), transparent 27%),
+        linear-gradient(180deg, #0d1d30, #07111f);
+      padding: 27px 20px;
+    }
+    .notch { width: 86px; height: 21px; background: #02060b; border-radius: 20px; margin: -17px auto 26px; }
+    .screen-small { color: #8da1b6; font-size: 12px; }
+    .screen-title { font-size: 25px; line-height: 1.1; font-weight: 900; margin: 7px 0 22px; }
+    .search-box {
+      height: 50px; border-radius: 15px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; padding: 0 15px;
+      color: #9eb0c3; font-size: 12px;
+    }
+    .route-card {
+      margin-top: 13px; padding: 15px; border-radius: 19px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .route-top { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 850; }
+    .route-line { height: 1px; background: rgba(255,255,255,.08); margin: 12px 0; }
+    .route-meta { display: flex; justify-content: space-between; color: #8fa2b6; font-size: 10px; }
+    .mini-btn { margin-top: 12px; height: 36px; border-radius: 11px; background: var(--primary); color: #04111b; display: grid; place-items: center; font-size: 11px; font-weight: 900; }
 
-  /* ──────────────── TESTIMONIALS ──────────────── */
-  #testimonials { background: var(--navy-mid); border-top: 1px solid var(--navy-border); border-bottom: 1px solid var(--navy-border); }
-  .testimonials-header { text-align: center; margin-bottom: 52px; }
-  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .tcard {
-    background: var(--navy-card); border: 1px solid var(--navy-border);
-    border-radius: var(--radius-lg); padding: 28px;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .tcard:hover { border-color: rgba(0,212,255,0.25); transform: translateY(-3px); }
-  .tcard .stars { color: #F59E0B; font-size: 14px; margin-bottom: 14px; }
-  .tcard .quote { font-size: 14px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 20px; font-style: italic; }
-  .tcard .user { display: flex; align-items: center; gap: 10px; }
-  .tcard .user-ava {
-    width: 36px; height: 36px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
-  }
-  .tcard .user-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
-  .tcard .user-loc { font-size: 12px; color: var(--text-muted); }
-  .tcard .route-tag {
-    font-size: 11px; background: rgba(0,212,255,0.08); color: var(--cyan);
-    padding: 3px 8px; border-radius: 4px; margin-left: auto;
-  }
+    .float-card {
+      position: absolute;
+      background: rgba(14,29,48,.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,.11);
+      border-radius: 17px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.28);
+      padding: 13px 15px;
+      font-size: 12px;
+    }
+    .float-card strong { display: block; font-size: 13px; margin-bottom: 2px; }
+    .float-one { left: 0; top: 22%; }
+    .float-two { right: -10px; bottom: 18%; }
+    .success { color: var(--green); }
 
-  /* ──────────────── CONTACT ──────────────── */
-  #contact .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
-  .contact-info h2 { margin-bottom: 12px; }
-  .contact-info p { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 32px; }
-  .contact-items { display: flex; flex-direction: column; gap: 18px; }
-  .contact-item { display: flex; align-items: flex-start; gap: 14px; }
-  .ci-icon {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--cyan-glow); border: 1px solid rgba(0,212,255,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-  .ci-label { font-size: 12px; color: var(--text-muted); }
-  .ci-val { font-size: 15px; color: var(--text-primary); font-weight: 500; }
+    section { padding: 100px 0; }
+    .section-inner { width: min(calc(100% - 40px), var(--max)); margin: auto; }
+    .section-heading { max-width: 700px; margin-bottom: 45px; }
+    .section-heading small { color: var(--primary); text-transform: uppercase; letter-spacing: .13em; font-weight: 850; }
+    .section-heading h2 { font-size: clamp(34px, 4.5vw, 54px); line-height: 1.06; letter-spacing: -.04em; margin-top: 10px; }
+    .section-heading p { color: var(--muted); margin-top: 14px; }
 
-  .contact-form {
-    background: var(--navy-card); border: 1px solid var(--navy-border);
-    border-radius: var(--radius-xl); padding: 36px;
-  }
-  .form-group { margin-bottom: 20px; }
-  .form-group label { font-size: 13px; font-weight: 500; color: var(--text-secondary); display: block; margin-bottom: 8px; }
-  .form-group input, .form-group textarea, .form-group select {
-    width: 100%; background: var(--navy-mid); border: 1px solid var(--navy-border);
-    border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text-primary);
-    font-family: var(--font-body); font-size: 14px; outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-    border-color: rgba(0,212,255,0.5);
-  }
-  .form-group textarea { height: 100px; resize: vertical; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .form-submit {
-    width: 100%; padding: 14px; background: var(--cyan); color: var(--navy);
-    border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700;
-    cursor: pointer; font-family: var(--font-body); transition: all 0.2s;
-    letter-spacing: 0.2px;
-  }
-  .form-submit:hover { background: #00BBEE; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
-  .success-msg {
-    display: none; text-align: center; padding: 20px;
-    color: var(--cyan); font-weight: 600; font-size: 16px;
-  }
+    .features { background: rgba(255,255,255,.018); border-block: 1px solid var(--line); }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .feature {
+      min-height: 230px;
+      padding: 27px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+    }
+    .feature-icon {
+      width: 45px; height: 45px; border-radius: 14px;
+      background: rgba(22,200,243,.1);
+      color: var(--primary);
+      display: grid; place-items: center;
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+    .feature h3 { font-size: 18px; margin-bottom: 8px; }
+    .feature p { color: var(--muted); font-size: 14px; }
 
-  /* ──────────────── FOOTER ──────────────── */
-  footer {
-    background: var(--navy-mid); border-top: 1px solid var(--navy-border);
-    padding: 60px 5% 32px;
-  }
-  .footer-grid {
-    max-width: 1140px; margin: 0 auto;
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
-    margin-bottom: 48px;
-  }
-  .footer-brand .nav-logo { margin-bottom: 12px; display: inline-flex; }
-  .footer-brand p { font-size: 14px; color: var(--text-muted); line-height: 1.75; max-width: 280px; margin-bottom: 20px; }
-  .social-links { display: flex; gap: 10px; }
-  .social-link {
-    width: 36px; height: 36px; border-radius: 8px;
-    background: var(--navy-card); border: 1px solid var(--navy-border);
-    display: flex; align-items: center; justify-content: center;
-    text-decoration: none; color: var(--text-muted); font-size: 16px;
-    transition: all 0.2s;
-  }
-  .social-link:hover { border-color: var(--cyan); color: var(--cyan); }
-  .footer-col h4 { font-size: 13px; font-weight: 600; color: var(--white); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .footer-col ul a { text-decoration: none; font-size: 14px; color: var(--text-muted); transition: color 0.2s; }
-  .footer-col ul a:hover { color: var(--cyan); }
-  .footer-bottom {
-    max-width: 1140px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 28px; border-top: 1px solid var(--navy-border);
-    font-size: 13px; color: var(--text-muted); flex-wrap: wrap; gap: 10px;
-  }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .step { padding: 26px 0; border-top: 1px solid var(--line); }
+    .step-num { color: var(--primary); font-weight: 900; font-size: 12px; letter-spacing: .1em; }
+    .step h3 { font-size: 21px; margin: 13px 0 7px; }
+    .step p { color: var(--muted); font-size: 14px; }
 
-  /* ──────────────── SCROLL ANIMATIONS ──────────────── */
-  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fee-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 30px;
+      padding: 38px;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(22,200,243,.10), rgba(255,255,255,.035));
+      border: 1px solid rgba(22,200,243,.18);
+    }
+    .fee-card h2 { font-size: clamp(30px, 4vw, 48px); letter-spacing: -.04em; line-height: 1.05; }
+    .fee-card p { color: var(--muted); margin-top: 12px; max-width: 650px; }
+    .fee {
+      min-width: 180px;
+      text-align: center;
+      padding: 25px;
+      border-radius: 22px;
+      background: #07111f;
+      border: 1px solid var(--line);
+    }
+    .fee strong { display: block; font-size: 42px; color: var(--primary); line-height: 1; }
+    .fee span { color: var(--muted); font-size: 12px; }
 
-  /* ──────────────── MOBILE ──────────────── */
-  @media (max-width: 900px) {
-    .hero-content { grid-template-columns: 1fr; }
-    .hero-visual { display: none; }
-    #features .section-inner { grid-template-columns: 1fr; }
-    .features-visual { display: none; }
-    .app-inner { grid-template-columns: 1fr; }
-    .screenshot-row { display: none; }
-    #about .section-inner { grid-template-columns: 1fr; }
-    #contact .section-inner { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    .steps-grid { grid-template-columns: 1fr 1fr; }
-    .steps-grid::before { display: none; }
-    .testimonials-grid { grid-template-columns: 1fr; }
-    .team-grid { grid-template-columns: 1fr 1fr; }
-    .features-grid { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
-    .nav-hamburger { display: flex; }
-    .form-row { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 560px) {
-    nav { padding: 0 4%; }
-    section { padding: 72px 4%; }
-    .footer-grid { grid-template-columns: 1fr; }
-    .team-grid { grid-template-columns: 1fr; }
-    .hero-stats { gap: 20px; }
-    .float-badge { display: none; }
-  }
+    .download {
+      text-align: center;
+      padding: 110px 20px;
+    }
+    .download-box {
+      width: min(100%, 900px);
+      margin: auto;
+      padding: 60px 30px;
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 50% 0, rgba(22,200,243,.19), transparent 45%),
+        var(--card-strong);
+      border: 1px solid var(--line);
+    }
+    .download h2 { font-size: clamp(35px, 5vw, 60px); line-height: 1; letter-spacing: -.05em; }
+    .download p { color: var(--muted); max-width: 580px; margin: 18px auto 28px; }
+
+    footer { border-top: 1px solid var(--line); padding: 38px 0; }
+    .footer-inner {
+      width: min(calc(100% - 40px), var(--max));
+      margin: auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 25px;
+      color: #8092a6; font-size: 12px;
+    }
+    .legal { display: flex; gap: 20px; flex-wrap: wrap; }
+    .legal a:hover { color: white; }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; text-align: center; gap: 20px; padding-top: 65px; }
+      .hero-copy { margin-inline: auto; }
+      .hero-actions { justify-content: center; }
+      .visual { min-height: 560px; }
+      .feature-grid, .steps { grid-template-columns: 1fr 1fr; }
+      .fee-card { grid-template-columns: 1fr; }
+      .fee { min-width: 0; }
+    }
+
+    @media (max-width: 580px) {
+      .nav-inner, .section-inner, .hero, .footer-inner { width: min(calc(100% - 28px), var(--max)); }
+      .nav-inner { min-height: 68px; }
+      .nav-cta { padding: 9px 12px; font-size: 12px; }
+      .brand { font-size: 18px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .hero { min-height: auto; padding: 58px 0 65px; }
+      h1 { font-size: clamp(43px, 14vw, 64px); }
+      .hero-actions { display: grid; }
+      .hero-actions a { width: 100%; }
+      .visual { min-height: 510px; }
+      .phone { width: 255px; }
+      .float-card { font-size: 10px; padding: 10px 12px; }
+      .float-one { left: -2px; }
+      .float-two { right: -2px; }
+      section { padding: 75px 0; }
+      .feature-grid, .steps { grid-template-columns: 1fr; }
+      .feature { min-height: 0; }
+      .fee-card { padding: 26px 20px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .legal { justify-content: center; }
+    }
+  
+    .brand-mark {
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.75) 50%, transparent 65%);
+      transform: translateX(-100%) rotate(10deg);
+      animation: logoShine 4.5s ease-in-out infinite;
+    }
+    @keyframes logoShine {
+      0%, 68% { transform: translateX(-120%) rotate(10deg); }
+      82%, 100% { transform: translateX(120%) rotate(10deg); }
+    }
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 13px 9px 9px;
+      border: 1px solid rgba(22,200,243,.18);
+      border-radius: 16px;
+      background: rgba(255,255,255,.025);
+      box-shadow: 0 12px 40px rgba(22,200,243,.06);
+    }
+    .brand-tag {
+      display: block;
+      color: #7e93aa;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      margin-top: -2px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .info-card {
+      padding: 30px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: var(--card);
+    }
+    .info-card .kicker {
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .info-card h3 {
+      font-size: 23px;
+      margin: 10px 0 9px;
+      letter-spacing: -.025em;
+    }
+    .info-card p { color: var(--muted); font-size: 14px; }
+    .about-panel {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .about-main, .founder-card {
+      padding: clamp(28px, 4vw, 45px);
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: var(--card);
+    }
+    .about-main h2 {
+      font-size: clamp(35px, 4.5vw, 55px);
+      line-height: 1.03;
+      letter-spacing: -.045em;
+      margin: 13px 0 18px;
+    }
+    .about-main p { color: var(--muted); max-width: 720px; }
+    .founder-card {
+      background:
+        radial-gradient(circle at 100% 0, rgba(22,200,243,.17), transparent 42%),
+        var(--card-strong);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .founder-avatar {
+      width: 70px; height: 70px;
+      display: grid; place-items: center;
+      border-radius: 21px;
+      background: linear-gradient(135deg, var(--primary-2), var(--primary));
+      color: #04111b;
+      font-size: 23px;
+      font-weight: 1000;
+      box-shadow: 0 15px 40px rgba(22,200,243,.16);
+    }
+    .founder-label {
+      margin-top: 28px;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+    }
+    .founder-card h3 {
+      font-size: clamp(23px, 3vw, 31px);
+      line-height: 1.12;
+      margin-top: 8px;
+      letter-spacing: -.03em;
+    }
+    .founder-card p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+    .faq-list { display: grid; gap: 10px; }
+    details {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+      padding: 0 20px;
+    }
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 20px 0;
+      font-weight: 800;
+    }
+    summary::-webkit-details-marker { display: none; }
+    details p { color: var(--muted); font-size: 14px; padding: 0 0 20px; }
+    @media (max-width: 760px) {
+      .info-grid, .about-panel { grid-template-columns: 1fr; }
+    }
+
+
+    /* ───────────── COLORFUL PREMIUM SYSTEM ───────────── */
+    :root {
+      --purple: #8B5CF6;
+      --pink: #F43F5E;
+      --orange: #FF7A18;
+      --yellow: #F7C948;
+      --teal: #14B8A6;
+      --sky: #38BDF8;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 8% 8%, rgba(244,63,94,.13), transparent 23%),
+        radial-gradient(circle at 88% 7%, rgba(139,92,246,.16), transparent 26%),
+        radial-gradient(circle at 76% 38%, rgba(20,184,166,.09), transparent 22%),
+        radial-gradient(circle at 10% 58%, rgba(255,122,24,.08), transparent 22%),
+        #07111f;
+    }
+
+    .hero .eyebrow {
+      border-color: rgba(244,63,94,.28);
+      background: linear-gradient(90deg, rgba(244,63,94,.09), rgba(139,92,246,.08));
+      color: #ffd3dc;
+    }
+    .hero .eyebrow-dot { background: var(--pink); }
+    h1 .accent {
+      background: linear-gradient(90deg, #38BDF8, #8B5CF6, #F43F5E, #FF7A18);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .features {
+      background:
+        radial-gradient(circle at 5% 30%, rgba(139,92,246,.08), transparent 25%),
+        radial-gradient(circle at 95% 70%, rgba(255,122,24,.07), transparent 25%),
+        rgba(255,255,255,.014);
+    }
+
+    .feature:nth-child(6n+1) .feature-icon { color:#38BDF8; background:rgba(56,189,248,.12); }
+    .feature:nth-child(6n+2) .feature-icon { color:#F43F5E; background:rgba(244,63,94,.12); }
+    .feature:nth-child(6n+3) .feature-icon { color:#14B8A6; background:rgba(20,184,166,.12); }
+    .feature:nth-child(6n+4) .feature-icon { color:#F7C948; background:rgba(247,201,72,.12); }
+    .feature:nth-child(6n+5) .feature-icon { color:#8B5CF6; background:rgba(139,92,246,.12); }
+    .feature:nth-child(6n+6) .feature-icon { color:#FF7A18; background:rgba(255,122,24,.12); }
+
+    .feature:nth-child(6n+1) { border-top: 2px solid rgba(56,189,248,.55); }
+    .feature:nth-child(6n+2) { border-top: 2px solid rgba(244,63,94,.55); }
+    .feature:nth-child(6n+3) { border-top: 2px solid rgba(20,184,166,.55); }
+    .feature:nth-child(6n+4) { border-top: 2px solid rgba(247,201,72,.55); }
+    .feature:nth-child(6n+5) { border-top: 2px solid rgba(139,92,246,.55); }
+    .feature:nth-child(6n+6) { border-top: 2px solid rgba(255,122,24,.55); }
+
+    .feature { transition: transform .22s ease, border-color .22s ease, background .22s ease; }
+    .feature:hover { transform: translateY(-5px); background: rgba(255,255,255,.085); }
+
+    .info-card:nth-child(4n+1) .kicker { color: var(--pink); }
+    .info-card:nth-child(4n+2) .kicker { color: var(--teal); }
+    .info-card:nth-child(4n+3) .kicker { color: var(--purple); }
+    .info-card:nth-child(4n+4) .kicker { color: var(--orange); }
+
+    .fee-card {
+      background:
+        radial-gradient(circle at 90% 10%, rgba(247,201,72,.13), transparent 30%),
+        linear-gradient(135deg, rgba(255,122,24,.08), rgba(244,63,94,.05), rgba(139,92,246,.06));
+      border-color: rgba(255,122,24,.24);
+    }
+    .fee strong {
+      background: linear-gradient(90deg, #F7C948, #FF7A18, #F43F5E);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .founder-card {
+      background:
+        radial-gradient(circle at 100% 0, rgba(244,63,94,.18), transparent 35%),
+        radial-gradient(circle at 0 100%, rgba(139,92,246,.15), transparent 40%),
+        var(--card-strong);
+    }
+    .founder-avatar {
+      background: linear-gradient(135deg, #F7C948, #FF7A18, #F43F5E);
+    }
+
+    .download-box {
+      background:
+        radial-gradient(circle at 20% 0, rgba(244,63,94,.15), transparent 34%),
+        radial-gradient(circle at 80% 0, rgba(139,92,246,.17), transparent 35%),
+        radial-gradient(circle at 50% 100%, rgba(20,184,166,.10), transparent 40%),
+        var(--card-strong);
+    }
+
+    .feature-category {
+      margin-top: 45px;
+    }
+    .feature-category:first-of-type { margin-top: 0; }
+    .feature-category-title {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 17px;
+    }
+    .feature-category-title span {
+      width: 34px; height: 34px;
+      display: grid; place-items: center;
+      border-radius: 11px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid var(--line);
+    }
+    .feature-category-title h3 {
+      font-size: 21px;
+      letter-spacing: -.025em;
+    }
+
+
+    /* ───────────── TRIPRIDE BRAND IDENTITY ───────────── */
+    .brand-mark {
+      padding: 0 !important;
+      overflow: hidden;
+      background: #197aa1 !important;
+    }
+    .brand-mark::after { display: none !important; }
+    .brand-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: inherit;
+    }
+    .hero-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 20px;
+      padding: 10px 14px 10px 10px;
+      border: 1px solid rgba(45,166,207,.25);
+      background: rgba(45,166,207,.07);
+      border-radius: 18px;
+    }
+    .hero-brand img {
+      width: 48px; height: 48px;
+      border-radius: 15px;
+      object-fit: cover;
+      box-shadow: 0 10px 30px rgba(25,122,161,.24);
+    }
+    .hero-brand strong { display:block; font-size:17px; letter-spacing:-.02em; }
+    .hero-brand span { display:block; color:#8fa8ba; font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+
+    .commitment {
+      border-block: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 12% 50%, rgba(20,184,166,.08), transparent 28%),
+        radial-gradient(circle at 88% 50%, rgba(139,92,246,.08), transparent 28%);
+    }
+    .commitment-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 25px;
+      align-items: center;
+      padding: 34px;
+      border-radius: 28px;
+      border: 1px solid rgba(45,166,207,.20);
+      background: rgba(255,255,255,.045);
+    }
+    .commitment-logo {
+      width: 88px; height: 88px;
+      border-radius: 25px;
+      object-fit: cover;
+      box-shadow: 0 18px 45px rgba(25,122,161,.20);
+    }
+    .commitment-card small {
+      color: #55e6a5;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .commitment-card h2 {
+      margin: 8px 0 10px;
+      font-size: clamp(29px,4vw,46px);
+      line-height: 1.06;
+      letter-spacing: -.04em;
+    }
+    .commitment-card p { color: var(--muted); max-width: 800px; }
+
+    .footer-brand-logo {
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; color:white;
+    }
+    .footer-brand-logo img {
+      width:34px; height:34px; border-radius:11px; object-fit:cover;
+    }
+
+    @media(max-width:580px) {
+      .commitment-card { grid-template-columns:1fr; padding:25px 20px; }
+      .commitment-logo { width:72px; height:72px; }
+      .hero-brand { margin-inline:auto; }
+    }
+
+
+    /* Self-contained TripRide logo — no external image file required */
+    .tripride-svg-logo {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .brand-mark .tripride-svg-logo {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+    }
+    .hero-brand .inline-logo-svg {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+    }
+    .hero-brand .inline-logo-svg .tripride-svg-logo {
+      border-radius: 15px;
+      filter: drop-shadow(0 10px 16px rgba(25,126,167,.22));
+    }
+    .logo-svg-wrap {
+      padding: 0 !important;
+      overflow: hidden;
+      background: transparent !important;
+    }
+    .commitment-logo.logo-svg-wrap {
+      width: 88px;
+      height: 88px;
+      border-radius: 25px;
+      flex: 0 0 88px;
+    }
+    .download-logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border-radius: 22px;
+      filter: drop-shadow(0 16px 22px rgba(25,126,167,.22));
+    }
+    .footer-brand-logo .inline-logo-svg {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+    }
+    .footer-brand-logo .inline-logo-svg .tripride-svg-logo {
+      border-radius: 11px;
+    }
+    @media(max-width:580px) {
+      .commitment-logo.logo-svg-wrap {
+        width:72px;
+        height:72px;
+        flex-basis:72px;
+      }
+    }
+
+
+    /* Compact feature groups */
+    .feature-category .feature:nth-child(n+4) {
+      display: none;
+    }
+    .feature-category.expanded .feature {
+      display: block;
+    }
+    .feature-more-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+    .feature-more-btn {
+      width: 54px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: white;
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .feature-more-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.10);
+      border-color: rgba(56,189,248,.35);
+    }
+    .feature-category.expanded .feature-more-btn {
+      color: var(--primary);
+    }
+
+
+    .trust-strip {
+      padding: 28px 0;
+      border-block: 1px solid var(--line);
+      background: rgba(255,255,255,.018);
+    }
+    .trust-grid {
+      width: min(calc(100% - 40px), var(--max));
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 10px;
+    }
+    .trust-item {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      min-height: 66px;
+      padding: 13px 15px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+    }
+    .trust-item b { display:block; font-size:12px; }
+    .trust-item span { color:var(--muted); font-size:10px; }
+    .trust-icon {
+      width:34px;height:34px;display:grid;place-items:center;
+      border-radius:11px;background:rgba(255,255,255,.07);
+      flex:0 0 34px;
+    }
+    @media(max-width:760px){.trust-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:440px){.trust-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
+
 <body>
-
-<!-- ────────── NAV ────────── -->
-<nav id="navbar">
-  <a href="#hero" class="nav-logo">
-    <div class="logo-icon">🚗</div>
-    Trip<span>Mate</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#how">How it works</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#app" class="nav-cta">Download App</a></li>
-  </ul>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
-
-<!-- mobile menu -->
-<div id="mobileMenu" style="display:none; position:fixed; top:68px; left:0; right:0; background:rgba(11,20,38,0.97); backdrop-filter:blur(20px); padding:24px 5%; z-index:999; border-bottom:1px solid var(--navy-border);">
-  <ul style="list-style:none; display:flex; flex-direction:column; gap:18px;">
-    <li><a href="#how" onclick="toggleMenu()" style="color:var(--text-secondary);text-decoration:none;font-size:16px;font-weight:500">How it works</a></li>
-    <li><a href="#features" onclick="toggleMenu()" style="color:var(--text-secondary);text-decoration:none;font-size:16px;font-weight:500">Features</a></li>
-    <li><a href="#about" onclick="toggleMenu()" style="color:var(--text-secondary);text-decoration:none;font-size:16px;font-weight:500">About</a></li>
-    <li><a href="#contact" onclick="toggleMenu()" style="color:var(--text-secondary);text-decoration:none;font-size:16px;font-weight:500">Contact</a></li>
-    <li><a href="#app" onclick="toggleMenu()" style="color:var(--cyan);text-decoration:none;font-size:16px;font-weight:700">Download App →</a></li>
-  </ul>
-</div>
-
-<!-- ────────── HERO ────────── -->
-<section id="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-content">
-    <div class="hero-text fade-up">
-      <div class="hero-eyebrow">🇮🇳 Built for India's roads</div>
-      <h1>Share the ride,<br><span class="accent">split the cost.</span></h1>
-      <p class="hero-sub">
-        TripRide connects drivers and passengers across Indian cities. Save money, meet people, and reduce traffic — one trip at a time.
-      </p>
-      <div class="hero-btns">
-        <a href="#app" class="btn-primary">📱 Download App</a>
-        <a href="#how" class="btn-outline">See how it works →</a>
-      </div>
-      <div class="hero-stats">
-        <div class="hero-stat"><span class="num">50K+</span><span class="lbl">Active Riders</span></div>
-        <div class="hero-stat"><span class="num">120+</span><span class="lbl">Indian Cities</span></div>
-        <div class="hero-stat"><span class="num">4.8★</span><span class="lbl">App Rating</span></div>
-        <div class="hero-stat"><span class="num">₹0</span><span class="lbl">Commission Fee</span></div>
-      </div>
-    </div>
-
-    <div class="hero-visual fade-up" style="animation-delay:0.2s">
-      <div class="phone-mockup">
-        <div class="phone-status">
-          <span>9:41</span><span>📶 🔋</span>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#home" class="brand brand-lockup" aria-label="TripRide home">
+        <div class="brand-mark"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
+  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
+  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
+  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
+</svg></div>
+        <div>
+          <div>trip<span>ride</span></div>
+          <small class="brand-tag">Travel · Share · Connect</small>
         </div>
-        <div class="phone-content">
-          <div class="phone-header">
-            <div>
-              <div class="greeting">Good morning,</div>
-              <div class="username">Arjun 👋</div>
-            </div>
-            <div class="phone-avatar">AK</div>
-          </div>
-          <div class="search-bar-mock">🔍  Where are you heading?</div>
-          <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;font-weight:600;letter-spacing:0.5px;">TODAY'S TRIPS</div>
-          <div class="trip-card-mock">
-            <div class="trip-route">
-              <span class="trip-city">Hyderabad</span>
-              <span class="trip-arrow">→</span>
-              <span class="trip-city">Tirupati</span>
-            </div>
-            <div class="trip-meta">
-              <span class="trip-tag">⏰ 7:00 AM</span>
-              <span class="trip-tag">3 seats</span>
-              <span class="trip-price">₹450/seat</span>
-            </div>
-          </div>
-          <div class="trip-card-mock">
-            <div class="trip-route">
-              <span class="trip-city">Bangalore</span>
-              <span class="trip-arrow">→</span>
-              <span class="trip-city">Mysuru</span>
-            </div>
-            <div class="trip-meta">
-              <span class="trip-tag">⏰ 9:30 AM</span>
-              <span class="trip-tag">2 seats</span>
-              <span class="trip-price">₹320/seat</span>
-            </div>
-          </div>
-          <div class="trip-card-mock">
-            <div class="trip-route">
-              <span class="trip-city">Chennai</span>
-              <span class="trip-arrow">→</span>
-              <span class="trip-city">Pondicherry</span>
-            </div>
-            <div class="trip-meta">
-              <span class="trip-tag">⏰ 8:00 AM</span>
-              <span class="trip-tag">1 seat</span>
-              <span class="trip-price">₹280/seat</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="float-badge left">
-        <div class="badge-label">Saved this month</div>
-        <div class="badge-value">₹2,400 💰</div>
-      </div>
-      <div class="float-badge right">
-        <div class="badge-label">Trip verified</div>
-        <div class="badge-value">✅ ID Checked</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ────────── HOW IT WORKS ────────── -->
-<section id="how">
-  <div class="section-inner">
-    <div class="how-header fade-up">
-      <div class="section-eyebrow">Simple process</div>
-      <h2>Go from booking to boarding<br>in <span class="accent">under 2 minutes</span></h2>
-      <p class="section-desc">No complicated forms, no waiting on calls. TripRide gets you moving fast.</p>
-    </div>
-    <div class="steps-grid fade-up">
-      <div class="step-item">
-        <div class="step-num">01</div>
-        <div class="step-title">Sign up with Google</div>
-        <div class="step-desc">One-tap Google login. Your profile is verified and ready to go in seconds.</div>
-      </div>
-      <div class="step-item active">
-        <div class="step-num">02</div>
-        <div class="step-title">Find or post a trip</div>
-        <div class="step-desc">Search trips by city, date, and time — or list your own ride and earn.</div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">03</div>
-        <div class="step-title">Pay securely</div>
-        <div class="step-desc">UPI, card, or wallet — pay safely in-app with instant confirmations.</div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">04</div>
-        <div class="step-title">Hit the road</div>
-        <div class="step-desc">Meet, ride, and review. Build trust in the community trip by trip.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ────────── FEATURES ────────── -->
-<section id="features">
-  <div class="section-inner">
-    <div class="features-text fade-up">
-      <div class="section-eyebrow">Everything you need</div>
-      <h2>Built for real<br><span class="accent">Indian travellers</span></h2>
-      <p class="section-desc">From UPI payments to in-app chat in regional languages — tripride is designed for how Indians actually travel.</p>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">💬</div>
-          <h3>In-app messaging</h3>
-          <p>Chat with drivers or co-passengers before the trip. Coordinate pickup points easily.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔒</div>
-          <h3>Verified profiles</h3>
-          <p>Aadhaar-linked ID verification and Digilocker integration for safe rides.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">₹</div>
-          <h3>UPI & wallet pay</h3>
-          <p>Pay via UPI, PhonePe, Google Pay, debit/credit card, or tripride wallet.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">⭐</div>
-          <h3>Ratings & reviews</h3>
-          <p>Build your reputation. High-rated drivers and riders get priority listings.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔔</div>
-          <h3>Smart notifications</h3>
-          <p>Real-time alerts for booking confirmations, trip updates, and new requests.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🛡️</div>
-          <h3>SOS & safety tools</h3>
-          <p>One-tap SOS, live location sharing with trusted contacts during every trip.</p>
-        </div>
-      </div>
-    </div>
-    <div class="features-visual fade-up">
-      <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">LIVE ROUTE PREVIEW</div>
-      <div class="map-mock">
-        <div class="map-grid"></div>
-        <div class="map-route"></div>
-        <div class="map-dot start"></div>
-        <div class="map-dot end"></div>
-        <div class="map-label start">Hyderabad</div>
-        <div class="map-label end">Tirupati</div>
-        <div style="position:absolute;top:30%;left:45%;width:10px;height:10px;border-radius:50%;background:var(--cyan);opacity:0.6;animation:float 2s ease-in-out infinite;"></div>
-      </div>
-      <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">PASSENGERS ON THIS TRIP</div>
-      <div class="rider-list">
-        <div class="rider-item">
-          <div class="rider-avatar" style="background:rgba(59,130,246,0.2);color:#3B82F6;">PK</div>
-          <div class="rider-info">
-            <div class="rider-name">Priya Krishnan</div>
-            <div class="rider-sub">⭐ 4.9 · 47 trips</div>
-          </div>
-          <div class="rider-fare">₹450</div>
-        </div>
-        <div class="rider-item">
-          <div class="rider-avatar" style="background:rgba(0,212,255,0.15);color:var(--cyan);">RM</div>
-          <div class="rider-info">
-            <div class="rider-name">Ravi Mohan</div>
-            <div class="rider-sub">⭐ 4.7 · 23 trips</div>
-          </div>
-          <div class="rider-fare">₹450</div>
-        </div>
-        <div class="rider-item" style="border-style:dashed;opacity:0.5;">
-          <div class="rider-avatar" style="background:var(--navy-mid);color:var(--text-muted);">+1</div>
-          <div class="rider-info">
-            <div class="rider-name" style="color:var(--text-muted)">1 seat open</div>
-            <div class="rider-sub">Join this trip</div>
-          </div>
-          <div style="font-size:12px;background:rgba(0,212,255,0.1);color:var(--cyan);padding:4px 10px;border-radius:6px;border:1px dashed rgba(0,212,255,0.3);">Book</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ────────── APP DOWNLOAD ────────── -->
-<section id="app">
-  <div class="section-inner app-inner">
-    <div class="fade-up">
-      <div class="section-eyebrow">Mobile app</div>
-      <h2>Your rides,<br><span class="accent">in your pocket.</span></h2>
-      <p style="font-size:15px;color:var(--text-secondary);line-height:1.75;margin-top:12px;max-width:420px;">
-        Available on Android and iOS. Lightweight, fast, and designed for low-bandwidth networks across India. Offline mode included.
-      </p>
-      <div class="app-badges">
-        <a href="#" class="store-badge">
-          <div class="store-icon">🤖</div>
-          <div class="store-text">
-            <span class="store-sub">Get it on</span>
-            <span class="store-name">Google Play</span>
-          </div>
-        </a>
-        <a href="#" class="store-badge">
-          <div class="store-icon">🍎</div>
-          <div class="store-text">
-            <span class="store-sub">Download on the</span>
-            <span class="store-name">App Store</span>
-          </div>
-        </a>
-      </div>
-    </div>
-    <div class="screenshot-row fade-up">
-      <div class="screenshot">
-        <div class="screenshot-bar"></div>
-        <div class="ss-content">
-          <div class="ss-heading"></div>
-          <div class="ss-line cyan"></div>
-          <div class="ss-line short"></div>
-          <div class="ss-card"></div>
-          <div class="ss-card"></div>
-          <div class="ss-line short"></div>
-          <div class="ss-line"></div>
-        </div>
-      </div>
-      <div class="screenshot">
-        <div class="screenshot-bar" style="background:rgba(0,212,255,0.15)"></div>
-        <div class="ss-content">
-          <div class="ss-heading"></div>
-          <div class="ss-line"></div>
-          <div class="ss-card" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.2)"></div>
-          <div class="ss-line short cyan"></div>
-          <div class="ss-line"></div>
-          <div class="ss-card"></div>
-          <div class="ss-line short"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ────────── ABOUT + FOUNDER ────────── -->
-<section id="about">
-  <div class="section-inner">
-    <div class="about-text fade-up">
-      <div class="section-eyebrow">Our story</div>
-      <h2>Born in a traffic jam<br>on <span class="accent">NH-65</span></h2>
-      <p>tripride started when our founder was stuck in bumper-to-bumper traffic between Hyderabad and Tirupati — and realised that three empty seats next to him could have carried three people making the exact same journey.</p>
-      <p>We built tripride to solve India's intercity mobility gap: buses are full, trains are booked, and taxis are expensive. Carpooling is the natural answer — but it needed a trustworthy platform.</p>
-      <p>Today, tripride operates across South India with a growing community of verified drivers and passengers who share not just rides, but stories.</p>
-      <div class="values-list">
-        <div class="value-item">
-          <div class="value-dot"></div>
-          <div><div class="v-title">Safety first</div><div class="v-desc">Every user is ID-verified. SOS, live tracking, and trusted contacts built-in.</div></div>
-        </div>
-        <div class="value-item">
-          <div class="value-dot"></div>
-          <div><div class="v-title">Zero profiteering</div><div class="v-desc">Drivers share actual costs — no surge pricing, no hidden commissions.</div></div>
-        </div>
-        <div class="value-item">
-          <div class="value-dot"></div>
-          <div><div class="v-title">Community over platform</div><div class="v-desc">Built on trust, not algorithms. Ratings are earned, not bought.</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="fade-up">
-      <div class="founder-card">
-        <div class="founder-photo">M</div>
-        <div class="founder-name">Mohith Kumar</div>
-        <div class="founder-role">Founder & CEO</div>
-        <p class="founder-bio">
-          Full-stack developer and product builder from Tirupati, Andhra Pradesh. Mohith built tripride's first prototype in Django and React while interning at BR Concepts — a side project that quickly turned into a mission. He's passionate about solving real Indian mobility problems with simple, reliable technology.
-        </p>
-        <div class="founder-tags">
-          <span class="tag">Django / Python</span>
-          <span class="tag">React</span>
-          <span class="tag">PostgreSQL</span>
-          <span class="tag">Firebase</span>
-          <span class="tag">UPI APIs</span>
-        </div>
-      </div>
-
-      <div class="team-grid" style="margin-top:24px;">
-        <div class="team-card">
-          <div class="team-avatar" style="background:rgba(59,130,246,0.15);color:#3B82F6;">PD</div>
-          <div class="team-name">Priya Devi</div>
-          <div class="team-role">Head of Design</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar" style="background:rgba(0,212,255,0.12);color:var(--cyan);">RS</div>
-          <div class="team-name">Rajan Sharma</div>
-          <div class="team-role">Backend Engineer</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar" style="background:rgba(245,158,11,0.12);color:#F59E0B;">AR</div>
-          <div class="team-name">Anitha Rao</div>
-          <div class="team-role">Growth & Ops</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ────────── TESTIMONIALS ────────── -->
-<section id="testimonials">
-  <div class="section-inner">
-    <div class="testimonials-header fade-up">
-      <div class="section-eyebrow">Real riders</div>
-      <h2>What India's commuters are <span class="accent">saying</span></h2>
-    </div>
-    <div class="testimonials-grid fade-up">
-      <div class="tcard">
-        <div class="stars">★★★★★</div>
-        <p class="quote">"I travel from Hyderabad to Tirupati almost every weekend. tripride saves me ₹800 every single trip. The co-passengers have become friends now!"</p>
-        <div class="user">
-          <div class="user-ava" style="background:rgba(59,130,246,0.15);color:#3B82F6;">SK</div>
-          <div><div class="user-name">Suresh K.</div><div class="user-loc">Hyderabad</div></div>
-          <div class="route-tag">HYD → TIR</div>
-        </div>
-      </div>
-      <div class="tcard">
-        <div class="stars">★★★★★</div>
-        <p class="quote">"As a woman traveller, safety was my concern. The ID verification and live tracking features gave me confidence. I've done 30+ trips without any issues."</p>
-        <div class="user">
-          <div class="user-ava" style="background:rgba(0,212,255,0.12);color:var(--cyan);">MN</div>
-          <div><div class="user-name">Meena N.</div><div class="user-loc">Bangalore</div></div>
-          <div class="route-tag">BLR → MYS</div>
-        </div>
-      </div>
-      <div class="tcard">
-        <div class="stars">★★★★☆</div>
-        <p class="quote">"I'm a driver who lists my weekend trips. I recover my full fuel cost and meet interesting people. tripride's UPI payout is instant — love that."</p>
-        <div class="user">
-          <div class="user-ava" style="background:rgba(245,158,11,0.12);color:#F59E0B;">VR</div>
-          <div><div class="user-name">Venkat R.</div><div class="user-loc">Chennai</div></div>
-          <div class="route-tag">MAA → PDY</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ────────── CONTACT ────────── -->
-<section id="contact">
-  <div class="section-inner">
-    <div class="contact-info fade-up">
-      <div class="section-eyebrow">Get in touch</div>
-      <h2>We'd love to<br><span class="accent">hear from you.</span></h2>
-      <p>Partnership enquiries, press coverage, or just a question about how tripride works — reach out anytime. We're a small team and we personally read every message.</p>
-      <div class="contact-items">
-        <div class="contact-item">
-          <div class="ci-icon">📧</div>
-          <div><div class="ci-label">Email us</div><div class="ci-val">supporttripride1@gmail.com</div></div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-icon">📍</div>
-          <div><div class="ci-label">Headquarters</div><div class="ci-val">Tirupati, Andhra Pradesh, India</div></div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-icon">📱</div>
-          <div><div class="ci-label">WhatsApp support</div><div class="ci-val">+91 9951994651</div></div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-icon">⏰</div>
-          <div><div class="ci-label">Support hours</div><div class="ci-val">Mon – Sat, 9 AM – 8 PM IST</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="contact-form fade-up" id="contactForm">
-      <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--white);margin-bottom:24px;">Send us a message</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>First name</label>
-          <input type="text" placeholder="Arjun" id="fname" />
-        </div>
-        <div class="form-group">
-          <label>Last name</label>
-          <input type="text" placeholder="Kumar" id="lname" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Email address</label>
-        <input type="email" placeholder="arjun@example.com" id="femail" />
-      </div>
-      <div class="form-group">
-        <label>I'm reaching out about</label>
-        <select id="fsubject">
-          <option value="">Select a topic…</option>
-          <option>Partnership / Business</option>
-          <option>Press inquiry</option>
-          <option>Driver registration</option>
-          <option>App bug or feedback</option>
-          <option>Something else</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Message</label>
-        <textarea placeholder="Tell us what's on your mind…" id="fmessage"></textarea>
-      </div>
-      <button class="form-submit" onclick="handleSubmit()">Send message →</button>
-      <div class="success-msg" id="successMsg">✅ Thanks! We'll get back to you within 24 hours.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ────────── FOOTER ────────── -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="#hero" class="nav-logo" style="font-size:20px;">
-        <div class="logo-icon" style="width:32px;height:32px;font-size:16px;">🚗</div>
-        Trip<span>Mate</span>
       </a>
-      <p>Making India's roads more human. Share rides, cut costs, and travel with people you can trust.</p>
-      <div class="social-links">
-        <a href="#" class="social-link" title="Twitter">𝕏</a>
-        <a href="#" class="social-link" title="Instagram">ig</a>
-        <a href="#" class="social-link" title="LinkedIn">in</a>
-        <a href="#" class="social-link" title="WhatsApp">wa</a>
+
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#fee">Platform fee</a>
+        <a href="#about">About</a>
+        <a href="#support">Support</a>
+      </div>
+
+      <a class="nav-cta" href="#download">Get the app</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="home">
+      <div>
+        <div class="hero-brand">
+          <div class="inline-logo-svg"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
+  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
+  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
+  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
+</svg></div>
+          <div><strong>TripRide</strong><span>Travel · Share · Connect</span></div>
+        </div>
+        <div class="eyebrow"><span class="eyebrow-dot"></span> Travel made simpler</div>
+        <h1>Every trip starts with a <span class="accent">connection.</span></h1>
+        <p class="hero-copy">
+          Find trips, share your journey, connect with co-travellers and manage bookings from one simple place.
+        </p>
+
+        <div class="hero-actions">
+          <a class="primary-btn" href="#download">Download TripRide</a>
+          <a class="secondary-btn" href="#how">See how it works</a>
+        </div>
+      </div>
+
+      <div class="visual" aria-label="TripRide app preview">
+        <div class="glow"></div>
+
+        <div class="phone">
+          <div class="screen">
+            <div class="notch"></div>
+            <div class="screen-small">Good morning</div>
+            <div class="screen-title">Where are you<br />heading next?</div>
+            <div class="search-box">⌕ &nbsp; Search destination</div>
+
+            <div class="route-card">
+              <div class="route-top"><span>Hyderabad</span><span>→</span><span>Tirupati</span></div>
+              <div class="route-line"></div>
+              <div class="route-meta"><span>Trip details</span><span>Available seats</span></div>
+              <div class="mini-btn">View trip</div>
+            </div>
+
+            <div class="route-card">
+              <div class="route-top"><span>Find a ride</span><span>+</span><span>Share a ride</span></div>
+              <div class="route-line"></div>
+              <div class="route-meta"><span>Connect</span><span>Travel</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="float-card float-one">
+          <strong>Trip found</strong>
+          <span class="success">Ready to explore</span>
+        </div>
+
+        <div class="float-card float-two">
+          <strong>Simple booking</strong>
+          <span>Manage it in the app</span>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="trust-strip" aria-label="TripRide principles">
+      <div class="trust-grid">
+        <div class="trust-item"><div class="trust-icon">🤝</div><div><b>Committed journeys</b><span>Trips matter to the people depending on them.</span></div></div>
+        <div class="trust-item"><div class="trust-icon">₹</div><div><b>Clear ₹50 fee</b><span>Platform fee presented clearly.</span></div></div>
+        <div class="trust-item"><div class="trust-icon">💬</div><div><b>Connected travel</b><span>Profiles, chat and trip tools in one app.</span></div></div>
+        <div class="trust-item"><div class="trust-icon">✦</div><div><b>Built for TripRide</b><span>No fake ratings, counts or testimonials.</span></div></div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="section-inner">
+        <div class="section-heading">
+          <small>Inside TripRide</small>
+          <h2>One app. A lot more around every journey.</h2>
+          <p>From finding a trip to profiles, bookings, chat, payments and travel services, TripRide brings the experience together in one place.</p>
+        </div>
+
+        <div class="feature-category">
+          <div class="feature-category-title"><span>🚗</span><h3>Trips & rides</h3></div>
+          <div class="feature-grid">
+            <article class="feature"><div class="feature-icon">⌕</div><h3>Discover trips</h3><p>Browse available trips and find journeys that match where you want to travel.</p></article>
+            <article class="feature"><div class="feature-icon">＋</div><h3>Create a ride</h3><p>Create your own trip and share available seats with people travelling on the route.</p></article>
+            <article class="feature"><div class="feature-icon">↔</div><h3>Place-to-place travel</h3><p>Explore travel options around your selected origin and destination.</p></article>
+            <article class="feature"><div class="feature-icon">♡</div><h3>Saved trips</h3><p>Keep trips you are interested in accessible so you can return to them later.</p></article>
+            <article class="feature"><div class="feature-icon">▣</div><h3>My trips</h3><p>View and manage trip activity connected to your TripRide account.</p></article>
+            <article class="feature"><div class="feature-icon">👥</div><h3>Passenger view</h3><p>Trip creators can access passenger information associated with their trip bookings.</p></article>
+          </div>
+          <div class="feature-more-row">
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+          </div>
+        </div>
+
+        <div class="feature-category">
+          <div class="feature-category-title"><span>🎟</span><h3>Bookings & payments</h3></div>
+          <div class="feature-grid">
+            <article class="feature"><div class="feature-icon">🎟</div><h3>Trip bookings</h3><p>Book supported trips and keep the booking information connected to the journey.</p></article>
+            <article class="feature"><div class="feature-icon">₹</div><h3>Payment flow</h3><p>Complete supported payment steps in-app and receive the relevant payment status.</p></article>
+            <article class="feature"><div class="feature-icon">✓</div><h3>Payment verification</h3><p>TripRide can show whether a payment is being checked, verified or needs attention.</p></article>
+            <article class="feature"><div class="feature-icon">▤</div><h3>Booking details</h3><p>Keep relevant booking and trip information organised inside the app.</p></article>
+            <article class="feature"><div class="feature-icon">₹50</div><h3>Clear platform fee</h3><p>The TripRide platform fee shown on this website is ₹50, with transaction details shown before confirmation where applicable.</p></article>
+            <article class="feature"><div class="feature-icon">◷</div><h3>Status updates</h3><p>See meaningful status information during booking and payment-related flows.</p></article>
+          </div>
+          <div class="feature-more-row">
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+          </div>
+        </div>
+
+        <div class="feature-category">
+          <div class="feature-category-title"><span>💬</span><h3>People & communication</h3></div>
+          <div class="feature-grid">
+            <article class="feature"><div class="feature-icon">💬</div><h3>In-app chat</h3><p>Message other TripRide users to coordinate information around a journey.</p></article>
+            <article class="feature"><div class="feature-icon">🔔</div><h3>Notifications</h3><p>Receive app notifications for relevant activity and important TripRide updates.</p></article>
+            <article class="feature"><div class="feature-icon">◎</div><h3>User profiles</h3><p>View profile information used by TripRide to help users connect around travel.</p></article>
+            <article class="feature"><div class="feature-icon">▦</div><h3>QR profile access</h3><p>Scan a TripRide QR code to open the associated user profile more quickly.</p></article>
+            <article class="feature"><div class="feature-icon">⌁</div><h3>Profile sharing</h3><p>Use profile and QR-based flows to make connecting between TripRide users easier.</p></article>
+            <article class="feature"><div class="feature-icon">●</div><h3>Account-based experience</h3><p>Your TripRide activity stays connected to your signed-in account across supported features.</p></article>
+          </div>
+          <div class="feature-more-row">
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+          </div>
+        </div>
+
+        <div class="feature-category">
+          <div class="feature-category-title"><span>🏢</span><h3>Travel services</h3></div>
+          <div class="feature-grid">
+            <article class="feature"><div class="feature-icon">🏢</div><h3>Travel agencies</h3><p>TripRide includes travel-agency related experiences as part of its broader travel platform.</p></article>
+            <article class="feature"><div class="feature-icon">🚘</div><h3>Rental agencies</h3><p>Explore supported rental-agency information and travel options from the app.</p></article>
+            <article class="feature"><div class="feature-icon">⌖</div><h3>Location-aware discovery</h3><p>Supported location features help TripRide present travel information around places and routes.</p></article>
+            <article class="feature"><div class="feature-icon">☰</div><h3>Agency listings</h3><p>Browse available agency-related listings through dedicated TripRide screens.</p></article>
+            <article class="feature"><div class="feature-icon">✓</div><h3>Agency registration flow</h3><p>Supported agency registration can move through payment verification and approval status steps.</p></article>
+            <article class="feature"><div class="feature-icon">↗</div><h3>Travel-focused navigation</h3><p>Move between ride, agency and profile experiences without leaving the TripRide ecosystem.</p></article>
+          </div>
+          <div class="feature-more-row">
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+          </div>
+        </div>
+
+        <div class="feature-category">
+          <div class="feature-category-title"><span>⚙</span><h3>App experience</h3></div>
+          <div class="feature-grid">
+            <article class="feature"><div class="feature-icon">◐</div><h3>Light & dark theme</h3><p>TripRide supports theme preferences so the interface can match your viewing preference.</p></article>
+            <article class="feature"><div class="feature-icon">▱</div><h3>Responsive interface</h3><p>Screens are designed to adapt across smaller and larger supported phone sizes.</p></article>
+            <article class="feature"><div class="feature-icon">↻</div><h3>Session restore</h3><p>TripRide can restore an existing authenticated session when the app starts.</p></article>
+            <article class="feature"><div class="feature-icon">☁</div><h3>Cloud-connected data</h3><p>Supported TripRide experiences use Firebase-backed app data for connected functionality.</p></article>
+            <article class="feature"><div class="feature-icon">⚑</div><h3>Friendly error states</h3><p>User-facing screens can present understandable status messages instead of raw technical errors.</p></article>
+            <article class="feature"><div class="feature-icon">✦</div><h3>Modern mobile UI</h3><p>TripRide combines clear cards, navigation and focused travel flows in a modern mobile interface.</p></article>
+          </div>
+          <div class="feature-more-row">
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="commitment" id="commitment">
+      <div class="section-inner">
+        <div class="commitment-card">
+          <div class="commitment-logo logo-svg-wrap"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
+  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
+  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
+  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
+</svg></div>
+          <div>
+            <small>The TripRide promise</small>
+            <h2>A confirmed journey is a commitment.</h2>
+            <p>
+              A ride can be an important part of someone’s day — getting home, reaching work, meeting family or making a journey that matters.
+              TripRide is designed around responsible trip creation, thoughtful booking and respect for the people depending on that journey.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="section-inner">
+        <div class="section-heading">
+          <small>How it works</small>
+          <h2>Open. Find. Connect. Travel.</h2>
+          <p>No complicated website dashboard. The actual trip experience stays where it belongs — inside the TripRide app.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">01 / FIND</div>
+            <h3>Choose your trip</h3>
+            <p>Search for a route and explore the trip information available in the app.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">02 / CONNECT</div>
+            <h3>Book or share</h3>
+            <p>Join an available trip or create your own ride when you have seats to share.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">03 / TRAVEL</div>
+            <h3>Manage the journey</h3>
+            <p>Use your booking, chat and trip tools from TripRide throughout the journey.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="more">
+      <div class="section-inner">
+        <div class="section-heading">
+          <small>More than a trip search</small>
+          <h2>Built around the full TripRide experience.</h2>
+          <p>TripRide brings the important parts of planning and managing shared travel into one mobile experience.</p>
+        </div>
+
+        <div class="info-grid">
+          <article class="info-card">
+            <div class="kicker">Trip management</div>
+            <h3>Keep your journeys organised</h3>
+            <p>Access trip details, bookings and saved trip information without jumping between different services.</p>
+          </article>
+          <article class="info-card">
+            <div class="kicker">People</div>
+            <h3>Profiles that make connection easier</h3>
+            <p>TripRide profiles and QR profile access give users a simple way to connect around a journey.</p>
+          </article>
+          <article class="info-card">
+            <div class="kicker">Communication</div>
+            <h3>Chat where the trip happens</h3>
+            <p>Use in-app messaging to coordinate relevant journey information with other TripRide users.</p>
+          </article>
+          <article class="info-card">
+            <div class="kicker">Travel ecosystem</div>
+            <h3>Designed to grow with travel needs</h3>
+            <p>TripRide is structured around rides, bookings and travel-related services while keeping the experience simple for users.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="fee">
+      <div class="section-inner">
+        <div class="fee-card">
+          <div>
+            <h2>Simple platform fee.</h2>
+            <p>
+              TripRide keeps the platform fee clear and visible. Any additional payment details applicable to a transaction should be shown in the app before confirmation.
+            </p>
+          </div>
+          <div class="fee">
+            <strong>₹50</strong>
+            <span>platform fee</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="about">
+      <div class="section-inner">
+        <div class="about-panel">
+          <div class="about-main">
+            <div class="eyebrow"><span class="eyebrow-dot"></span> About TripRide</div>
+            <h2>A simpler way to bring people and journeys together.</h2>
+            <p>
+              TripRide is a travel application focused on helping people discover trips, share journeys, manage bookings and communicate around travel from one place. The goal is straightforward: keep the experience useful, clear and easy to use.
+            </p>
+          </div>
+
+          <aside class="founder-card">
+            <div>
+              <div class="founder-avatar">VM</div>
+              <div class="founder-label">Founder</div>
+              <h3>Valasareddy Mohith Kumar Reddy</h3>
+            </div>
+            <p>Founder of TripRide.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="section-inner">
+        <div class="section-heading">
+          <small>Quick answers</small>
+          <h2>TripRide, without the fine-print feeling.</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>What is TripRide?</summary>
+            <p>TripRide is a mobile travel app for discovering trips, sharing rides, managing bookings and connecting around a journey.</p>
+          </details>
+          <details>
+            <summary>What is the TripRide platform fee?</summary>
+            <p>The platform fee shown on this website is ₹50. Applicable transaction details should be displayed in the app before confirmation.</p>
+          </details>
+          <details>
+            <summary>Where do I manage my trips?</summary>
+            <p>The main TripRide experience — including trip and booking tools — is available inside the mobile app.</p>
+          </details>
+          <details>
+            <summary>Does this website show fake user or trip counts?</summary>
+            <p>No. This website does not display invented user counts, trip counts, ratings or testimonials.</p>
+          </details>
+          <details>
+            <summary>What does TripRide mean by committed journeys?</summary>
+            <p>TripRide treats a confirmed trip as a meaningful commitment between people. The experience encourages users to create and book trips thoughtfully because another person may be depending on that journey.</p>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="download" id="download">
+      <div class="download-box">
+        <div class="download-logo logo-svg-wrap"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
+  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
+  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
+  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
+</svg></div>
+        <div class="eyebrow"><span class="eyebrow-dot"></span> TripRide app</div>
+        <h2 style="margin-top:20px;">Ready when your next journey is.</h2>
+        <p>Discover trips, share a journey, connect with travellers and keep your TripRide activity together in the app.</p>
+        <a class="primary-btn" href="#" aria-label="Download TripRide app">Get TripRide</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="support">
+    <div class="footer-inner">
+      <div class="footer-brand-logo"><div class="inline-logo-svg"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
+  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
+  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
+  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
+</svg></div><span>© 2026 TripRide</span></div>
+      <div class="legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Support</a>
       </div>
     </div>
-    <div class="footer-col">
-      <h4>Product</h4>
-      <ul>
-        <li><a href="#how">How it works</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#app">Download app</a></li>
-        <li><a href="#">Safety centre</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#about">About us</a></li>
-        <li><a href="#about">Team</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Careers</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Legal</h4>
-      <ul>
-        <li><a href="#">Privacy policy</a></li>
-        <li><a href="#">Terms of service</a></li>
-        <li><a href="#">Community guidelines</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 tripride Technologies Pvt. Ltd. — Tirupati, India 🇮🇳</span>
-    <span>Made with ❤️ for India's travellers</span>
-  </div>
-</footer>
+  </footer>
 
 <script>
-  // mobile menu
-  function toggleMenu() {
-    const m = document.getElementById('mobileMenu');
-    m.style.display = m.style.display === 'none' ? 'block' : 'none';
-  }
-
-  // scroll animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // navbar scroll effect
-  window.addEventListener('scroll', () => {
-    const nav = document.getElementById('navbar');
-    nav.style.borderBottomColor = window.scrollY > 40
-      ? 'rgba(0,212,255,0.15)' : 'rgba(0,212,255,0.08)';
+  document.querySelectorAll('.feature-more-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const category = button.closest('.feature-category');
+      const expanded = category.classList.toggle('expanded');
+      button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      button.setAttribute('aria-label', expanded ? 'Show fewer features' : 'Show more features');
+      button.textContent = expanded ? '−' : '•••';
+    });
   });
-
-  // form submit
-  function handleSubmit() {
-    const name = document.getElementById('fname').value;
-    const email = document.getElementById('femail').value;
-    const msg = document.getElementById('fmessage').value;
-    if (!name || !email || !msg) {
-      alert('Please fill in your name, email, and message.');
-      return;
-    }
-    document.querySelector('.form-submit').style.display = 'none';
-    document.querySelectorAll('.form-group').forEach(g => g.style.opacity = '0.4');
-    document.getElementById('successMsg').style.display = 'block';
-  }
-
-  // hero stats animated count
-  const stats = [
-    { el: null, target: 50000, prefix: '', suffix: 'K+', div: 1000 },
-    { el: null, target: 120, prefix: '', suffix: '+', div: 1 },
-  ];
 </script>
+
 </body>
 </html>
