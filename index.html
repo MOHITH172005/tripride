@@ -3,800 +3,442 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#07111f" />
-  <meta name="description" content="TripRide — find rides, share trips, connect with travellers and manage your journey in one simple app." />
+  <meta name="theme-color" content="#10233F" />
   <title>TripRide — Travel. Share. Connect.</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23197EA7'/><circle cx='50' cy='56' r='16' fill='none' stroke='white' stroke-width='9'/><path d='M50 72V92M26 59C18 43 25 23 43 16V31L50 39L57 31L65 39L73 31C78 44 73 60 62 67' fill='none' stroke='white' stroke-width='8'/></svg>" />
+  <meta name="description" content="TripRide — find rides, share trips, connect with travellers and manage your journey in one simple app." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TripRide" />
+  <meta property="og:title" content="TripRide — Travel. Share. Connect." />
+  <meta property="og:description" content="Find rides, share trips, connect with travellers and manage your journey in one simple app." />
+  <meta property="og:image" content="https://tripride.co.in/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="TripRide — Travel. Share. Connect." />
+  <meta name="twitter:description" content="Find rides, share trips, connect with travellers and manage your journey in one simple app." />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2310233F'/><circle cx='50' cy='56' r='16' fill='none' stroke='%23D9AE6B' stroke-width='9'/><path d='M50 72V92M26 59C18 43 25 23 43 16V31L50 39L57 31L65 39L73 31C78 44 73 60 62 67' fill='none' stroke='%23D9AE6B' stroke-width='8'/></svg>" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2310233F'/><path d='M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z' fill='%23D9AE6B'/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #07111f;
-      --bg-soft: #0b1728;
-      --card: rgba(255,255,255,.065);
-      --card-strong: #0f1d30;
-      --line: rgba(255,255,255,.10);
-      --text: #f8fbff;
-      --muted: #9eafc3;
-      --primary: #16c8f3;
-      --primary-2: #4ee0ff;
-      --green: #55e6a5;
-      --shadow: 0 28px 80px rgba(0,0,0,.34);
-      --radius: 28px;
+      --bg: #F7F5F0;
+      --bg-panel: #FFFFFF;
+      --ink: #141920;
+      --muted: #5C6472;
+      --muted-2: #838C99;
+      --line: rgba(20,25,32,.11);
+      --line-soft: rgba(20,25,32,.07);
+
+      --navy: #10233F;
+      --navy-2: #16304F;
+      --gold: #B8873B;
+      --gold-2: #D9AE6B;
+      --forest: #2F6E52;
+      --rust: #9E4A3C;
+
+      --shadow: 0 24px 60px rgba(16,35,63,.10);
+      --shadow-lg: 0 34px 90px rgba(16,35,63,.16);
+      --radius: 26px;
       --max: 1180px;
+
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at 80% 8%, rgba(22,200,243,.13), transparent 28%),
-        radial-gradient(circle at 10% 28%, rgba(85,230,165,.06), transparent 25%),
-        var(--bg);
-      color: var(--text);
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
       line-height: 1.6;
       overflow-x: hidden;
     }
-
     a { color: inherit; text-decoration: none; }
     button, a { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    img, svg { max-width: 100%; }
+    .icon { width: 20px; height: 20px; display: block; }
+    .icon-sm { width: 16px; height: 16px; }
 
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(18px);
-      background: rgba(7,17,31,.78);
-      border-bottom: 1px solid var(--line);
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
     }
 
+    /* ── reveal-on-scroll ── */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--navy);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
     .nav-inner {
       width: min(calc(100% - 40px), var(--max));
-      min-height: 76px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
+      min-height: 74px; margin: auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
     }
-
-    .brand { display: flex; align-items: center; gap: 11px; font-weight: 900; font-size: 21px; }
-    .brand-mark {
-      width: 38px; height: 38px; border-radius: 12px;
-      display: grid; place-items: center;
-      background: linear-gradient(135deg, var(--primary-2), var(--primary));
-      color: #04111b; font-weight: 1000;
-      box-shadow: 0 8px 28px rgba(22,200,243,.25);
+    .brand-lockup {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-weight: 800; font-size: 19px; color: #F4F0E6;
+      font-family: var(--serif); letter-spacing: -.01em;
     }
-    .brand span { color: var(--primary); }
+    .brand-lockup em { font-style: italic; color: var(--gold-2); }
+    .brand-mark { width: 36px; height: 36px; border-radius: 10px; overflow: hidden; flex: 0 0 36px; }
 
-    .nav-links { display: flex; align-items: center; gap: 30px; color: #c8d4e1; font-size: 14px; font-weight: 650; }
-    .nav-links a:hover { color: white; }
+    .nav-links { display: flex; align-items: center; gap: 30px; color: rgba(244,240,230,.72); font-size: 13.5px; font-weight: 600; }
+    .nav-links a { position: relative; padding: 4px 0; }
+    .nav-links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -2px; height: 1.5px; background: var(--gold-2); transition: right .25s ease; }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover::after { right: 0; }
 
     .nav-cta, .primary-btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--primary-2), var(--primary));
-      color: #04111b;
-      font-weight: 850;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border-radius: 11px;
+      background: var(--gold);
+      color: #1a1204;
+      font-weight: 750;
       border: 0;
-      transition: transform .2s ease, box-shadow .2s ease;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      font-family: var(--sans);
     }
-    .nav-cta { padding: 11px 17px; }
-    .primary-btn { min-height: 54px; padding: 0 24px; }
-    .nav-cta:hover, .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(22,200,243,.2); }
+    .nav-cta { padding: 10px 16px; font-size: 13.5px; }
+    .primary-btn { min-height: 54px; padding: 0 26px; font-size: 15px; }
+    .nav-cta:hover, .primary-btn:hover { transform: translateY(-2px); background: var(--gold-2); box-shadow: 0 14px 30px rgba(184,135,59,.28); }
+    .nav-cta:active, .primary-btn:active { transform: translateY(0); }
 
+    /* ── HERO ── */
     .hero {
-      width: min(calc(100% - 40px), var(--max));
-      margin: auto;
-      min-height: calc(100vh - 76px);
-      display: grid;
-      grid-template-columns: 1.03fr .97fr;
-      align-items: center;
-      gap: 72px;
-      padding: 70px 0 90px;
+      width: min(calc(100% - 40px), var(--max)); margin: auto;
+      min-height: calc(100vh - 74px);
+      display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 60px;
+      padding: 74px 0 90px;
     }
+    .hero-brand {
+      display: inline-flex; align-items: center; gap: 13px;
+      margin-bottom: 22px; padding: 9px 16px 9px 9px;
+      border: 1px solid var(--line); background: var(--bg-panel);
+      border-radius: 999px; box-shadow: var(--shadow);
+    }
+    .hero-brand .inline-logo-svg { width: 42px; height: 42px; flex: 0 0 42px; border-radius: 12px; overflow: hidden; }
+    .hero-brand strong { display:block; font-family: var(--serif); font-size:15px; letter-spacing:-.01em; }
+    .hero-brand span { display:block; color:var(--muted-2); font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
 
     .eyebrow {
       display: inline-flex; align-items: center; gap: 9px;
-      padding: 8px 12px;
-      border: 1px solid rgba(22,200,243,.25);
-      background: rgba(22,200,243,.07);
+      padding: 7px 13px;
+      border: 1px solid var(--line);
+      background: var(--bg-panel);
       border-radius: 999px;
-      color: #bcefff;
-      font-size: 12px; font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
+      color: var(--navy);
+      font-size: 11.5px; font-weight: 700;
+      letter-spacing: .09em; text-transform: uppercase;
     }
-    .eyebrow-dot { width: 7px; height: 7px; background: var(--primary); border-radius: 50%; }
+    .eyebrow-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; flex: 0 0 6px; }
 
     h1 {
-      margin-top: 22px;
-      font-size: clamp(48px, 6vw, 82px);
-      line-height: .98;
-      letter-spacing: -.055em;
-      max-width: 760px;
+      margin-top: 24px;
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: clamp(44px, 5.6vw, 74px);
+      line-height: 1.02;
+      letter-spacing: -.02em;
+      max-width: 700px;
+      color: var(--navy);
     }
-    h1 .accent { color: var(--primary); }
+    h1 .accent { font-style: italic; font-weight: 500; color: var(--gold); }
 
-    .hero-copy {
-      margin-top: 25px;
-      max-width: 610px;
-      color: var(--muted);
-      font-size: clamp(16px, 2vw, 19px);
-    }
+    .hero-copy { margin-top: 22px; max-width: 560px; color: var(--muted); font-size: clamp(15.5px, 1.7vw, 17.5px); }
 
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; align-items: center; }
     .secondary-btn {
-      min-height: 54px; padding: 0 23px;
-      display: inline-flex; align-items: center; justify-content: center;
-      border-radius: 14px;
+      min-height: 54px; padding: 0 24px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border-radius: 11px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.045);
-      font-weight: 800;
-      color: white;
+      background: var(--bg-panel);
+      font-weight: 700; color: var(--navy); font-size: 15px;
+      transition: border-color .2s ease, transform .2s ease;
     }
+    .secondary-btn:hover { border-color: var(--navy); transform: translateY(-2px); }
 
-    .hero-note {
-      margin-top: 20px;
-      color: #8295aa;
-      font-size: 12px;
+    .store-badges { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+    .store-badge {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 9px 16px 9px 13px; border-radius: 11px;
+      background: var(--navy); color: #F4F0E6;
+      border: 1px solid rgba(16,35,63,.14);
+      transition: transform .2s ease, background .2s ease;
     }
+    .store-badge:hover { transform: translateY(-2px); background: var(--navy-2); }
+    .store-badge .store-icon { width: 20px; height: 20px; flex: 0 0 20px; }
+    .store-badge small { display: block; font-size: 8.5px; text-transform: uppercase; letter-spacing: .09em; color: rgba(244,240,230,.6); }
+    .store-badge strong { display: block; font-size: 13px; font-family: var(--serif); font-weight: 600; line-height: 1.2; }
 
     .visual { position: relative; min-height: 600px; display: grid; place-items: center; }
     .glow {
-      position: absolute;
-      width: 420px; height: 420px; border-radius: 50%;
-      background: rgba(22,200,243,.14);
-      filter: blur(70px);
+      position: absolute; width: 440px; height: 440px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(184,135,59,.16), transparent 68%);
+      filter: blur(20px);
     }
 
     .phone {
       position: relative;
-      width: min(330px, 78vw);
-      aspect-ratio: .51;
-      border-radius: 46px;
-      padding: 11px;
-      background: linear-gradient(145deg, #26364a, #09111d);
-      border: 1px solid rgba(255,255,255,.2);
-      box-shadow: var(--shadow);
-      transform: rotate(4deg);
+      width: min(325px, 78vw); aspect-ratio: .51;
+      border-radius: 44px; padding: 11px;
+      background: linear-gradient(150deg, #2A3D57, #0C1626);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow-lg);
+      transform: rotate(3deg);
+      transition: transform .4s ease;
     }
+    .phone:hover { transform: rotate(0deg); }
     .screen {
-      height: 100%;
-      overflow: hidden;
-      border-radius: 37px;
-      background:
-        radial-gradient(circle at 80% 0, rgba(22,200,243,.22), transparent 27%),
-        linear-gradient(180deg, #0d1d30, #07111f);
-      padding: 27px 20px;
+      height: 100%; overflow: hidden; border-radius: 35px;
+      background: radial-gradient(circle at 80% 0, rgba(184,135,59,.18), transparent 30%), linear-gradient(180deg, #16304F, #0C1929);
+      padding: 26px 19px;
     }
-    .notch { width: 86px; height: 21px; background: #02060b; border-radius: 20px; margin: -17px auto 26px; }
-    .screen-small { color: #8da1b6; font-size: 12px; }
-    .screen-title { font-size: 25px; line-height: 1.1; font-weight: 900; margin: 7px 0 22px; }
+    .notch { width: 82px; height: 20px; background: #060B12; border-radius: 20px; margin: -16px auto 24px; }
+    .screen-small { color: rgba(244,240,230,.55); font-size: 11.5px; }
+    .screen-title { font-family: var(--serif); font-size: 23px; line-height: 1.15; font-weight: 600; margin: 7px 0 21px; color: #F4F0E6; }
     .search-box {
-      height: 50px; border-radius: 15px;
+      height: 48px; border-radius: 13px;
       background: rgba(255,255,255,.07);
       border: 1px solid rgba(255,255,255,.08);
-      display: flex; align-items: center; padding: 0 15px;
-      color: #9eb0c3; font-size: 12px;
+      display: flex; align-items: center; gap: 9px; padding: 0 14px;
+      color: rgba(244,240,230,.6); font-size: 11.5px;
     }
-    .route-card {
-      margin-top: 13px; padding: 15px; border-radius: 19px;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-    .route-top { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 850; }
-    .route-line { height: 1px; background: rgba(255,255,255,.08); margin: 12px 0; }
-    .route-meta { display: flex; justify-content: space-between; color: #8fa2b6; font-size: 10px; }
-    .mini-btn { margin-top: 12px; height: 36px; border-radius: 11px; background: var(--primary); color: #04111b; display: grid; place-items: center; font-size: 11px; font-weight: 900; }
+    .search-box .icon-sm { color: rgba(244,240,230,.45); }
+    .route-card { margin-top: 12px; padding: 15px; border-radius: 17px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
+    .route-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12.5px; font-weight: 700; color: #F4F0E6; }
+    .route-top .icon-sm { color: var(--gold-2); }
+    .route-line { height: 1px; background: rgba(255,255,255,.09); margin: 11px 0; }
+    .route-meta { display: flex; justify-content: space-between; color: rgba(244,240,230,.45); font-size: 9.5px; }
+    .mini-btn { margin-top: 11px; height: 34px; border-radius: 10px; background: var(--gold); color: #1a1204; display: grid; place-items: center; font-size: 10.5px; font-weight: 800; }
 
     .float-card {
       position: absolute;
-      background: rgba(14,29,48,.92);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,.11);
-      border-radius: 17px;
-      box-shadow: 0 18px 45px rgba(0,0,0,.28);
-      padding: 13px 15px;
-      font-size: 12px;
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 13px 15px; font-size: 11.5px;
+      display: flex; align-items: center; gap: 10px;
     }
-    .float-card strong { display: block; font-size: 13px; margin-bottom: 2px; }
-    .float-one { left: 0; top: 22%; }
-    .float-two { right: -10px; bottom: 18%; }
-    .success { color: var(--green); }
+    .float-card .float-icon { width: 30px; height: 30px; flex: 0 0 30px; border-radius: 9px; display: grid; place-items: center; }
+    .float-card strong { display: block; font-size: 12.5px; margin-bottom: 2px; font-family: var(--serif); color: var(--navy); }
+    .float-one { left: 0; top: 20%; }
+    .float-one .float-icon { background: rgba(47,110,82,.14); color: var(--forest); }
+    .float-two { right: -8px; bottom: 16%; }
+    .float-two .float-icon { background: rgba(184,135,59,.16); color: var(--gold); }
+    .success { color: var(--forest); font-weight: 600; }
 
-    section { padding: 100px 0; }
+    section { padding: 96px 0; }
     .section-inner { width: min(calc(100% - 40px), var(--max)); margin: auto; }
-    .section-heading { max-width: 700px; margin-bottom: 45px; }
-    .section-heading small { color: var(--primary); text-transform: uppercase; letter-spacing: .13em; font-weight: 850; }
-    .section-heading h2 { font-size: clamp(34px, 4.5vw, 54px); line-height: 1.06; letter-spacing: -.04em; margin-top: 10px; }
-    .section-heading p { color: var(--muted); margin-top: 14px; }
+    .section-heading { max-width: 680px; margin-bottom: 44px; }
+    .section-heading small { color: var(--gold); text-transform: uppercase; letter-spacing: .13em; font-weight: 750; font-size: 11.5px; }
+    .section-heading h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 4vw, 46px); line-height: 1.1; letter-spacing: -.015em; margin-top: 10px; color: var(--navy); }
+    .section-heading p { color: var(--muted); margin-top: 14px; font-size: 15px; }
 
-    .features { background: rgba(255,255,255,.018); border-block: 1px solid var(--line); }
-    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    /* ── TRUST STRIP ── */
+    .trust-strip { padding: 26px 0; border-block: 1px solid var(--line); background: var(--bg-panel); }
+    .trust-grid { width: min(calc(100% - 40px), var(--max)); margin: auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    .trust-item { display: flex; gap: 11px; align-items: center; min-height: 64px; padding: 12px 14px; border-radius: 14px; background: var(--bg); border: 1px solid var(--line-soft); }
+    .trust-item b { display:block; font-size:12.5px; color: var(--navy); }
+    .trust-item span { color:var(--muted-2); font-size:10.5px; }
+    .trust-icon { width:34px;height:34px;display:grid;place-items:center; border-radius:9px; background: rgba(184,135,59,.13); color: var(--gold); flex:0 0 34px; }
+
+    /* ── FEATURES ── */
+    .features { background: var(--bg-panel); border-block: 1px solid var(--line); }
+    .feature-category { margin-top: 44px; }
+    .feature-category:first-of-type { margin-top: 0; }
+    .feature-category-title { display: flex; align-items: center; gap: 11px; margin-bottom: 17px; }
+    .feature-category-title span { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); color: var(--navy); }
+    .feature-category-title h3 { font-family: var(--serif); font-weight: 600; font-size: 20px; letter-spacing: -.01em; color: var(--navy); }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
     .feature {
-      min-height: 230px;
-      padding: 27px;
-      background: var(--card);
+      min-height: 220px; padding: 26px;
+      background: var(--bg);
       border: 1px solid var(--line);
-      border-radius: 22px;
+      border-radius: 20px;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
-    .feature-icon {
-      width: 45px; height: 45px; border-radius: 14px;
-      background: rgba(22,200,243,.1);
-      color: var(--primary);
-      display: grid; place-items: center;
-      font-size: 20px;
-      margin-bottom: 24px;
-    }
-    .feature h3 { font-size: 18px; margin-bottom: 8px; }
-    .feature p { color: var(--muted); font-size: 14px; }
+    .feature:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: rgba(184,135,59,.35); }
+    .feature-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 22px; background: rgba(16,35,63,.06); color: var(--navy); }
+    .feature:nth-child(3n+2) .feature-icon { background: rgba(184,135,59,.13); color: var(--gold); }
+    .feature:nth-child(3n+3) .feature-icon { background: rgba(47,110,82,.12); color: var(--forest); }
+    .feature h3 { font-size: 16.5px; margin-bottom: 7px; font-weight: 750; color: var(--navy); }
+    .feature p { color: var(--muted); font-size: 13.5px; }
 
+    .feature-category .feature:nth-child(n+4) { display: none; }
+    .feature-category.expanded .feature { display: block; }
+    .feature-more-row { display: flex; justify-content: center; margin-top: 18px; }
+    .feature-more-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      height: 38px; padding: 0 18px; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--bg-panel);
+      color: var(--navy); font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: var(--sans);
+      transition: transform .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .feature-more-btn .icon-sm { transition: transform .2s ease; }
+    .feature-more-btn:hover { transform: translateY(-2px); border-color: var(--gold); color: var(--gold); }
+    .feature-category.expanded .feature-more-btn { color: var(--gold); border-color: rgba(184,135,59,.35); }
+    .feature-category.expanded .feature-more-btn .icon-sm { transform: rotate(180deg); }
+
+    /* ── COMMITMENT ── */
+    .commitment { border-block: 1px solid var(--line); background: var(--navy); color: #F4F0E6; }
+    .commitment-card {
+      display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center;
+      padding: 40px; border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04);
+    }
+    .commitment-logo { width: 84px; height: 84px; border-radius: 22px; overflow: hidden; flex: 0 0 84px; box-shadow: 0 18px 45px rgba(0,0,0,.3); }
+    .commitment-card small { color: var(--gold-2); font-weight: 750; letter-spacing: .12em; text-transform: uppercase; font-size: 11.5px; }
+    .commitment-card h2 { font-family: var(--serif); font-weight: 600; margin: 9px 0 12px; font-size: clamp(27px,3.6vw,42px); line-height: 1.12; letter-spacing: -.015em; }
+    .commitment-card p { color: rgba(244,240,230,.72); max-width: 800px; font-size: 15px; }
+
+    /* ── STEPS ── */
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .step { padding: 26px 0; border-top: 1px solid var(--line); }
-    .step-num { color: var(--primary); font-weight: 900; font-size: 12px; letter-spacing: .1em; }
-    .step h3 { font-size: 21px; margin: 13px 0 7px; }
-    .step p { color: var(--muted); font-size: 14px; }
+    .step { padding: 24px 0; border-top: 2px solid var(--navy); }
+    .step-head { display: flex; align-items: center; justify-content: space-between; }
+    .step-num { color: var(--gold); font-weight: 800; font-size: 11.5px; letter-spacing: .1em; }
+    .step-icon { width: 30px; height: 30px; border-radius: 9px; background: rgba(16,35,63,.06); color: var(--navy); display: grid; place-items: center; }
+    .step h3 { font-family: var(--serif); font-weight: 600; font-size: 20px; margin: 12px 0 7px; color: var(--navy); }
+    .step p { color: var(--muted); font-size: 13.5px; }
 
+    /* ── INFO GRID ── */
+    .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .info-card { padding: 28px; border-radius: 22px; border: 1px solid var(--line); background: var(--bg-panel); transition: box-shadow .2s ease, transform .2s ease; }
+    .info-card:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+    .info-card .kicker { color: var(--gold); font-size: 10.5px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+    .info-card h3 { font-family: var(--serif); font-weight: 600; font-size: 21px; margin: 9px 0 9px; letter-spacing: -.01em; color: var(--navy); }
+    .info-card p { color: var(--muted); font-size: 13.5px; }
+
+    /* ── FEE CARD ── */
     .fee-card {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      gap: 30px;
-      padding: 38px;
-      border-radius: var(--radius);
-      background:
-        linear-gradient(135deg, rgba(22,200,243,.10), rgba(255,255,255,.035));
-      border: 1px solid rgba(22,200,243,.18);
+      display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 30px;
+      padding: 38px; border-radius: var(--radius);
+      background: var(--navy); color: #F4F0E6;
+      border: 1px solid rgba(255,255,255,.08);
     }
-    .fee-card h2 { font-size: clamp(30px, 4vw, 48px); letter-spacing: -.04em; line-height: 1.05; }
-    .fee-card p { color: var(--muted); margin-top: 12px; max-width: 650px; }
-    .fee {
-      min-width: 180px;
-      text-align: center;
-      padding: 25px;
-      border-radius: 22px;
-      background: #07111f;
-      border: 1px solid var(--line);
-    }
-    .fee strong { display: block; font-size: 42px; color: var(--primary); line-height: 1; }
-    .fee span { color: var(--muted); font-size: 12px; }
+    .fee-card h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(28px, 3.6vw, 42px); letter-spacing: -.015em; line-height: 1.08; }
+    .fee-card p { color: rgba(244,240,230,.68); margin-top: 12px; max-width: 620px; font-size: 14.5px; }
+    .fee { min-width: 175px; text-align: center; padding: 24px; border-radius: 20px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
+    .fee strong { display: block; font-family: var(--serif); font-size: 40px; line-height: 1; color: var(--gold-2); }
+    .fee span { color: rgba(244,240,230,.55); font-size: 11.5px; }
 
-    .download {
-      text-align: center;
-      padding: 110px 20px;
-    }
+    /* ── ABOUT ── */
+    .about-panel { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; align-items: stretch; }
+    .about-main, .founder-card { padding: clamp(28px, 4vw, 44px); border-radius: 26px; border: 1px solid var(--line); background: var(--bg-panel); }
+    .about-main h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; letter-spacing: -.015em; margin: 13px 0 16px; color: var(--navy); }
+    .about-main p { color: var(--muted); max-width: 700px; font-size: 15px; }
+    .founder-card { background: var(--navy); color: #F4F0E6; display: flex; flex-direction: column; justify-content: space-between; }
+    .founder-avatar { width: 66px; height: 66px; display: grid; place-items: center; border-radius: 18px; background: var(--gold); color: #1a1204; font-family: var(--serif); font-size: 20px; font-weight: 700; }
+    .founder-label { margin-top: 26px; color: var(--gold-2); font-size: 10.5px; font-weight: 750; text-transform: uppercase; letter-spacing: .13em; }
+    .founder-card h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(21px, 2.6vw, 27px); line-height: 1.18; margin-top: 8px; letter-spacing: -.01em; }
+    .founder-card p { color: rgba(244,240,230,.62); font-size: 12.5px; margin-top: 11px; }
+
+    /* ── FAQ ── */
+    .faq-list { display: grid; gap: 9px; }
+    details { border: 1px solid var(--line); border-radius: 16px; background: var(--bg-panel); padding: 0 20px; transition: border-color .2s ease; }
+    details[open] { border-color: rgba(184,135,59,.35); }
+    summary { cursor: pointer; list-style: none; padding: 19px 0; font-weight: 700; color: var(--navy); display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 15px; }
+    summary::-webkit-details-marker { display: none; }
+    summary .summary-plus { color: var(--gold); font-size: 19px; line-height: 1; transition: transform .2s ease; flex: 0 0 auto; }
+    details[open] summary .summary-plus { transform: rotate(45deg); }
+    details p { color: var(--muted); font-size: 13.5px; padding: 0 0 19px; }
+    details a { color: var(--gold); font-weight: 700; text-decoration: underline; }
+
+    /* ── DOWNLOAD ── */
+    .download { text-align: center; padding: 110px 20px; }
     .download-box {
-      width: min(100%, 900px);
-      margin: auto;
-      padding: 60px 30px;
-      border-radius: 32px;
-      background:
-        radial-gradient(circle at 50% 0, rgba(22,200,243,.19), transparent 45%),
-        var(--card-strong);
-      border: 1px solid var(--line);
+      width: min(100%, 880px); margin: auto; padding: 58px 30px; border-radius: 30px;
+      background: var(--navy); color: #F4F0E6;
+      border: 1px solid rgba(255,255,255,.08);
+      position: relative; overflow: hidden;
     }
-    .download h2 { font-size: clamp(35px, 5vw, 60px); line-height: 1; letter-spacing: -.05em; }
-    .download p { color: var(--muted); max-width: 580px; margin: 18px auto 28px; }
+    .download-box::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(circle at 85% -10%, rgba(184,135,59,.22), transparent 45%);
+      pointer-events: none;
+    }
+    .download-logo { width: 68px; height: 68px; margin: 0 auto 20px; border-radius: 18px; overflow: hidden; position: relative; }
+    .download h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(32px, 4.4vw, 52px); line-height: 1.06; letter-spacing: -.02em; position: relative; }
+    .download p { color: rgba(244,240,230,.68); max-width: 560px; margin: 16px auto 26px; font-size: 15px; position: relative; }
+    .download .store-badges { justify-content: center; position: relative; }
 
-    footer { border-top: 1px solid var(--line); padding: 38px 0; }
-    .footer-inner {
-      width: min(calc(100% - 40px), var(--max));
-      margin: auto;
-      display: flex; align-items: center; justify-content: space-between; gap: 25px;
-      color: #8092a6; font-size: 12px;
-    }
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--line); padding: 36px 0; background: var(--bg-panel); }
+    .footer-inner { width: min(calc(100% - 40px), var(--max)); margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 25px; color: var(--muted-2); font-size: 12px; }
+    .footer-brand-logo { display:flex; align-items:center; gap:10px; font-weight:750; color: var(--navy); font-family: var(--serif); }
+    .footer-brand-logo .inline-logo-svg { width:30px; height:30px; border-radius:9px; overflow: hidden; flex: 0 0 30px; }
     .legal { display: flex; gap: 20px; flex-wrap: wrap; }
-    .legal a:hover { color: white; }
+    .legal a:hover { color: var(--navy); }
 
     @media (max-width: 900px) {
       .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; text-align: center; gap: 20px; padding-top: 65px; }
+      .hero { grid-template-columns: 1fr; text-align: center; gap: 20px; padding-top: 60px; }
       .hero-copy { margin-inline: auto; }
-      .hero-actions { justify-content: center; }
+      .hero-brand { margin-inline: auto; }
+      .hero-actions, .store-badges { justify-content: center; }
       .visual { min-height: 560px; }
       .feature-grid, .steps { grid-template-columns: 1fr 1fr; }
-      .fee-card { grid-template-columns: 1fr; }
+      .fee-card { grid-template-columns: 1fr; text-align: left; }
       .fee { min-width: 0; }
+      .info-grid, .about-panel { grid-template-columns: 1fr; }
+      .trust-grid { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 580px) {
       .nav-inner, .section-inner, .hero, .footer-inner { width: min(calc(100% - 28px), var(--max)); }
-      .nav-inner { min-height: 68px; }
-      .nav-cta { padding: 9px 12px; font-size: 12px; }
-      .brand { font-size: 18px; }
-      .brand-mark { width: 34px; height: 34px; }
-      .hero { min-height: auto; padding: 58px 0 65px; }
-      h1 { font-size: clamp(43px, 14vw, 64px); }
+      .nav-inner { min-height: 66px; }
+      .hero { min-height: auto; padding: 54px 0 60px; }
+      h1 { font-size: clamp(38px, 12vw, 56px); }
       .hero-actions { display: grid; }
       .hero-actions a { width: 100%; }
-      .visual { min-height: 510px; }
-      .phone { width: 255px; }
+      .visual { min-height: 500px; }
+      .phone { width: 250px; }
       .float-card { font-size: 10px; padding: 10px 12px; }
       .float-one { left: -2px; }
       .float-two { right: -2px; }
-      section { padding: 75px 0; }
+      section { padding: 70px 0; }
       .feature-grid, .steps { grid-template-columns: 1fr; }
       .feature { min-height: 0; }
       .fee-card { padding: 26px 20px; }
+      .commitment-card { grid-template-columns:1fr; padding:24px 20px; }
+      .commitment-logo { width:68px; height:68px; flex-basis: 68px; }
+      .trust-grid { grid-template-columns: 1fr; }
       .footer-inner { flex-direction: column; text-align: center; }
       .legal { justify-content: center; }
+      .store-badges { justify-content: center; width: 100%; }
+      .store-badge { flex: 1 1 auto; justify-content: center; }
     }
-  
-    .brand-mark {
-      position: relative;
-      overflow: hidden;
-    }
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.75) 50%, transparent 65%);
-      transform: translateX(-100%) rotate(10deg);
-      animation: logoShine 4.5s ease-in-out infinite;
-    }
-    @keyframes logoShine {
-      0%, 68% { transform: translateX(-120%) rotate(10deg); }
-      82%, 100% { transform: translateX(120%) rotate(10deg); }
-    }
-    .brand-lockup {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 9px 13px 9px 9px;
-      border: 1px solid rgba(22,200,243,.18);
-      border-radius: 16px;
-      background: rgba(255,255,255,.025);
-      box-shadow: 0 12px 40px rgba(22,200,243,.06);
-    }
-    .brand-tag {
-      display: block;
-      color: #7e93aa;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-      margin-top: -2px;
-    }
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-    .info-card {
-      padding: 30px;
-      border-radius: 24px;
-      border: 1px solid var(--line);
-      background: var(--card);
-    }
-    .info-card .kicker {
-      color: var(--primary);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .info-card h3 {
-      font-size: 23px;
-      margin: 10px 0 9px;
-      letter-spacing: -.025em;
-    }
-    .info-card p { color: var(--muted); font-size: 14px; }
-    .about-panel {
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-    .about-main, .founder-card {
-      padding: clamp(28px, 4vw, 45px);
-      border-radius: 28px;
-      border: 1px solid var(--line);
-      background: var(--card);
-    }
-    .about-main h2 {
-      font-size: clamp(35px, 4.5vw, 55px);
-      line-height: 1.03;
-      letter-spacing: -.045em;
-      margin: 13px 0 18px;
-    }
-    .about-main p { color: var(--muted); max-width: 720px; }
-    .founder-card {
-      background:
-        radial-gradient(circle at 100% 0, rgba(22,200,243,.17), transparent 42%),
-        var(--card-strong);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .founder-avatar {
-      width: 70px; height: 70px;
-      display: grid; place-items: center;
-      border-radius: 21px;
-      background: linear-gradient(135deg, var(--primary-2), var(--primary));
-      color: #04111b;
-      font-size: 23px;
-      font-weight: 1000;
-      box-shadow: 0 15px 40px rgba(22,200,243,.16);
-    }
-    .founder-label {
-      margin-top: 28px;
-      color: var(--primary);
-      font-size: 11px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .13em;
-    }
-    .founder-card h3 {
-      font-size: clamp(23px, 3vw, 31px);
-      line-height: 1.12;
-      margin-top: 8px;
-      letter-spacing: -.03em;
-    }
-    .founder-card p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 12px;
-    }
-    .faq-list { display: grid; gap: 10px; }
-    details {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--card);
-      padding: 0 20px;
-    }
-    summary {
-      cursor: pointer;
-      list-style: none;
-      padding: 20px 0;
-      font-weight: 800;
-    }
-    summary::-webkit-details-marker { display: none; }
-    details p { color: var(--muted); font-size: 14px; padding: 0 0 20px; }
-    @media (max-width: 760px) {
-      .info-grid, .about-panel { grid-template-columns: 1fr; }
-    }
-
-
-    /* ───────────── COLORFUL PREMIUM SYSTEM ───────────── */
-    :root {
-      --purple: #8B5CF6;
-      --pink: #F43F5E;
-      --orange: #FF7A18;
-      --yellow: #F7C948;
-      --teal: #14B8A6;
-      --sky: #38BDF8;
-    }
-
-    body {
-      background:
-        radial-gradient(circle at 8% 8%, rgba(244,63,94,.13), transparent 23%),
-        radial-gradient(circle at 88% 7%, rgba(139,92,246,.16), transparent 26%),
-        radial-gradient(circle at 76% 38%, rgba(20,184,166,.09), transparent 22%),
-        radial-gradient(circle at 10% 58%, rgba(255,122,24,.08), transparent 22%),
-        #07111f;
-    }
-
-    .hero .eyebrow {
-      border-color: rgba(244,63,94,.28);
-      background: linear-gradient(90deg, rgba(244,63,94,.09), rgba(139,92,246,.08));
-      color: #ffd3dc;
-    }
-    .hero .eyebrow-dot { background: var(--pink); }
-    h1 .accent {
-      background: linear-gradient(90deg, #38BDF8, #8B5CF6, #F43F5E, #FF7A18);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .features {
-      background:
-        radial-gradient(circle at 5% 30%, rgba(139,92,246,.08), transparent 25%),
-        radial-gradient(circle at 95% 70%, rgba(255,122,24,.07), transparent 25%),
-        rgba(255,255,255,.014);
-    }
-
-    .feature:nth-child(6n+1) .feature-icon { color:#38BDF8; background:rgba(56,189,248,.12); }
-    .feature:nth-child(6n+2) .feature-icon { color:#F43F5E; background:rgba(244,63,94,.12); }
-    .feature:nth-child(6n+3) .feature-icon { color:#14B8A6; background:rgba(20,184,166,.12); }
-    .feature:nth-child(6n+4) .feature-icon { color:#F7C948; background:rgba(247,201,72,.12); }
-    .feature:nth-child(6n+5) .feature-icon { color:#8B5CF6; background:rgba(139,92,246,.12); }
-    .feature:nth-child(6n+6) .feature-icon { color:#FF7A18; background:rgba(255,122,24,.12); }
-
-    .feature:nth-child(6n+1) { border-top: 2px solid rgba(56,189,248,.55); }
-    .feature:nth-child(6n+2) { border-top: 2px solid rgba(244,63,94,.55); }
-    .feature:nth-child(6n+3) { border-top: 2px solid rgba(20,184,166,.55); }
-    .feature:nth-child(6n+4) { border-top: 2px solid rgba(247,201,72,.55); }
-    .feature:nth-child(6n+5) { border-top: 2px solid rgba(139,92,246,.55); }
-    .feature:nth-child(6n+6) { border-top: 2px solid rgba(255,122,24,.55); }
-
-    .feature { transition: transform .22s ease, border-color .22s ease, background .22s ease; }
-    .feature:hover { transform: translateY(-5px); background: rgba(255,255,255,.085); }
-
-    .info-card:nth-child(4n+1) .kicker { color: var(--pink); }
-    .info-card:nth-child(4n+2) .kicker { color: var(--teal); }
-    .info-card:nth-child(4n+3) .kicker { color: var(--purple); }
-    .info-card:nth-child(4n+4) .kicker { color: var(--orange); }
-
-    .fee-card {
-      background:
-        radial-gradient(circle at 90% 10%, rgba(247,201,72,.13), transparent 30%),
-        linear-gradient(135deg, rgba(255,122,24,.08), rgba(244,63,94,.05), rgba(139,92,246,.06));
-      border-color: rgba(255,122,24,.24);
-    }
-    .fee strong {
-      background: linear-gradient(90deg, #F7C948, #FF7A18, #F43F5E);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .founder-card {
-      background:
-        radial-gradient(circle at 100% 0, rgba(244,63,94,.18), transparent 35%),
-        radial-gradient(circle at 0 100%, rgba(139,92,246,.15), transparent 40%),
-        var(--card-strong);
-    }
-    .founder-avatar {
-      background: linear-gradient(135deg, #F7C948, #FF7A18, #F43F5E);
-    }
-
-    .download-box {
-      background:
-        radial-gradient(circle at 20% 0, rgba(244,63,94,.15), transparent 34%),
-        radial-gradient(circle at 80% 0, rgba(139,92,246,.17), transparent 35%),
-        radial-gradient(circle at 50% 100%, rgba(20,184,166,.10), transparent 40%),
-        var(--card-strong);
-    }
-
-    .feature-category {
-      margin-top: 45px;
-    }
-    .feature-category:first-of-type { margin-top: 0; }
-    .feature-category-title {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      margin-bottom: 17px;
-    }
-    .feature-category-title span {
-      width: 34px; height: 34px;
-      display: grid; place-items: center;
-      border-radius: 11px;
-      background: rgba(255,255,255,.07);
-      border: 1px solid var(--line);
-    }
-    .feature-category-title h3 {
-      font-size: 21px;
-      letter-spacing: -.025em;
-    }
-
-
-    /* ───────────── TRIPRIDE BRAND IDENTITY ───────────── */
-    .brand-mark {
-      padding: 0 !important;
-      overflow: hidden;
-      background: #197aa1 !important;
-    }
-    .brand-mark::after { display: none !important; }
-    .brand-logo-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      border-radius: inherit;
-    }
-    .hero-brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 13px;
-      margin-bottom: 20px;
-      padding: 10px 14px 10px 10px;
-      border: 1px solid rgba(45,166,207,.25);
-      background: rgba(45,166,207,.07);
-      border-radius: 18px;
-    }
-    .hero-brand img {
-      width: 48px; height: 48px;
-      border-radius: 15px;
-      object-fit: cover;
-      box-shadow: 0 10px 30px rgba(25,122,161,.24);
-    }
-    .hero-brand strong { display:block; font-size:17px; letter-spacing:-.02em; }
-    .hero-brand span { display:block; color:#8fa8ba; font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-
-    .commitment {
-      border-block: 1px solid var(--line);
-      background:
-        radial-gradient(circle at 12% 50%, rgba(20,184,166,.08), transparent 28%),
-        radial-gradient(circle at 88% 50%, rgba(139,92,246,.08), transparent 28%);
-    }
-    .commitment-card {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 25px;
-      align-items: center;
-      padding: 34px;
-      border-radius: 28px;
-      border: 1px solid rgba(45,166,207,.20);
-      background: rgba(255,255,255,.045);
-    }
-    .commitment-logo {
-      width: 88px; height: 88px;
-      border-radius: 25px;
-      object-fit: cover;
-      box-shadow: 0 18px 45px rgba(25,122,161,.20);
-    }
-    .commitment-card small {
-      color: #55e6a5;
-      font-weight: 900;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .commitment-card h2 {
-      margin: 8px 0 10px;
-      font-size: clamp(29px,4vw,46px);
-      line-height: 1.06;
-      letter-spacing: -.04em;
-    }
-    .commitment-card p { color: var(--muted); max-width: 800px; }
-
-    .footer-brand-logo {
-      display:flex; align-items:center; gap:10px;
-      font-weight:900; color:white;
-    }
-    .footer-brand-logo img {
-      width:34px; height:34px; border-radius:11px; object-fit:cover;
-    }
-
-    @media(max-width:580px) {
-      .commitment-card { grid-template-columns:1fr; padding:25px 20px; }
-      .commitment-logo { width:72px; height:72px; }
-      .hero-brand { margin-inline:auto; }
-    }
-
-
-    /* Self-contained TripRide logo — no external image file required */
-    .tripride-svg-logo {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-    .brand-mark .tripride-svg-logo {
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-    }
-    .hero-brand .inline-logo-svg {
-      width: 48px;
-      height: 48px;
-      flex: 0 0 48px;
-    }
-    .hero-brand .inline-logo-svg .tripride-svg-logo {
-      border-radius: 15px;
-      filter: drop-shadow(0 10px 16px rgba(25,126,167,.22));
-    }
-    .logo-svg-wrap {
-      padding: 0 !important;
-      overflow: hidden;
-      background: transparent !important;
-    }
-    .commitment-logo.logo-svg-wrap {
-      width: 88px;
-      height: 88px;
-      border-radius: 25px;
-      flex: 0 0 88px;
-    }
-    .download-logo {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 20px;
-      border-radius: 22px;
-      filter: drop-shadow(0 16px 22px rgba(25,126,167,.22));
-    }
-    .footer-brand-logo .inline-logo-svg {
-      width: 34px;
-      height: 34px;
-      flex: 0 0 34px;
-    }
-    .footer-brand-logo .inline-logo-svg .tripride-svg-logo {
-      border-radius: 11px;
-    }
-    @media(max-width:580px) {
-      .commitment-logo.logo-svg-wrap {
-        width:72px;
-        height:72px;
-        flex-basis:72px;
-      }
-    }
-
-
-    /* Compact feature groups */
-    .feature-category .feature:nth-child(n+4) {
-      display: none;
-    }
-    .feature-category.expanded .feature {
-      display: block;
-    }
-    .feature-more-row {
-      display: flex;
-      justify-content: center;
-      margin-top: 18px;
-    }
-    .feature-more-btn {
-      width: 54px;
-      height: 38px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      color: white;
-      font-size: 22px;
-      line-height: 1;
-      letter-spacing: 3px;
-      cursor: pointer;
-      transition: transform .2s ease, background .2s ease, border-color .2s ease;
-    }
-    .feature-more-btn:hover {
-      transform: translateY(-2px);
-      background: rgba(255,255,255,.10);
-      border-color: rgba(56,189,248,.35);
-    }
-    .feature-category.expanded .feature-more-btn {
-      color: var(--primary);
-    }
-
-
-    .trust-strip {
-      padding: 28px 0;
-      border-block: 1px solid var(--line);
-      background: rgba(255,255,255,.018);
-    }
-    .trust-grid {
-      width: min(calc(100% - 40px), var(--max));
-      margin: auto;
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 10px;
-    }
-    .trust-item {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      min-height: 66px;
-      padding: 13px 15px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--line);
-    }
-    .trust-item b { display:block; font-size:12px; }
-    .trust-item span { color:var(--muted); font-size:10px; }
-    .trust-icon {
-      width:34px;height:34px;display:grid;place-items:center;
-      border-radius:11px;background:rgba(255,255,255,.07);
-      flex:0 0 34px;
-    }
-    @media(max-width:760px){.trust-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:440px){.trust-grid{grid-template-columns:1fr}}
-
-</style>
+  </style>
 </head>
 
 <body>
   <nav class="nav">
     <div class="nav-inner">
-      <a href="#home" class="brand brand-lockup" aria-label="TripRide home">
-        <div class="brand-mark"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
-  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
-  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
-  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
-  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
-</svg></div>
-        <div>
-          <div>trip<span>ride</span></div>
-          <small class="brand-tag">Travel · Share · Connect</small>
+      <a href="#home" class="brand-lockup" aria-label="TripRide home">
+        <div class="brand-mark">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+            <circle cx="50" cy="50" r="50" fill="#10233F"/>
+            <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#D9AE6B"/>
+            <circle cx="50" cy="57" r="13" fill="#10233F" stroke="#D9AE6B" stroke-width="8"/>
+            <path d="M50 70V91" stroke="#D9AE6B" stroke-width="8" stroke-linecap="butt"/>
+          </svg>
         </div>
+        trip<em>ride</em>
       </a>
 
       <div class="nav-links">
@@ -815,12 +457,14 @@
     <section class="hero" id="home">
       <div>
         <div class="hero-brand">
-          <div class="inline-logo-svg"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
-  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
-  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
-  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
-  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
-</svg></div>
+          <div class="inline-logo-svg">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+              <circle cx="50" cy="50" r="50" fill="#10233F"/>
+              <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#D9AE6B"/>
+              <circle cx="50" cy="57" r="13" fill="#10233F" stroke="#D9AE6B" stroke-width="8"/>
+              <path d="M50 70V91" stroke="#D9AE6B" stroke-width="8" stroke-linecap="butt"/>
+            </svg>
+          </div>
           <div><strong>TripRide</strong><span>Travel · Share · Connect</span></div>
         </div>
         <div class="eyebrow"><span class="eyebrow-dot"></span> Travel made simpler</div>
@@ -833,6 +477,25 @@
           <a class="primary-btn" href="#download">Download TripRide</a>
           <a class="secondary-btn" href="#how">See how it works</a>
         </div>
+
+        <div class="store-badges">
+          <a class="store-badge" href="#download" aria-label="Get it on Google Play">
+            <svg class="store-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3.6 2.2 14 12 3.6 21.8c-.4-.3-.6-.8-.6-1.3V3.5c0-.5.2-1 .6-1.3Z" fill="#D9AE6B"/>
+              <path d="m14 12 3.4-3.4L21 10.7c.9.5.9 1.7 0 2.2l-3.6 2.1L14 12Z" fill="#F4F0E6"/>
+              <path d="M14 12 4.4 21.5c.3.2.7.3 1 .2l11.6-6.7L14 12Z" fill="#F4F0E6" opacity=".8"/>
+              <path d="M14 12 4.4 2.5c.3-.2.7-.3 1-.2l11.6 6.7L14 12Z" fill="#F4F0E6" opacity=".55"/>
+            </svg>
+            <span><small>Get it on</small><strong>Google Play</strong></span>
+          </a>
+          <a class="store-badge" href="#download" aria-label="Download on the App Store">
+            <svg class="store-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M16.7 12.6c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.6-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.5 2.1 2.6 2 1-.1 1.4-.7 2.7-.7s1.6.7 2.7.6c1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.4-.9-2.4-3.9Z" fill="#F4F0E6"/>
+              <path d="M14.5 6.1c.6-.7 1-1.7.9-2.6-.9 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.5 1 .1 1.9-.5 2.5-1.2Z" fill="#F4F0E6"/>
+            </svg>
+            <span><small>Download on the</small><strong>App Store</strong></span>
+          </a>
+        </div>
       </div>
 
       <div class="visual" aria-label="TripRide app preview">
@@ -843,10 +506,17 @@
             <div class="notch"></div>
             <div class="screen-small">Good morning</div>
             <div class="screen-title">Where are you<br />heading next?</div>
-            <div class="search-box">⌕ &nbsp; Search destination</div>
+            <div class="search-box">
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              Search destination
+            </div>
 
             <div class="route-card">
-              <div class="route-top"><span>Hyderabad</span><span>→</span><span>Tirupati</span></div>
+              <div class="route-top">
+                <span>Hyderabad</span>
+                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <span>Tirupati</span>
+              </div>
               <div class="route-line"></div>
               <div class="route-meta"><span>Trip details</span><span>Available seats</span></div>
               <div class="mini-btn">View trip</div>
@@ -861,127 +531,263 @@
         </div>
 
         <div class="float-card float-one">
-          <strong>Trip found</strong>
-          <span class="success">Ready to explore</span>
+          <div class="float-icon">
+            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <div><strong>Trip found</strong><span class="success">Ready to explore</span></div>
         </div>
 
         <div class="float-card float-two">
-          <strong>Simple booking</strong>
-          <span>Manage it in the app</span>
+          <div class="float-icon">
+            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M8 15h2"/></svg>
+          </div>
+          <div><strong>Simple booking</strong><span>Manage it in the app</span></div>
         </div>
       </div>
     </section>
 
-
     <section class="trust-strip" aria-label="TripRide principles">
       <div class="trust-grid">
-        <div class="trust-item"><div class="trust-icon">🤝</div><div><b>Committed journeys</b><span>Trips matter to the people depending on them.</span></div></div>
-        <div class="trust-item"><div class="trust-icon">₹</div><div><b>Clear ₹50 fee</b><span>Platform fee presented clearly.</span></div></div>
-        <div class="trust-item"><div class="trust-icon">💬</div><div><b>Connected travel</b><span>Profiles, chat and trip tools in one app.</span></div></div>
-        <div class="trust-item"><div class="trust-icon">✦</div><div><b>Built for TripRide</b><span>No fake ratings, counts or testimonials.</span></div></div>
+        <div class="trust-item reveal">
+          <div class="trust-icon"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a2 2 0 0 0-2-2h-2a2 2 0 0 0-1.6.8L11 8M6 8a2 2 0 0 1 2-2h2a2 2 0 0 1 1.6.8L13 8"/><path d="m3 11 4.7-3.1a2 2 0 0 1 2.2 0L13 10M21 11l-4.7-3.1a2 2 0 0 0-2.2 0L11 10M3 11v6a2 2 0 0 0 2 2h2M21 11v6a2 2 0 0 1-2 2h-2"/></svg></div>
+          <div><b>Committed journeys</b><span>Trips matter to the people depending on them.</span></div>
+        </div>
+        <div class="trust-item reveal">
+          <div class="trust-icon"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h7a3 3 0 0 1 0 6H8m0-6v12m0-12H6m2 6h6m-8 6h6"/></svg></div>
+          <div><b>Clear ₹50 fee</b><span>Platform fee presented clearly.</span></div>
+        </div>
+        <div class="trust-item reveal">
+          <div class="trust-icon"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg></div>
+          <div><b>Connected travel</b><span>Profiles, chat and trip tools in one app.</span></div>
+        </div>
+        <div class="trust-item reveal">
+          <div class="trust-icon"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 6v6c0 5 4 8.5 9 10 5-1.5 9-5 9-10V6l-9-4Z"/></svg></div>
+          <div><b>Built for TripRide</b><span>No fake ratings, counts or testimonials.</span></div>
+        </div>
       </div>
     </section>
 
     <section class="features" id="features">
       <div class="section-inner">
-        <div class="section-heading">
+        <div class="section-heading reveal">
           <small>Inside TripRide</small>
           <h2>One app. A lot more around every journey.</h2>
           <p>From finding a trip to profiles, bookings, chat, payments and travel services, TripRide brings the experience together in one place.</p>
         </div>
 
-        <div class="feature-category">
-          <div class="feature-category-title"><span>🚗</span><h3>Trips & rides</h3></div>
+        <div class="feature-category reveal">
+          <div class="feature-category-title">
+            <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14M5 17a2 2 0 0 1-2-2v-2a1 1 0 0 1 .3-.7L5 10h14l1.7 2.3c.2.2.3.4.3.7v2a2 2 0 0 1-2 2M5 17v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2m10 0v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2M7 10 8 6h8l1 4"/><circle cx="7.5" cy="14" r="1"/><circle cx="16.5" cy="14" r="1"/></svg></span>
+            <h3>Trips & rides</h3>
+          </div>
           <div class="feature-grid">
-            <article class="feature"><div class="feature-icon">⌕</div><h3>Discover trips</h3><p>Browse available trips and find journeys that match where you want to travel.</p></article>
-            <article class="feature"><div class="feature-icon">＋</div><h3>Create a ride</h3><p>Create your own trip and share available seats with people travelling on the route.</p></article>
-            <article class="feature"><div class="feature-icon">↔</div><h3>Place-to-place travel</h3><p>Explore travel options around your selected origin and destination.</p></article>
-            <article class="feature"><div class="feature-icon">♡</div><h3>Saved trips</h3><p>Keep trips you are interested in accessible so you can return to them later.</p></article>
-            <article class="feature"><div class="feature-icon">▣</div><h3>My trips</h3><p>View and manage trip activity connected to your TripRide account.</p></article>
-            <article class="feature"><div class="feature-icon">👥</div><h3>Passenger view</h3><p>Trip creators can access passenger information associated with their trip bookings.</p></article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+              <h3>Discover trips</h3><p>Browse available trips and find journeys that match where you want to travel.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
+              <h3>Create a ride</h3><p>Create your own trip and share available seats with people travelling on the route.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 3 4 4-4 4M21 7H8M7 21l-4-4 4-4m-4 4h13"/></svg></div>
+              <h3>Place-to-place travel</h3><p>Explore travel options around your selected origin and destination.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 8.6a5.5 5.5 0 0 0-9.3-4A5.5 5.5 0 0 0 2 8.6c0 5.6 6.8 9.6 9.5 11.4 2.7-1.8 9.3-5.8 9.3-11.4Z"/></svg></div>
+              <h3>Saved trips</h3><p>Keep trips you are interested in accessible so you can return to them later.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/></svg></div>
+              <h3>My trips</h3><p>View and manage trip activity connected to your TripRide account.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 20v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 20v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div>
+              <h3>Passenger view</h3><p>Trip creators can access passenger information associated with their trip bookings.</p>
+            </article>
           </div>
           <div class="feature-more-row">
-            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">
+              <span class="more-label">Show more</span>
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
           </div>
         </div>
 
-        <div class="feature-category">
-          <div class="feature-category-title"><span>🎟</span><h3>Bookings & payments</h3></div>
+        <div class="feature-category reveal">
+          <div class="feature-category-title">
+            <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h2"/></svg></span>
+            <h3>Bookings & payments</h3>
+          </div>
           <div class="feature-grid">
-            <article class="feature"><div class="feature-icon">🎟</div><h3>Trip bookings</h3><p>Book supported trips and keep the booking information connected to the journey.</p></article>
-            <article class="feature"><div class="feature-icon">₹</div><h3>Payment flow</h3><p>Complete supported payment steps in-app and receive the relevant payment status.</p></article>
-            <article class="feature"><div class="feature-icon">✓</div><h3>Payment verification</h3><p>TripRide can show whether a payment is being checked, verified or needs attention.</p></article>
-            <article class="feature"><div class="feature-icon">▤</div><h3>Booking details</h3><p>Keep relevant booking and trip information organised inside the app.</p></article>
-            <article class="feature"><div class="feature-icon">₹50</div><h3>Clear platform fee</h3><p>The TripRide platform fee shown on this website is ₹50, with transaction details shown before confirmation where applicable.</p></article>
-            <article class="feature"><div class="feature-icon">◷</div><h3>Status updates</h3><p>See meaningful status information during booking and payment-related flows.</p></article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 6v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-6Z"/><path d="M13 5v14" stroke-dasharray="2 2"/></svg></div>
+              <h3>Trip bookings</h3><p>Book supported trips and keep the booking information connected to the journey.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h6a3 3 0 0 1 0 6H9m0-6v12m0-6h5m-5 6H8m1-6H8"/></svg></div>
+              <h3>Payment flow</h3><p>Complete supported payment steps in-app and receive the relevant payment status.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
+              <h3>Payment verification</h3><p>TripRide can show whether a payment is being checked, verified or needs attention.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5M8 17h3"/></svg></div>
+              <h3>Booking details</h3><p>Keep relevant booking and trip information organised inside the app.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h6a3 3 0 0 1 0 6H9m0-6v12m0-6h5"/></svg></div>
+              <h3>Clear platform fee</h3><p>The TripRide platform fee shown on this website is ₹50, with transaction details shown before confirmation where applicable.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+              <h3>Status updates</h3><p>See meaningful status information during booking and payment-related flows.</p>
+            </article>
           </div>
           <div class="feature-more-row">
-            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">
+              <span class="more-label">Show more</span>
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
           </div>
         </div>
 
-        <div class="feature-category">
-          <div class="feature-category-title"><span>💬</span><h3>People & communication</h3></div>
+        <div class="feature-category reveal">
+          <div class="feature-category-title">
+            <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-3.4 6.8 8.5 8.5 0 0 1-5.1 1.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg></span>
+            <h3>People & communication</h3>
+          </div>
           <div class="feature-grid">
-            <article class="feature"><div class="feature-icon">💬</div><h3>In-app chat</h3><p>Message other TripRide users to coordinate information around a journey.</p></article>
-            <article class="feature"><div class="feature-icon">🔔</div><h3>Notifications</h3><p>Receive app notifications for relevant activity and important TripRide updates.</p></article>
-            <article class="feature"><div class="feature-icon">◎</div><h3>User profiles</h3><p>View profile information used by TripRide to help users connect around travel.</p></article>
-            <article class="feature"><div class="feature-icon">▦</div><h3>QR profile access</h3><p>Scan a TripRide QR code to open the associated user profile more quickly.</p></article>
-            <article class="feature"><div class="feature-icon">⌁</div><h3>Profile sharing</h3><p>Use profile and QR-based flows to make connecting between TripRide users easier.</p></article>
-            <article class="feature"><div class="feature-icon">●</div><h3>Account-based experience</h3><p>Your TripRide activity stays connected to your signed-in account across supported features.</p></article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-3.4 6.8 8.5 8.5 0 0 1-5.1 1.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg></div>
+              <h3>In-app chat</h3><p>Message other TripRide users to coordinate information around a journey.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+              <h3>Notifications</h3><p>Receive app notifications for relevant activity and important TripRide updates.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+              <h3>User profiles</h3><p>View profile information used by TripRide to help users connect around travel.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14h2M14 19h2M19 19h2"/></svg></div>
+              <h3>QR profile access</h3><p>Scan a TripRide QR code to open the associated user profile more quickly.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.5 6.9-4M8.6 13.5l6.9 4"/></svg></div>
+              <h3>Profile sharing</h3><p>Use profile and QR-based flows to make connecting between TripRide users easier.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 18c0-2.5 2.2-4 5-4s5 1.5 5 4"/></svg></div>
+              <h3>Account-based experience</h3><p>Your TripRide activity stays connected to your signed-in account across supported features.</p>
+            </article>
           </div>
           <div class="feature-more-row">
-            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">
+              <span class="more-label">Show more</span>
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
           </div>
         </div>
 
-        <div class="feature-category">
-          <div class="feature-category-title"><span>🏢</span><h3>Travel services</h3></div>
+        <div class="feature-category reveal">
+          <div class="feature-category-title">
+            <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M6 21V8l6-4 6 4v13M10 21v-5h4v5M9 12h.01M15 12h.01M9 9h.01M15 9h.01"/></svg></span>
+            <h3>Travel services</h3>
+          </div>
           <div class="feature-grid">
-            <article class="feature"><div class="feature-icon">🏢</div><h3>Travel agencies</h3><p>TripRide includes travel-agency related experiences as part of its broader travel platform.</p></article>
-            <article class="feature"><div class="feature-icon">🚘</div><h3>Rental agencies</h3><p>Explore supported rental-agency information and travel options from the app.</p></article>
-            <article class="feature"><div class="feature-icon">⌖</div><h3>Location-aware discovery</h3><p>Supported location features help TripRide present travel information around places and routes.</p></article>
-            <article class="feature"><div class="feature-icon">☰</div><h3>Agency listings</h3><p>Browse available agency-related listings through dedicated TripRide screens.</p></article>
-            <article class="feature"><div class="feature-icon">✓</div><h3>Agency registration flow</h3><p>Supported agency registration can move through payment verification and approval status steps.</p></article>
-            <article class="feature"><div class="feature-icon">↗</div><h3>Travel-focused navigation</h3><p>Move between ride, agency and profile experiences without leaving the TripRide ecosystem.</p></article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M6 21V8l6-4 6 4v13M10 21v-5h4v5M9 12h.01M15 12h.01M9 9h.01M15 9h.01"/></svg></div>
+              <h3>Travel agencies</h3><p>TripRide includes travel-agency related experiences as part of its broader travel platform.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14M5 17a2 2 0 0 1-2-2v-2a1 1 0 0 1 .3-.7L5 10h14l1.7 2.3c.2.2.3.4.3.7v2a2 2 0 0 1-2 2M5 17v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2m10 0v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2M7 10 8 6h8l1 4"/><circle cx="7.5" cy="14" r="1"/><circle cx="16.5" cy="14" r="1"/></svg></div>
+              <h3>Rental agencies</h3><p>Explore supported rental-agency information and travel options from the app.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <h3>Location-aware discovery</h3><p>Supported location features help TripRide present travel information around places and routes.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></div>
+              <h3>Agency listings</h3><p>Browse available agency-related listings through dedicated TripRide screens.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12h6m-6 4h6M8 8h.01M9 4h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m9 16 1.5 1.5L14 14"/></svg></div>
+              <h3>Agency registration flow</h3><p>Supported agency registration can move through payment verification and approval status steps.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 4 7l4 4M4 7h11a4 4 0 0 1 4 4v1M16 21l4-4-4-4M20 17H9a4 4 0 0 1-4-4v-1"/></svg></div>
+              <h3>Travel-focused navigation</h3><p>Move between ride, agency and profile experiences without leaving the TripRide ecosystem.</p>
+            </article>
           </div>
           <div class="feature-more-row">
-            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">
+              <span class="more-label">Show more</span>
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
           </div>
         </div>
 
-        <div class="feature-category">
-          <div class="feature-category-title"><span>⚙</span><h3>App experience</h3></div>
+        <div class="feature-category reveal">
+          <div class="feature-category-title">
+            <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
+            <h3>App experience</h3>
+          </div>
           <div class="feature-grid">
-            <article class="feature"><div class="feature-icon">◐</div><h3>Light & dark theme</h3><p>TripRide supports theme preferences so the interface can match your viewing preference.</p></article>
-            <article class="feature"><div class="feature-icon">▱</div><h3>Responsive interface</h3><p>Screens are designed to adapt across smaller and larger supported phone sizes.</p></article>
-            <article class="feature"><div class="feature-icon">↻</div><h3>Session restore</h3><p>TripRide can restore an existing authenticated session when the app starts.</p></article>
-            <article class="feature"><div class="feature-icon">☁</div><h3>Cloud-connected data</h3><p>Supported TripRide experiences use Firebase-backed app data for connected functionality.</p></article>
-            <article class="feature"><div class="feature-icon">⚑</div><h3>Friendly error states</h3><p>User-facing screens can present understandable status messages instead of raw technical errors.</p></article>
-            <article class="feature"><div class="feature-icon">✦</div><h3>Modern mobile UI</h3><p>TripRide combines clear cards, navigation and focused travel flows in a modern mobile interface.</p></article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.5 0-1-.1-1.5A6 6 0 0 1 12 3Z"/></svg></div>
+              <h3>Light & dark theme</h3><p>TripRide supports theme preferences so the interface can match your viewing preference.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="9" height="14" rx="1.5"/><rect x="13" y="4" width="9" height="17" rx="1.5"/><path d="M6 18h1M17 18h1"/></svg></div>
+              <h3>Responsive interface</h3><p>Screens are designed to adapt across smaller and larger supported phone sizes.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></div>
+              <h3>Session restore</h3><p>TripRide can restore an existing authenticated session when the app starts.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6-1.7A4 4 0 0 0 6.5 16"/></svg></div>
+              <h3>Cloud-connected data</h3><p>Supported TripRide experiences use Firebase-backed app data for connected functionality.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 2.3 18a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3l-8-14.1a2 2 0 0 0-3.4 0Z"/></svg></div>
+              <h3>Friendly error states</h3><p>User-facing screens can present understandable status messages instead of raw technical errors.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 2.2 6.8H21l-5.6 4.1 2.2 6.8L12 15.6l-5.6 4.1 2.2-6.8L3 8.8h6.8Z"/></svg></div>
+              <h3>Modern mobile UI</h3><p>TripRide combines clear cards, navigation and focused travel flows in a modern mobile interface.</p>
+            </article>
           </div>
           <div class="feature-more-row">
-            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">•••</button>
+            <button class="feature-more-btn" type="button" aria-label="Show more features" aria-expanded="false">
+              <span class="more-label">Show more</span>
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
           </div>
         </div>
       </div>
     </section>
 
-
     <section class="commitment" id="commitment">
       <div class="section-inner">
-        <div class="commitment-card">
-          <div class="commitment-logo logo-svg-wrap"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
-  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
-  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
-  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
-  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
-</svg></div>
+        <div class="commitment-card reveal">
+          <div class="commitment-logo">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+              <circle cx="50" cy="50" r="50" fill="#0C1929"/>
+              <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#D9AE6B"/>
+              <circle cx="50" cy="57" r="13" fill="#0C1929" stroke="#D9AE6B" stroke-width="8"/>
+              <path d="M50 70V91" stroke="#D9AE6B" stroke-width="8" stroke-linecap="butt"/>
+            </svg>
+          </div>
           <div>
             <small>The TripRide promise</small>
             <h2>A confirmed journey is a commitment.</h2>
             <p>
-              A ride can be an important part of someone’s day — getting home, reaching work, meeting family or making a journey that matters.
+              A ride can be an important part of someone's day — getting home, reaching work, meeting family or making a journey that matters.
               TripRide is designed around responsible trip creation, thoughtful booking and respect for the people depending on that journey.
             </p>
           </div>
@@ -991,27 +797,34 @@
 
     <section id="how">
       <div class="section-inner">
-        <div class="section-heading">
+        <div class="section-heading reveal">
           <small>How it works</small>
           <h2>Open. Find. Connect. Travel.</h2>
           <p>No complicated website dashboard. The actual trip experience stays where it belongs — inside the TripRide app.</p>
         </div>
 
         <div class="steps">
-          <div class="step">
-            <div class="step-num">01 / FIND</div>
+          <div class="step reveal">
+            <div class="step-head">
+              <div class="step-num">01 / FIND</div>
+              <div class="step-icon"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+            </div>
             <h3>Choose your trip</h3>
             <p>Search for a route and explore the trip information available in the app.</p>
           </div>
-
-          <div class="step">
-            <div class="step-num">02 / CONNECT</div>
+          <div class="step reveal">
+            <div class="step-head">
+              <div class="step-num">02 / CONNECT</div>
+              <div class="step-icon"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 20v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 20v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div>
+            </div>
             <h3>Book or share</h3>
             <p>Join an available trip or create your own ride when you have seats to share.</p>
           </div>
-
-          <div class="step">
-            <div class="step-num">03 / TRAVEL</div>
+          <div class="step reveal">
+            <div class="step-head">
+              <div class="step-num">03 / TRAVEL</div>
+              <div class="step-icon"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14M5 17a2 2 0 0 1-2-2v-2a1 1 0 0 1 .3-.7L5 10h14l1.7 2.3c.2.2.3.4.3.7v2a2 2 0 0 1-2 2M7 10 8 6h8l1 4"/><circle cx="7.5" cy="14" r="1"/><circle cx="16.5" cy="14" r="1"/></svg></div>
+            </div>
             <h3>Manage the journey</h3>
             <p>Use your booking, chat and trip tools from TripRide throughout the journey.</p>
           </div>
@@ -1019,32 +832,31 @@
       </div>
     </section>
 
-    
     <section id="more">
       <div class="section-inner">
-        <div class="section-heading">
+        <div class="section-heading reveal">
           <small>More than a trip search</small>
           <h2>Built around the full TripRide experience.</h2>
           <p>TripRide brings the important parts of planning and managing shared travel into one mobile experience.</p>
         </div>
 
         <div class="info-grid">
-          <article class="info-card">
+          <article class="info-card reveal">
             <div class="kicker">Trip management</div>
             <h3>Keep your journeys organised</h3>
             <p>Access trip details, bookings and saved trip information without jumping between different services.</p>
           </article>
-          <article class="info-card">
+          <article class="info-card reveal">
             <div class="kicker">People</div>
             <h3>Profiles that make connection easier</h3>
             <p>TripRide profiles and QR profile access give users a simple way to connect around a journey.</p>
           </article>
-          <article class="info-card">
+          <article class="info-card reveal">
             <div class="kicker">Communication</div>
             <h3>Chat where the trip happens</h3>
             <p>Use in-app messaging to coordinate relevant journey information with other TripRide users.</p>
           </article>
-          <article class="info-card">
+          <article class="info-card reveal">
             <div class="kicker">Travel ecosystem</div>
             <h3>Designed to grow with travel needs</h3>
             <p>TripRide is structured around rides, bookings and travel-related services while keeping the experience simple for users.</p>
@@ -1055,12 +867,10 @@
 
     <section id="fee">
       <div class="section-inner">
-        <div class="fee-card">
+        <div class="fee-card reveal">
           <div>
             <h2>Simple platform fee.</h2>
-            <p>
-              TripRide keeps the platform fee clear and visible. Any additional payment details applicable to a transaction should be shown in the app before confirmation.
-            </p>
+            <p>TripRide keeps the platform fee clear and visible. Any additional payment details applicable to a transaction should be shown in the app before confirmation.</p>
           </div>
           <div class="fee">
             <strong>₹50</strong>
@@ -1070,19 +880,15 @@
       </div>
     </section>
 
-    
     <section id="about">
       <div class="section-inner">
         <div class="about-panel">
-          <div class="about-main">
+          <div class="about-main reveal">
             <div class="eyebrow"><span class="eyebrow-dot"></span> About TripRide</div>
             <h2>A simpler way to bring people and journeys together.</h2>
-            <p>
-              TripRide is a travel application focused on helping people discover trips, share journeys, manage bookings and communicate around travel from one place. The goal is straightforward: keep the experience useful, clear and easy to use.
-            </p>
+            <p>TripRide is a travel application focused on helping people discover trips, share journeys, manage bookings and communicate around travel from one place. The goal is straightforward: keep the experience useful, clear and easy to use.</p>
           </div>
-
-          <aside class="founder-card">
+          <aside class="founder-card reveal">
             <div>
               <div class="founder-avatar">VM</div>
               <div class="founder-label">Founder</div>
@@ -1096,82 +902,124 @@
 
     <section id="faq">
       <div class="section-inner">
-        <div class="section-heading">
+        <div class="section-heading reveal">
           <small>Quick answers</small>
           <h2>TripRide, without the fine-print feeling.</h2>
         </div>
-        <div class="faq-list">
+        <div class="faq-list reveal">
           <details>
-            <summary>What is TripRide?</summary>
+            <summary>What is TripRide?<span class="summary-plus">+</span></summary>
             <p>TripRide is a mobile travel app for discovering trips, sharing rides, managing bookings and connecting around a journey.</p>
           </details>
           <details>
-            <summary>What is the TripRide platform fee?</summary>
+            <summary>What is the TripRide platform fee?<span class="summary-plus">+</span></summary>
             <p>The platform fee shown on this website is ₹50. Applicable transaction details should be displayed in the app before confirmation.</p>
           </details>
           <details>
-            <summary>Where do I manage my trips?</summary>
+            <summary>Where do I manage my trips?<span class="summary-plus">+</span></summary>
             <p>The main TripRide experience — including trip and booking tools — is available inside the mobile app.</p>
           </details>
           <details>
-            <summary>Does this website show fake user or trip counts?</summary>
+            <summary>Does this website show fake user or trip counts?<span class="summary-plus">+</span></summary>
             <p>No. This website does not display invented user counts, trip counts, ratings or testimonials.</p>
           </details>
           <details>
-            <summary>What does TripRide mean by committed journeys?</summary>
+            <summary>What does TripRide mean by committed journeys?<span class="summary-plus">+</span></summary>
             <p>TripRide treats a confirmed trip as a meaningful commitment between people. The experience encourages users to create and book trips thoughtfully because another person may be depending on that journey.</p>
           </details>
-
+          <details>
+            <summary>How do I delete my TripRide account?<span class="summary-plus">+</span></summary>
+            <p>You can request account deletion from the Delete Account page linked in the footer, or directly from the app. See our <a href="delete-account.html">Delete Account</a> page for details.</p>
+          </details>
         </div>
       </div>
     </section>
 
     <section class="download" id="download">
-      <div class="download-box">
-        <div class="download-logo logo-svg-wrap"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
-  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
-  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
-  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
-  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
-</svg></div>
-        <div class="eyebrow"><span class="eyebrow-dot"></span> TripRide app</div>
+      <div class="download-box reveal">
+        <div class="download-logo">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+            <circle cx="50" cy="50" r="50" fill="#0C1929"/>
+            <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#D9AE6B"/>
+            <circle cx="50" cy="57" r="13" fill="#0C1929" stroke="#D9AE6B" stroke-width="8"/>
+            <path d="M50 70V91" stroke="#D9AE6B" stroke-width="8" stroke-linecap="butt"/>
+          </svg>
+        </div>
+        <div class="eyebrow" style="background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.14); color:#F4F0E6; position:relative;"><span class="eyebrow-dot"></span> TripRide app</div>
         <h2 style="margin-top:20px;">Ready when your next journey is.</h2>
         <p>Discover trips, share a journey, connect with travellers and keep your TripRide activity together in the app.</p>
-        <a class="primary-btn" href="#" aria-label="Download TripRide app">Get TripRide</a>
+        <div class="store-badges">
+          <a class="store-badge" href="#download" aria-label="Get it on Google Play" style="background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.16);">
+            <svg class="store-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3.6 2.2 14 12 3.6 21.8c-.4-.3-.6-.8-.6-1.3V3.5c0-.5.2-1 .6-1.3Z" fill="#D9AE6B"/>
+              <path d="m14 12 3.4-3.4L21 10.7c.9.5.9 1.7 0 2.2l-3.6 2.1L14 12Z" fill="#F4F0E6"/>
+              <path d="M14 12 4.4 21.5c.3.2.7.3 1 .2l11.6-6.7L14 12Z" fill="#F4F0E6" opacity=".8"/>
+              <path d="M14 12 4.4 2.5c.3-.2.7-.3 1-.2l11.6 6.7L14 12Z" fill="#F4F0E6" opacity=".55"/>
+            </svg>
+            <span><small>Get it on</small><strong>Google Play</strong></span>
+          </a>
+          <a class="store-badge" href="#download" aria-label="Download on the App Store" style="background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.16);">
+            <svg class="store-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M16.7 12.6c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.6-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.5 2.1 2.6 2 1-.1 1.4-.7 2.7-.7s1.6.7 2.7.6c1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.4-.9-2.4-3.9Z" fill="#F4F0E6"/>
+              <path d="M14.5 6.1c.6-.7 1-1.7.9-2.6-.9 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.5 1 .1 1.9-.5 2.5-1.2Z" fill="#F4F0E6"/>
+            </svg>
+            <span><small>Download on the</small><strong>App Store</strong></span>
+          </a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer id="support">
     <div class="footer-inner">
-      <div class="footer-brand-logo"><div class="inline-logo-svg"><svg class="tripride-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
-  <circle cx="50" cy="50" r="50" fill="#197EA7"/>
-  <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#F5F7FA"/>
-  <circle cx="50" cy="57" r="13" fill="#197EA7" stroke="#F5F7FA" stroke-width="8"/>
-  <path d="M50 70V91" stroke="#F5F7FA" stroke-width="8" stroke-linecap="butt"/>
-</svg></div><span>© 2026 TripRide</span></div>
+      <div class="footer-brand-logo">
+        <div class="inline-logo-svg">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TripRide logo">
+            <circle cx="50" cy="50" r="50" fill="#10233F"/>
+            <path d="M28 61C20 51 20 36 27 26C32 19 39 15 47 13V28C43 30 40 33 38 37L46 45L54 37L62 45L70 37C72 40 73 44 73 48C73 56 69 63 63 67C59 70 56 74 56 79V91H44V79C44 73 41 69 37 66C33 64 30 62 28 61Z" fill="#D9AE6B"/>
+            <circle cx="50" cy="57" r="13" fill="#10233F" stroke="#D9AE6B" stroke-width="8"/>
+            <path d="M50 70V91" stroke="#D9AE6B" stroke-width="8" stroke-linecap="butt"/>
+          </svg>
+        </div>
+        <span>© 2026 TripRide</span>
+      </div>
       <div class="legal">
-  <div class="legal">
-  <a href="/privacy-policy.html">Privacy Policy</a>
-  <a href="/terms-and-conditions.html">Terms & Conditions</a>
-  <a href="/delete-account.html">Delete Account</a>
-  <a href="mailto:support@tripride.co.in">Support</a>
-</div>
-</div>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-and-conditions.html">Terms & Conditions</a>
+        <a href="delete-account.html">Delete Account</a>
+        <a href="mailto:support@tripride.co.in">Support</a>
+      </div>
     </div>
   </footer>
 
-<script>
-  document.querySelectorAll('.feature-more-btn').forEach((button) => {
-    button.addEventListener('click', () => {
-      const category = button.closest('.feature-category');
-      const expanded = category.classList.toggle('expanded');
-      button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-      button.setAttribute('aria-label', expanded ? 'Show fewer features' : 'Show more features');
-      button.textContent = expanded ? '−' : '•••';
+  <script>
+    // Expand / collapse feature categories
+    document.querySelectorAll('.feature-more-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const category = button.closest('.feature-category');
+        const expanded = category.classList.toggle('expanded');
+        const label = button.querySelector('.more-label');
+        button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        button.setAttribute('aria-label', expanded ? 'Show fewer features' : 'Show more features');
+        if (label) label.textContent = expanded ? 'Show less' : 'Show more';
+      });
     });
-  });
-</script>
 
+    // Subtle scroll-reveal animation, disabled for reduced-motion users
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
+    }
+  </script>
 </body>
 </html>
