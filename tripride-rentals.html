@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TripRide | Rides, Trips & Rentals</title>
+<meta name="description" content="TripRide — Car Taxi, Bike Taxi, Auto Taxi, Car Rental and Bike Rental, all in one platform.">
+<style>
+:root{
+  --navy:#07111f;--navy2:#0d1b2d;--gold:#d9ad55;--gold2:#f3d58d;
+  --cream:#fffaf0;--muted:#aeb8c6;--white:#fff;--line:rgba(255,255,255,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,Arial,sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+nav{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(7,17,31,.82);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1px}.logo span{color:var(--gold)}
+.navlinks{display:flex;gap:26px;align-items:center;color:#d7dee8;font-size:14px}
+.navlinks a:hover{color:var(--gold2)}
+.navbtn{padding:11px 18px;border:1px solid rgba(217,173,85,.55);border-radius:30px;color:var(--gold2);font-weight:800}
+.hero{min-height:100vh;padding:150px 7% 80px;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;position:relative;background:radial-gradient(circle at 78% 35%,rgba(217,173,85,.14),transparent 32%),linear-gradient(145deg,#07111f,#0a1728)}
+.hero:before{content:"";position:absolute;width:500px;height:500px;border-radius:50%;border:1px solid rgba(217,173,85,.08);right:-150px;top:100px;animation:spin 30s linear infinite}
+.eyebrow{display:inline-flex;padding:8px 14px;border:1px solid rgba(217,173,85,.3);border-radius:30px;color:var(--gold2);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;background:rgba(217,173,85,.06)}
+h1{font-size:clamp(48px,6vw,82px);line-height:.98;letter-spacing:-4px;margin:23px 0}
+h1 span{color:var(--gold2)}
+.hero p{max-width:620px;color:#c2ccd8;font-size:18px;line-height:1.7}
+.hero-actions{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap}
+.btn{padding:15px 24px;border-radius:14px;font-weight:900;display:inline-flex;align-items:center;gap:8px;transition:.3s}
+.btn.primary{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#111}
+.btn.secondary{border:1px solid var(--line);background:rgba(255,255,255,.04)}
+.btn:hover{transform:translateY(-4px);box-shadow:0 16px 35px rgba(0,0,0,.25)}
+.visual{height:500px;position:relative;display:flex;align-items:center;justify-content:center}
+.orb{width:390px;height:390px;border-radius:50%;background:radial-gradient(circle,rgba(217,173,85,.18),rgba(217,173,85,.03) 55%,transparent 70%);border:1px solid rgba(217,173,85,.2);animation:pulse 4s ease-in-out infinite}
+.vehicle{position:absolute;font-size:145px;filter:drop-shadow(0 20px 35px rgba(0,0,0,.45));animation:float 4s ease-in-out infinite}
+.floatcard{position:absolute;background:rgba(15,28,45,.88);border:1px solid var(--line);padding:15px 17px;border-radius:16px;backdrop-filter:blur(12px);box-shadow:0 15px 40px rgba(0,0,0,.3)}
+.floatcard b{display:block;color:var(--gold2);margin-bottom:4px}.floatcard small{color:#c2ccd8}
+.c1{top:55px;right:15px}.c2{bottom:65px;left:5px}.c3{bottom:5px;right:55px}
+.section{padding:105px 7%;position:relative}
+.section.light{background:var(--cream);color:#101a27}
+.sectionhead{max-width:760px;margin-bottom:45px}
+.kicker{color:#9b7534;font-size:12px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+h2{font-size:clamp(35px,4vw,55px);letter-spacing:-2px;margin:10px 0 15px}
+.sectionhead p{color:#667383;line-height:1.7}
+.dark .sectionhead p{color:#aeb8c6}
+.services{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.card{position:relative;min-height:330px;padding:28px;border-radius:25px;border:1px solid #e5e0d5;background:#fff;overflow:hidden;transition:.35s}
+.card:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(217,173,85,.09);right:-80px;bottom:-80px}
+.card:hover{transform:translateY(-10px);box-shadow:0 25px 50px rgba(26,34,45,.13)}
+.icon{font-size:48px;margin-bottom:25px}.card h3{font-size:23px;margin-bottom:10px}.card p{font-size:14px;line-height:1.65;color:#687585;margin-bottom:22px}
+.card a{font-weight:900;color:#9b7534;font-size:14px}
+.taxi{background:linear-gradient(160deg,#fff,#f8f2e7)}.rental{background:linear-gradient(160deg,#fff,#f1f5f8)}
+.band{background:linear-gradient(120deg,#101d2e,#07111f);padding:70px 7%;display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.band h2{color:white;max-width:700px}.band p{color:#aeb8c6;line-height:1.7;max-width:680px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.step{padding:28px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.035)}.num{font-size:13px;color:var(--gold2);font-weight:900}.step h3{margin:13px 0 9px}.step p{color:#aeb8c6;font-size:14px;line-height:1.6}
+footer{padding:45px 7%;background:#040b13;display:flex;justify-content:space-between;gap:25px;color:#8f9aaa;font-size:13px}.footlogo{font-size:22px;font-weight:900;color:white}.footlogo span{color:var(--gold)}
+.reveal{opacity:0;transform:translateY(25px);transition:opacity .8s,transform .8s}.reveal.show{opacity:1;transform:none}
+@keyframes float{50%{transform:translateY(-15px)}}@keyframes pulse{50%{transform:scale(1.06);opacity:.75}}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:1050px){.services{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.visual{height:390px}.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){nav{padding:0 5%;height:68px}.navlinks a:not(.navbtn){display:none}.navbtn{padding:9px 13px}.hero{padding:120px 6% 60px}.hero h1{letter-spacing:-2px}.visual{height:320px}.orb{width:270px;height:270px}.vehicle{font-size:95px}.floatcard{padding:10px 12px;font-size:12px}.services,.steps{grid-template-columns:1fr}.section{padding:75px 6%}.band{padding:55px 6%;flex-direction:column;align-items:flex-start}footer{padding:35px 6%;flex-direction:column}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">Trip<span>Ride</span></a>
+  <div class="navlinks">
+    <a href="#services">Services</a>
+    <a href="#how">How It Works</a>
+    <a class="navbtn" href="index.html">Main Website ↗</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="reveal">
+    <div class="eyebrow">One Platform • Five Services</div>
+    <h1>Move your way.<br><span>TripRide.</span></h1>
+    <p>From quick city rides to flexible rentals, TripRide brings Car Taxi, Bike Taxi, Auto Taxi, Car Rental and Bike Rental together in one simple platform.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#services">Explore All Services ↓</a>
+      <a class="btn secondary" href="index.html">← TripRide Home</a>
+    </div>
+  </div>
+  <div class="visual reveal">
+    <div class="orb"></div>
+    <div class="vehicle">🚗</div>
+    <div class="floatcard c1"><b>5 Services</b><small>One TripRide platform</small></div>
+    <div class="floatcard c2"><b>Taxi + Rental</b><small>Choose what fits your journey</small></div>
+    <div class="floatcard c3"><b>Easy Booking</b><small>Simple. Fast. Convenient.</small></div>
+  </div>
+</section>
+
+<section class="section light" id="services">
+  <div class="sectionhead reveal">
+    <div class="kicker">Everything in one place</div>
+    <h2>Choose your TripRide.</h2>
+    <p>Whether you need a driver or your own vehicle, select the service that matches your journey.</p>
+  </div>
+
+  <div class="services">
+    <article class="card taxi reveal">
+      <div class="icon">🚗</div><h3>Car Taxi</h3>
+      <p>Comfortable point-to-point rides with a captain, whenever you need to travel.</p>
+      <a href="#how">Explore Car Taxi →</a>
+    </article>
+
+    <article class="card taxi reveal">
+      <div class="icon">🏍️</div><h3>Bike Taxi</h3>
+      <p>Quick and convenient two-wheeler rides for navigating the city with ease.</p>
+      <a href="#how">Explore Bike Taxi →</a>
+    </article>
+
+    <article class="card taxi reveal">
+      <div class="icon">🛺</div><h3>Auto Taxi</h3>
+      <p>Simple, practical auto rides for everyday city travel and short-distance journeys.</p>
+      <a href="#how">Explore Auto Taxi →</a>
+    </article>
+
+    <article class="card rental reveal">
+      <div class="icon">🚘</div><h3>Car Rental</h3>
+      <p>Rent a car for your plans and enjoy the freedom to travel on your own schedule.</p>
+      <a href="#how">Explore Car Rental →</a>
+    </article>
+
+    <article class="card rental reveal">
+      <div class="icon">🏍️</div><h3>Bike Rental</h3>
+      <p>Pick a bike and ride independently for local travel, errands or longer plans.</p>
+      <a href="#how">Explore Bike Rental →</a>
+    </article>
+  </div>
+</section>
+
+<section class="band">
+  <div class="reveal">
+    <div class="kicker">One app. More ways to move.</div>
+    <h2>Ride with a captain.<br>Or take the wheel yourself.</h2>
+    <p>TripRide combines on-demand taxi services with flexible vehicle rentals, giving customers more choice from one trusted platform.</p>
+  </div>
+  <a class="btn primary" href="#services">View Services</a>
+</section>
+
+<section class="section dark" id="how">
+  <div class="sectionhead reveal">
+    <div class="kicker">Simple by design</div>
+    <h2>How TripRide works.</h2>
+    <p>A clean journey from choosing your service to completing your trip.</p>
+  </div>
+  <div class="steps">
+    <div class="step reveal"><div class="num">01 / CHOOSE</div><h3>Select a service</h3><p>Choose Car Taxi, Bike Taxi, Auto Taxi, Car Rental or Bike Rental.</p></div>
+    <div class="step reveal"><div class="num">02 / BOOK</div><h3>Enter your journey</h3><p>Add your pickup, destination or rental details and continue with booking.</p></div>
+    <div class="step reveal"><div class="num">03 / CONFIRM</div><h3>Get matched</h3><p>For taxi services, connect with an available captain. For rentals, continue with the rental flow.</p></div>
+    <div class="step reveal"><div class="num">04 / GO</div><h3>Start travelling</h3><p>Enjoy your ride or rental and manage the journey through TripRide.</p></div>
+  </div>
+</section>
+
+<section class="section light">
+  <div class="sectionhead reveal">
+    <div class="kicker">Why TripRide</div>
+    <h2>Built around your journey.</h2>
+    <p>Different travel needs shouldn't require different platforms. TripRide puts everyday mobility choices together.</p>
+  </div>
+  <div class="services">
+    <article class="card reveal"><div class="icon">✦</div><h3>More Choice</h3><p>Five services across taxi and rental categories from one platform.</p></article>
+    <article class="card reveal"><div class="icon">⚡</div><h3>Simple Experience</h3><p>A straightforward flow designed to get you moving without unnecessary steps.</p></article>
+    <article class="card reveal"><div class="icon">⌖</div><h3>Local Mobility</h3><p>Designed for everyday city travel, short rides and flexible vehicle use.</p></article>
+    <article class="card reveal"><div class="icon">◈</div><h3>One Brand</h3><p>One familiar TripRide experience across rides, trips and rentals.</p></article>
+  </div>
+</section>
+
+<footer>
+  <div><div class="footlogo">Trip<span>Ride</span></div><div style="margin-top:8px">Rides • Trips • Rentals</div></div>
+  <div>© 2026 TripRide. All rights reserved.</div>
+</footer>
+
+<script>
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')})
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
