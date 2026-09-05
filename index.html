@@ -385,6 +385,45 @@
     .legal { display: flex; gap: 20px; flex-wrap: wrap; }
     .legal a:hover { color: var(--navy); }
 
+
+    /* Premium TripRide Rentals switch */
+    .rentals-switch{
+      position:relative;display:inline-flex;align-items:center;gap:9px;
+      min-height:46px;padding:5px 10px 5px 6px;border-radius:999px;
+      color:#F4F0E6;background:linear-gradient(135deg,rgba(217,174,107,.18),rgba(255,255,255,.055));
+      border:1px solid rgba(217,174,107,.38);overflow:hidden;isolation:isolate;
+      box-shadow:0 8px 28px rgba(0,0,0,.18);transition:.28s cubic-bezier(.2,.8,.2,1);
+      animation:rentalsPulse 3.2s ease-in-out infinite;
+    }
+    .rentals-switch::before{
+      content:"";position:absolute;inset:-100% -30%;z-index:-1;
+      background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.24) 50%,transparent 62%);
+      transform:translateX(-70%) rotate(7deg);animation:rentalsShine 4.5s ease-in-out infinite;
+    }
+    .rentals-switch:hover{transform:translateY(-2px) scale(1.025);border-color:#D9AE6B;
+      box-shadow:0 14px 38px rgba(0,0,0,.28),0 0 28px rgba(217,174,107,.18)}
+    .rentals-orb{width:34px;height:34px;flex:0 0 34px;border-radius:50%;
+      display:grid;place-items:center;background:linear-gradient(145deg,#D9AE6B,#A96F27);
+      box-shadow:0 5px 15px rgba(217,174,107,.3)}
+    .rentals-wheel{width:14px;height:14px;border:3px solid #10233F;border-radius:50%;
+      position:relative;animation:rentalsWheelSpin 3.8s linear infinite}
+    .rentals-wheel:before,.rentals-wheel:after{content:"";position:absolute;left:50%;top:50%;
+      width:22px;height:2px;background:#10233F;border-radius:3px;transform:translate(-50%,-50%)}
+    .rentals-wheel:after{transform:translate(-50%,-50%) rotate(90deg)}
+    .rentals-label{display:flex;flex-direction:column;line-height:1.05}
+    .rentals-label small{font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;
+      color:rgba(244,240,230,.55);margin-bottom:3px}
+    .rentals-label strong{font-family:var(--serif);font-size:12px;font-weight:600;white-space:nowrap}
+    .rentals-arrow{font-size:18px;color:var(--gold-2);transition:transform .25s ease}
+    .rentals-switch:hover .rentals-arrow{transform:translate(3px,-3px)}
+    @keyframes rentalsPulse{0%,100%{box-shadow:0 8px 28px rgba(0,0,0,.18)}
+      50%{box-shadow:0 10px 34px rgba(0,0,0,.23),0 0 22px rgba(217,174,107,.13)}}
+    @keyframes rentalsShine{0%,52%{transform:translateX(-70%) rotate(7deg)}
+      72%,100%{transform:translateX(70%) rotate(7deg)}}
+    @keyframes rentalsWheelSpin{to{transform:rotate(360deg)}}
+    body.rentals-opening{overflow:hidden}
+    body.rentals-opening:after{transform:translateY(0)!important}
+
     @media (max-width: 900px) {
       .nav-links { display: none; }
       .hero { grid-template-columns: 1fr; text-align: center; gap: 20px; padding-top: 60px; }
@@ -423,6 +462,22 @@
       .store-badges { justify-content: center; width: 100%; }
       .store-badge { flex: 1 1 auto; justify-content: center; }
     }
+  
+    body:after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+      background:radial-gradient(circle at 50% 45%,#1d4168 0,#10233F 38%,#081321 100%);
+      transform:translateY(100%);transition:transform .36s cubic-bezier(.76,0,.24,1)}
+    body.rentals-opening:before{content:"TRIPRIDE RENTALS";position:fixed;z-index:10000;
+      left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--serif);
+      font-size:clamp(25px,4vw,48px);font-weight:600;letter-spacing:.02em;color:#F4F0E6;
+      opacity:1;animation:rentalsTitle .34s ease forwards}
+    @keyframes rentalsTitle{from{opacity:0;transform:translate(-50%,-42%) scale(.94)}
+      to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+    @media(max-width:900px){
+      .rentals-switch{margin-left:auto;min-height:42px;padding-right:8px}
+      .rentals-label strong{font-size:10.5px}.rentals-label small{font-size:7px}
+      .rentals-orb{width:30px;height:30px;flex-basis:30px}.rentals-arrow{font-size:16px}
+    }
+
   </style>
 </head>
 
@@ -439,6 +494,13 @@
           </svg>
         </div>
         trip<em>ride</em>
+      </a>
+
+
+      <a class="rentals-switch" href="tripride-rentals.html" aria-label="Open TripRide Rentals">
+        <span class="rentals-orb" aria-hidden="true"><span class="rentals-wheel"></span></span>
+        <span class="rentals-label"><small>Explore</small><strong>TripRide Rentals</strong></span>
+        <span class="rentals-arrow" aria-hidden="true">↗</span>
       </a>
 
       <div class="nav-links">
@@ -1021,5 +1083,18 @@
       document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
     }
   </script>
+
+  <script>
+    document.querySelectorAll('.rentals-switch').forEach(function(link){
+      link.addEventListener('click', function(e){
+        const target = link.href;
+        if (!target || target.endsWith('#')) return;
+        e.preventDefault();
+        document.body.classList.add('rentals-opening');
+        setTimeout(function(){ window.location.href = target; }, 360);
+      });
+    });
+  </script>
+
 </body>
 </html>
