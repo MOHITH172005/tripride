@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRIPRIDE ADS</title>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,Arial,sans-serif;background:#08090d;color:#f7f8fb;line-height:1.5}
+:root{--bg:#08090d;--card:#11151d;--card2:#171c25;--line:#272e39;--muted:#98a2b3;--orange:#ff6b35;--green:#35d07f;--red:#ff5964}
+a{text-decoration:none;color:inherit}.wrap{max-width:1180px;margin:auto;padding:0 22px}
+nav{height:72px;border-bottom:1px solid var(--line);background:#08090df0;backdrop-filter:blur(16px);position:sticky;top:0;z-index:20}
+nav .wrap{height:100%;display:flex;justify-content:space-between;align-items:center}.logo{font-size:23px;font-weight:900}.logo span{color:var(--orange)}
+.navlinks{display:flex;align-items:center;gap:8px}.navlinks a{padding:10px 13px;color:var(--muted);font-size:14px}.navlinks a:hover{color:#fff}
+.btn{border:0;border-radius:11px;padding:12px 18px;background:var(--orange);color:#160b06;font-weight:800;cursor:pointer}.btn.dark{background:var(--card2);color:#fff;border:1px solid var(--line)}.btn.green{background:var(--green)}.btn.red{background:var(--red);color:#fff}.btn:disabled{opacity:.5;cursor:not-allowed}
+.hero{padding:90px 0;display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center}.badge{display:inline-block;padding:7px 12px;border-radius:30px;background:#2a150d;border:1px solid #65331f;color:#ff9d72;font-size:12px;font-weight:800;margin-bottom:18px}
+h1{font-size:clamp(42px,6vw,76px);line-height:.98;letter-spacing:-4px;margin-bottom:22px}.hero p{color:var(--muted);font-size:18px;max-width:600px;margin-bottom:28px}
+.heroCard{background:linear-gradient(145deg,#1d222c,#0d1016);border:1px solid var(--line);border-radius:28px;padding:24px;transform:rotate(2deg);box-shadow:0 30px 100px #0009}.phone{aspect-ratio:9/14;border-radius:24px;background:linear-gradient(160deg,#ff7744,#321309);display:grid;place-items:center;text-align:center;padding:30px}.phone b{font-size:35px;line-height:1.05}
+section{padding:70px 0;border-top:1px solid var(--line)}h2{font-size:34px;letter-spacing:-1.5px}.sub,.muted{color:var(--muted)}.sub{margin:7px 0 25px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}.ad video{width:100%;height:330px;object-fit:cover;background:#000;border-radius:13px}.ad h3{margin-top:12px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.num{width:36px;height:36px;border-radius:50%;background:var(--orange);color:#160b06;display:grid;place-items:center;font-weight:900;margin-bottom:13px}
+.price{text-align:center;font-size:64px;font-weight:900;color:var(--orange)}.price small{font-size:18px;color:var(--muted)}footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted)}
+.page{max-width:760px;margin:45px auto;padding:0 20px}.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px}.progress{display:flex;gap:7px;margin-bottom:24px}.progress i{height:5px;flex:1;background:var(--line);border-radius:9px}.progress i.on{background:var(--orange)}
+label{display:block;color:var(--muted);font-size:13px;margin:15px 0 7px}input,textarea,select{width:100%;background:#0b0e13;color:#fff;border:1px solid var(--line);border-radius:10px;padding:13px;font:inherit;outline:none}input:focus,textarea:focus,select:focus{border-color:var(--orange)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.chip{padding:9px 15px;border:1px solid var(--line);border-radius:99px;background:#0b0e13;cursor:pointer}.chip.on{background:var(--orange);color:#160b06;font-weight:800}
+.summary{background:#0b0e13;border:1px solid var(--line);border-radius:13px;padding:15px;margin-top:18px}.summary div{display:flex;justify-content:space-between;padding:6px 0}.summary .total{border-top:1px solid var(--line);margin-top:6px;padding-top:13px;font-size:21px;color:var(--orange);font-weight:900}.preview{width:190px;max-height:340px;object-fit:cover;border-radius:12px;margin-top:15px;background:#000}.error{color:var(--red);font-size:13px;margin-top:9px}.success{color:var(--green)}
+.modal{position:fixed;inset:0;background:#000c;display:grid;place-items:center;z-index:100;padding:20px}.modalBox{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:25px}
+.adminLayout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 72px)}.sidebar{background:#0d1016;border-right:1px solid var(--line);padding:20px}.sidebar button{width:100%;padding:12px;text-align:left;border:0;background:none;color:var(--muted);border-radius:9px;margin-bottom:5px;cursor:pointer}.sidebar button:hover,.sidebar button.active{background:#181d26;color:#fff}.adminMain{padding:28px;overflow:auto}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:20px 0}.stat b{display:block;font-size:29px;color:var(--orange);margin-bottom:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:500}.tag{display:inline-block;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:800;background:#252b35}.tag.active{background:#103b27;color:var(--green)}.tag.pending{background:#40300f;color:#ffc45b}.tag.rejected{background:#40191c;color:#ff7b82}.tag.paused{background:#263244;color:#8db6ff}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#171c25;border:1px solid var(--orange);padding:12px 18px;border-radius:12px;display:none;z-index:200}
+@media(max-width:760px){.navlinks a:not(.btn){display:none}.hero{grid-template-columns:1fr;padding-top:55px}.heroCard{display:none}.steps{grid-template-columns:1fr 1fr}.adminLayout{grid-template-columns:1fr}.sidebar{display:flex;overflow:auto}.sidebar button{min-width:max-content;margin-right:5px}.adminMain{padding:18px}h1{letter-spacing:-2px}}
+</style>
+</head>
+<body>
+<div id="app"></div><div id="toast" class="toast"></div>
+<script>
+/* ================= FIREBASE ================= */
+const firebaseConfig={
+ apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw",
+ authDomain:"tripmate-74df9.firebaseapp.com",
+ databaseURL:"https://tripmate-74df9-default-rtdb.asia-southeast1.firebasedatabase.app",
+ projectId:"tripmate-74df9",
+ storageBucket:"tripmate-74df9.firebasestorage.app",
+ messagingSenderId:"931960941543",
+ appId:"1:931960941543:web:e4b03f31153bead3776b42"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
+const storage=firebase.storage();
+const auth=firebase.auth();
+
+let firebaseAuthReady = new Promise((resolve,reject)=>{
+  const unsub=auth.onAuthStateChanged(user=>{
+    if(user){ anonymousUser=user; unsub(); resolve(user); }
+  }, err=>{ unsub(); reject(err); });
+  auth.signInAnonymously().catch(err=>console.error("Firebase anonymous auth:",err));
+});
+
+/* ================= SETTINGS ================= */
+const ADMIN_ID="Mohithvalasareddy";
+const ADMIN_PASSWORD="Mohith@3149";
+const PRICE_PER_DAY=50;
+const MAX_VIDEO_SECONDS=10;
+const MAX_VIDEO_MB=20;
+
+/*
+  PUT ONLY YOUR RAZORPAY PUBLIC KEY HERE.
+  Example: rzp_live_xxxxxxxxxxxxx
+  Never put Razorpay secret key in this HTML.
+*/
+const RAZORPAY_KEY_ID="rzp_live_TWnmOU0Pt8aLEj";
+
+let anonymousUser=null;
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const today=()=>new Date().toLocaleDateString("en-CA",{timeZone:"Asia/Kolkata"});
+const addDays=(s,n)=>{const d=new Date(s+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const fmt=s=>new Date(s+"T00:00:00Z").toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"});
+const money=n=>"₹"+Number(n).toLocaleString("en-IN");
+function toast(t){const x=$("#toast");x.textContent=t;x.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>x.style.display="none",3000)}
+
+let admin=false,adminTab="dashboard";
+let A={step:1,business:"",title:"",contact:"",phone:"",email:"",file:null,url:"",duration:0,start:today(),days:1,error:"",done:null};
+let AF={business:"TRIPRIDE",title:"Admin Advertisement",file:null,url:"",duration:0,start:today(),days:1,error:"",saving:false};
+
+function nav(){return `<nav><div class="wrap"><a class="logo" href="#home">TRIPRIDE <span>ADS</span></a><div class="navlinks">
+<a href="#home">Home</a><a href="#live">Live Ads</a><a href="#how">How It Works</a><a href="#pricing">Pricing</a><a class="btn dark" href="#admin">Admin</a><a class="btn" href="#advertise">Advertise Now</a>
+</div></div></nav>`}
+
+/* ================= HOME ================= */
+async function home(){
+ let ads=[];
+ try{
+  const snap=await db.ref("ads").once("value");
+  const all=snap.val()||{};
+  ads=Object.values(all).filter(a=>a.status==="ACTIVE"&&a.startDate<=today()&&a.endDate>=today());
+ }catch(e){console.error(e)}
+ return nav()+`<main>
+ <div class="wrap hero"><div><span class="badge">TRIPRIDE ADVERTISING</span><h1>Get your business seen by TRIPRIDE users.</h1>
+ <p>Upload a short video advertisement, choose your campaign duration, pay ₹50 per day, and get your advertisement reviewed by the admin team.</p>
+ <div class="row"><a class="btn" href="#advertise">Start Advertising</a><a class="btn dark" href="#how">How It Works</a></div></div>
+ <div class="heroCard"><div class="phone"><div><b>Your Business<br>Could Be Here</b><p class="muted">Video advertisements inside the TRIPRIDE app.</p></div></div></div></div>
+ <section id="live"><div class="wrap"><h2>Live Advertisements</h2><p class="sub">Currently active advertisements.</p><div class="grid">
+ ${ads.length?ads.map(a=>`<div class="card ad"><video src="${esc(a.videoUrl)}" controls muted playsinline preload="metadata"></video><h3>${esc(a.businessName)}</h3><p class="muted">${esc(a.title||"Advertisement")}</p></div>`).join(""):`<div class="card"><p class="muted">No live advertisements at the moment.</p></div>`}
+ </div></div></section>
+ <section id="how"><div class="wrap"><h2>How It Works</h2><p class="sub">Simple advertising in four steps.</p><div class="steps">
+ <div class="card"><div class="num">1</div><h3>Upload</h3><p class="muted">Upload a video up to 10 seconds.</p></div>
+ <div class="card"><div class="num">2</div><h3>Select Days</h3><p class="muted">Choose the number of campaign days.</p></div>
+ <div class="card"><div class="num">3</div><h3>Pay</h3><p class="muted">Pay only ₹50 per selected day.</p></div>
+ <div class="card"><div class="num">4</div><h3>Get Approved</h3><p class="muted">Approved ads become active in TRIPRIDE.</p></div>
+ </div></div></section>
+ <section id="pricing"><div class="wrap" style="text-align:center"><h2>Simple Pricing</h2><p class="sub">One transparent rate.</p><div class="price">₹50 <small>/ day</small></div></div></section>
+ </main><footer><div class="wrap">© ${new Date().getFullYear()} TRIPRIDE ADS</div></footer>`;
+}
+
+/* ================= AD FLOW ================= */
+function advertise(){
+ if(A.done)return nav()+`<div class="page"><div class="panel"><span class="badge">SUBMITTED</span><h2>Advertisement Submitted</h2><p class="sub">Payment completed. Your advertisement is waiting for admin approval.</p>
+ <div class="summary"><div><span>Advertisement ID</span><b>${esc(A.done.adId)}</b></div><div><span>Amount</span><b>${money(A.done.amount)}</b></div><div><span>Status</span><b class="success">PENDING APPROVAL</b></div></div>
+ <div class="row"><button class="btn" onclick="resetAd();location.hash='home'">Back to Home</button></div></div></div>`;
+ const end=addDays(A.start,A.days-1),amount=A.days*PRICE_PER_DAY;
+ let c="";
+ if(A.step===1)c=`<h2>Business Details</h2><p class="sub">Enter your advertisement information.</p>
+ <label>Business Name *</label><input value="${esc(A.business)}" oninput="A.business=this.value" placeholder="ABC Restaurant">
+ <label>Advertisement Title</label><input value="${esc(A.title)}" oninput="A.title=this.value" placeholder="Special Offer">
+ <label>Contact Person</label><input value="${esc(A.contact)}" oninput="A.contact=this.value">
+ <label>Phone Number *</label><input inputmode="numeric" maxlength="10" value="${esc(A.phone)}" oninput="A.phone=this.value">
+ <label>Email *</label><input type="email" value="${esc(A.email)}" oninput="A.email=this.value">`;
+ if(A.step===2)c=`<h2>Upload Video</h2><p class="sub">Maximum ${MAX_VIDEO_SECONDS} seconds and ${MAX_VIDEO_MB} MB.</p>
+ <label>Advertisement Video *</label><input type="file" accept="video/*" onchange="selectVideo(this.files[0])">
+ ${A.url?`<video class="preview" src="${A.url}" controls muted playsinline></video><p class="muted">Duration: ${A.duration.toFixed(1)} seconds</p>`:""}`;
+ if(A.step===3)c=`<h2>Campaign Duration</h2><label>Start Date *</label><input type="date" min="${today()}" value="${A.start}" onchange="A.start=this.value;render()">
+ <label>Number of Days *</label><div class="chips">${[1,3,7,15,30].map(d=>`<span class="chip ${A.days===d?"on":""}" onclick="A.days=${d};render()">${d} Day${d>1?"s":""}</span>`).join("")}</div>
+ <input type="number" min="1" max="90" value="${A.days}" style="margin-top:10px" onchange="A.days=Math.max(1,Math.min(90,+this.value||1));render()">
+ <div class="summary"><div><span>Price per day</span><b>${money(PRICE_PER_DAY)}</b></div><div><span>Duration</span><b>${A.days} day(s)</b></div><div><span>Campaign</span><span>${fmt(A.start)} - ${fmt(end)}</span></div><div class="total"><span>Total</span><span>${money(amount)}</span></div></div>`;
+ if(A.step===4)c=`<h2>Review & Payment</h2><p class="sub">Check the details before continuing to Razorpay.</p>
+ <div class="summary"><div><span>Business</span><b>${esc(A.business)}</b></div><div><span>Video</span><span>${A.duration.toFixed(1)} sec</span></div><div><span>Campaign</span><span>${fmt(A.start)} - ${fmt(end)}</span></div><div class="total"><span>Total</span><span>${money(amount)}</span></div></div>
+ <p class="muted" style="margin-top:14px">After payment, your advertisement will be submitted for admin approval.</p>`;
+ return nav()+`<div class="page"><div class="panel"><div class="progress">${[1,2,3,4].map(i=>`<i class="${i<=A.step?"on":""}"></i>`).join("")}</div>${c}<div class="error">${esc(A.error)}</div><div class="row">
+ ${A.step>1?`<button class="btn dark" onclick="A.step--;render()">Back</button>`:""}${A.step<4?`<button class="btn" onclick="nextStep()">Continue</button>`:`<button class="btn" id="payBtn" onclick="pay()">Pay ${money(amount)}</button>`}</div></div></div>`;
+}
+function selectVideo(f){
+ A.error="";if(!f)return;
+ if(f.size>MAX_VIDEO_MB*1024*1024){A.error=`Video must be smaller than ${MAX_VIDEO_MB} MB.`;A.file=null;A.url="";render();return}
+ const u=URL.createObjectURL(f),v=document.createElement("video");v.preload="metadata";v.src=u;
+ v.onloadedmetadata=()=>{if(v.duration>MAX_VIDEO_SECONDS+.2){A.error=`Video must be ${MAX_VIDEO_SECONDS} seconds or shorter.`;A.file=null;A.url="";}else{A.file=f;A.url=u;A.duration=v.duration}render()};
+ v.onerror=()=>{A.error="Unable to read this video.";render()};
+}
+function nextStep(){
+ A.error="";
+ if(A.step===1){if(A.business.trim().length<2)A.error="Enter your business name.";else if(!/^\d{10}$/.test(A.phone.trim()))A.error="Enter a valid 10-digit phone number.";else if(!/^\S+@\S+\.\S+$/.test(A.email.trim()))A.error="Enter a valid email address."}
+ if(A.step===2&&!A.file)A.error="Please upload a video.";
+ if(A.error){render();return}A.step++;render();
+}
+
+/* ================= RAZORPAY + FIREBASE =================
+   Successful checkout stores the ad in Firebase.
+   For secure production verification, use Razorpay webhooks/server.
+*/
+async function pay(){
+  const btn=$("#payBtn"), amount=A.days*PRICE_PER_DAY;
+
+  if(!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID==="YOUR_RAZORPAY_KEY_ID"){
+    A.error="Razorpay Key ID is missing.";
+    render();
+    return;
+  }
+
+  if(!window.Razorpay){
+    A.error="Razorpay Checkout failed to load. Check your internet connection and open this website through HTTPS/localhost.";
+    render();
+    return;
+  }
+
+  try{
+    btn.disabled=true;
+    btn.textContent="Preparing payment...";
+
+    // Make sure Firebase anonymous authentication is ready before the payment flow.
+    await firebaseAuthReady;
+
+    if(!anonymousUser){
+      const r=await auth.signInAnonymously();
+      anonymousUser=r.user;
+    }
+
+    const adId=db.ref("ads").push().key;
+    const storagePath=`advertisements/${adId}/video.mp4`;
+
+    const options={
+      key:RAZORPAY_KEY_ID,
+      amount:Math.round(amount*100),
+      currency:"INR",
+      name:"TRIPRIDE ADS",
+      description:`${A.days} day advertisement`,
+      image:"",
+      prefill:{
+        name:A.contact.trim(),
+        email:A.email.trim(),
+        contact:A.phone.trim()
+      },
+      notes:{
+        businessName:A.business.trim(),
+        advertisementTitle:A.title.trim(),
+        campaignDays:String(A.days)
+      },
+      theme:{color:"#ff6b35"},
+
+      handler:async function(response){
+        try{
+          btn.disabled=true;
+          btn.textContent="Uploading advertisement...";
+
+          if(!A.file){
+            throw new Error("Advertisement video is missing. Payment was successful, but the video file is not available in this browser.");
+          }
+
+          const fileRef=storage.ref(storagePath);
+
+          try{
+            await fileRef.put(A.file,{
+              contentType:A.file.type || "video/mp4",
+              customMetadata:{
+                adId:String(adId),
+                businessName:A.business.trim()
+              }
+            });
+          }catch(storageError){
+            throw new Error("Firebase Storage upload failed: "+storageError.message);
+          }
+
+          btn.textContent="Saving advertisement...";
+
+          let videoUrl;
+          try{
+            videoUrl=await fileRef.getDownloadURL();
+          }catch(urlError){
+            throw new Error("Firebase Storage URL failed: "+urlError.message);
+          }
+
+          const ad={
+            adId,
+            businessName:A.business.trim(),
+            title:A.title.trim(),
+            contactName:A.contact.trim(),
+            phone:A.phone.trim(),
+            email:A.email.trim(),
+            videoUrl,
+            videoPath:storagePath,
+            durationSec:Number(A.duration.toFixed(2)),
+            startDate:A.start,
+            endDate:addDays(A.start,A.days-1),
+            totalDays:A.days,
+            pricePerDay:PRICE_PER_DAY,
+            amount,
+            paymentId:response.razorpay_payment_id,
+            paymentStatus:"PAID",
+            status:"PENDING_APPROVAL",
+            createdAt:firebase.database.ServerValue.TIMESTAMP
+          };
+
+          try{
+            await db.ref("ads/"+adId).set(ad);
+          }catch(dbError){
+            throw new Error("Firebase Realtime Database save failed: "+dbError.message);
+          }
+
+          try{
+            await db.ref("payments/"+response.razorpay_payment_id).set({
+              paymentId:response.razorpay_payment_id,
+              adId,
+              businessName:A.business.trim(),
+              amount,
+              totalDays:A.days,
+              status:"PAID",
+              createdAt:firebase.database.ServerValue.TIMESTAMP
+            });
+          }catch(paymentDbError){
+            // The main ad was already saved. Show a specific warning instead of pretending the whole payment failed.
+            A.done=ad;
+            A.error="Advertisement saved, but payment record could not be saved: "+paymentDbError.message;
+            btn.disabled=false;
+            btn.textContent="Payment completed";
+            render();
+            return;
+          }
+
+          A.done=ad;
+          A.error="";
+          render();
+
+        }catch(e){
+          A.error=`Payment was successful, but advertisement saving failed. ${e.message}`;
+          btn.disabled=false;
+          btn.textContent="Retry Save";
+          render();
+        }
+      },
+
+      modal:{
+        ondismiss:function(){
+          btn.disabled=false;
+          btn.textContent="Pay "+money(amount);
+          A.error="Payment window was closed. No payment was completed.";
+          render();
+        }
+      }
+    };
+
+    const rzp=new Razorpay(options);
+
+    rzp.on("payment.failed",function(response){
+      const err=response.error||{};
+      const reason=err.description || err.reason || err.code || "Unknown Razorpay error";
+      A.error="Razorpay payment failed: "+reason;
+      btn.disabled=false;
+      btn.textContent="Pay "+money(amount);
+      render();
+      console.error("Razorpay payment.failed:",response);
+    });
+
+    btn.textContent="Opening Razorpay...";
+    rzp.open();
+
+  }catch(e){
+    console.error("Payment initialization error:",e);
+    A.error="Unable to start Razorpay: "+(e.message||e);
+    btn.disabled=false;
+    btn.textContent="Pay "+money(amount);
+    render();
+  }
+}
+function resetAd(){A={step:1,business:"",title:"",contact:"",phone:"",email:"",file:null,url:"",duration:0,start:today(),days:1,error:"",done:null}}
+
+/* ================= ADMIN ================= */
+function adminLogin(){return nav()+`<div class="page"><div class="panel"><span class="badge">ADMIN ACCESS</span><h2>Admin Login</h2><p class="sub">Authorized administrators only.</p>
+<label>Admin ID</label><input id="aid" value="">
+<label>Password</label><input id="apass" type="password" onkeydown="if(event.key==='Enter')doAdminLogin()">
+<div id="loginErr" class="error"></div><div class="row"><button class="btn" onclick="doAdminLogin()">Login</button><a href="#home" class="btn dark">Cancel</a></div></div></div>`}
+function doAdminLogin(){if($("#aid").value===ADMIN_ID&&$("#apass").value===ADMIN_PASSWORD){admin=true;location.hash="admin";render()}else $("#loginErr").textContent="Invalid admin ID or password."}
+function logout(){admin=false;location.hash="home";render()}
+
+async function getAllAds(){const s=await db.ref("ads").once("value");return Object.values(s.val()||{})}
+async function getPayments(){const s=await db.ref("payments").once("value");return Object.values(s.val()||{})}
+
+
+function adminFreeUploadCard(){
+  return `<div class="card" style="margin-bottom:22px">
+    <h3>Free Admin Advertisement</h3>
+    <p class="sub">Upload a TRIPRIDE/admin advertisement for free. No Razorpay payment is required. It becomes ACTIVE immediately and uses the same one-ad-per-launch rotation in the TRIPRIDE app.</p>
+    <label>Business / Brand Name *</label>
+    <input id="afBusiness" value="${esc(AF.business)}" placeholder="TRIPRIDE">
+    <label>Advertisement Title</label>
+    <input id="afTitle" value="${esc(AF.title)}" placeholder="Admin Promotion">
+    <label>Advertisement Video *</label>
+    <input type="file" accept="video/*" onchange="selectAdminFreeVideo(this.files[0])">
+    ${AF.url?`<video class="preview" src="${esc(AF.url)}" controls muted playsinline></video><p class="muted">Duration: ${AF.duration.toFixed(1)} seconds</p>`:""}
+    <label>Start Date *</label>
+    <input type="date" min="${today()}" value="${AF.start}" onchange="AF.start=this.value">
+    <label>Number of Days *</label>
+    <div class="chips">${[1,3,7,15,30].map(d=>`<span class="chip ${AF.days===d?"on":""}" onclick="AF.days=${d};render()">${d} Day${d>1?"s":""}</span>`).join("")}</div>
+    <input type="number" min="1" max="90" value="${AF.days}" style="margin-top:10px" onchange="AF.days=Math.max(1,Math.min(90,+this.value||1));render()">
+    <div class="summary">
+      <div><span>Price</span><b class="success">FREE</b></div>
+      <div><span>Campaign</span><span>${fmt(AF.start)} - ${fmt(addDays(AF.start,AF.days-1))}</span></div>
+      <div><span>Status after upload</span><b class="success">ACTIVE</b></div>
+    </div>
+    ${AF.error?`<p class="error">${esc(AF.error)}</p>`:""}
+    <div class="row"><button class="btn green" ${AF.saving?"disabled":""} onclick="saveAdminFreeAd()">${AF.saving?"Uploading...":"Upload Free Advertisement"}</button></div>
+  </div>`;
+}
+
+function selectAdminFreeVideo(f){
+  AF.error="";
+  if(!f)return;
+  if(f.size>MAX_VIDEO_MB*1024*1024){
+    AF.error=`Video must be smaller than ${MAX_VIDEO_MB} MB.`;
+    AF.file=null; AF.url=""; render(); return;
+  }
+  const u=URL.createObjectURL(f),v=document.createElement("video");
+  v.preload="metadata"; v.src=u;
+  v.onloadedmetadata=()=>{
+    if(v.duration>MAX_VIDEO_SECONDS+.2){
+      AF.error=`Video must be ${MAX_VIDEO_SECONDS} seconds or shorter.`;
+      AF.file=null; AF.url="";
+    }else{
+      AF.file=f; AF.url=u; AF.duration=v.duration;
+    }
+    render();
+  };
+  v.onerror=()=>{AF.error="Unable to read this video.";render()};
+}
+
+async function saveAdminFreeAd(){
+  AF.error="";
+  AF.business=($("#afBusiness")?.value||AF.business||"").trim();
+  AF.title=($("#afTitle")?.value||AF.title||"").trim();
+
+  if(AF.business.length<2){AF.error="Enter a business/brand name.";render();return}
+  if(!AF.file){AF.error="Please upload a video.";render();return}
+  if(AF.saving)return;
+
+  AF.saving=true; render();
+
+  try{
+    await firebaseAuthReady;
+    if(!anonymousUser){
+      const r=await auth.signInAnonymously();
+      anonymousUser=r.user;
+    }
+
+    const adId=db.ref("ads").push().key;
+    const storagePath=`advertisements/admin-free/${adId}/video.mp4`;
+    const fileRef=storage.ref(storagePath);
+
+    await fileRef.put(AF.file,{
+      contentType:AF.file.type||"video/mp4",
+      customMetadata:{adId:String(adId),businessName:AF.business,adminFreeAd:"true"}
+    });
+
+    const videoUrl=await fileRef.getDownloadURL();
+
+    const ad={
+      adId,
+      businessName:AF.business,
+      title:AF.title||"Admin Advertisement",
+      contactName:"TRIPRIDE ADMIN",
+      phone:"",
+      email:"",
+      videoUrl,
+      videoPath:storagePath,
+      durationSec:Number(AF.duration.toFixed(2)),
+      startDate:AF.start,
+      endDate:addDays(AF.start,AF.days-1),
+      totalDays:AF.days,
+      pricePerDay:0,
+      amount:0,
+      paymentId:"ADMIN_FREE",
+      paymentStatus:"PAID",
+      status:"ACTIVE",
+      adminCreated:true,
+      freeAdminAd:true,
+      createdAt:firebase.database.ServerValue.TIMESTAMP
+    };
+
+    await db.ref("ads/"+adId).set(ad);
+
+    toast("Free admin advertisement uploaded and activated.");
+    AF={business:"TRIPRIDE",title:"Admin Advertisement",file:null,url:"",duration:0,start:today(),days:1,error:"",saving:false};
+    adminTab="all";
+    render();
+  }catch(e){
+    console.error("Admin free advertisement upload failed:",e);
+    AF.saving=false;
+    AF.error="Upload failed: "+(e.message||e);
+    render();
+  }
+}
+
+async function adminPage(){
+ if(!admin)return adminLogin();
+ let ads=[],pays=[];try{[ads,pays]=await Promise.all([getAllAds(),getPayments()])}catch(e){return nav()+`<div class="page"><div class="panel"><h2>Firebase Error</h2><p class="error">${esc(e.message)}</p></div></div>`}
+ const pending=ads.filter(a=>a.status==="PENDING_APPROVAL"),active=ads.filter(a=>a.status==="ACTIVE"&&a.endDate>=today()),revenue=pays.reduce((s,p)=>s+Number(p.amount||0),0);
+ let content="";
+ if(adminTab==="dashboard")content=`<h2>Dashboard</h2><p class="sub">Real-time advertisement overview.</p>${adminFreeUploadCard()}<div class="stats">
+ <div class="card stat"><b>${ads.length}</b>Total Ads</div><div class="card stat"><b>${pending.length}</b>Pending</div><div class="card stat"><b>${active.length}</b>Active</div><div class="card stat"><b>${money(revenue)}</b>Revenue</div></div>
+ <h3>Pending Approval</h3><br>${adTable(pending)}`;
+ else if(adminTab==="free")content=adminFreeUploadCard();
+  else if(adminTab==="payments")content=`<h2>Payments</h2><p class="sub">Payments stored in Firebase Realtime Database.</p>${payTable(pays)}`;
+ else{let list=adminTab==="pending"?pending:adminTab==="active"?active:ads;content=`<h2>${adminTab==="pending"?"Pending Advertisements":adminTab==="active"?"Active Advertisements":"All Advertisements"}</h2><p class="sub">Manage advertisements.</p>${adTable(list)}`}
+ return nav()+`<div class="adminLayout"><aside class="sidebar">
+ <button class="${adminTab==="dashboard"?"active":""}" onclick="adminTab='dashboard';render()">Dashboard</button>
+ <button class="${adminTab==="pending"?"active":""}" onclick="adminTab='pending';render()">Pending Ads</button>
+ <button class="${adminTab==="active"?"active":""}" onclick="adminTab='active';render()">Active Ads</button>
+ <button class="${adminTab==="all"?"active":""}" onclick="adminTab='all';render()">All Ads</button>
+ <button class="${adminTab==="payments"?"active":""}" onclick="adminTab='payments';render()">Payments</button>
+ <button onclick="logout()">Logout</button></aside><main class="adminMain">${content}</main></div>`;
+}
+function adTable(list){
+ if(!list.length)return `<div class="card"><p class="muted">No advertisements found.</p></div>`;
+ return `<div class="card" style="overflow:auto"><table><tr><th>Business</th><th>Campaign</th><th>Amount</th><th>Status</th><th>Actions</th></tr>${list.map(a=>`<tr>
+ <td><b>${esc(a.businessName)}</b><br><small class="muted">${esc(a.phone||"")}</small></td>
+ <td>${fmt(a.startDate)} - ${fmt(a.endDate)}<br>${a.totalDays} day(s)</td><td>${money(a.amount)}</td>
+ <td><span class="tag ${String(a.status).toLowerCase().includes("pending")?"pending":String(a.status).toLowerCase()}">${String(a.status).replaceAll("_"," ")}</span></td>
+ <td><button class="btn dark" onclick="viewAd('${a.adId}')">View</button>
+ ${a.status==="PENDING_APPROVAL"?`<button class="btn green" onclick="changeStatus('${a.adId}','ACTIVE')">Approve</button><button class="btn red" onclick="changeStatus('${a.adId}','REJECTED')">Reject</button>`:""}
+ ${a.status==="ACTIVE"?`<button class="btn dark" onclick="changeStatus('${a.adId}','PAUSED')">Pause</button>`:""}
+ ${a.status==="PAUSED"?`<button class="btn green" onclick="changeStatus('${a.adId}','ACTIVE')">Resume</button>`:""}
+ </td></tr>`).join("")}</table></div>`;
+}
+function payTable(list){return `<div class="card" style="overflow:auto"><table><tr><th>Payment ID</th><th>Business</th><th>Amount</th><th>Days</th><th>Status</th></tr>${list.map(p=>`<tr><td>${esc(p.paymentId)}</td><td>${esc(p.businessName)}</td><td>${money(p.amount)}</td><td>${p.totalDays}</td><td>${esc(p.status)}</td></tr>`).join("")||`<tr><td colspan="5">No payments found.</td></tr>`}</table></div>`}
+async function changeStatus(id,status){try{await db.ref("ads/"+id).update({status,updatedAt:firebase.database.ServerValue.TIMESTAMP});toast("Advertisement updated.");render()}catch(e){toast("Update failed: "+e.message)}}
+async function viewAd(id){
+ const s=await db.ref("ads/"+id).once("value"),a=s.val();if(!a)return;
+ const m=document.createElement("div");m.className="modal";m.innerHTML=`<div class="modalBox"><h2>${esc(a.businessName)}</h2><p class="muted">${esc(a.title||"Advertisement")}</p><video src="${esc(a.videoUrl)}" controls autoplay playsinline style="width:100%;margin-top:15px;border-radius:12px;background:#000"></video><div class="summary"><div><span>Duration</span><span>${a.totalDays} days</span></div><div><span>Amount</span><b>${money(a.amount)}</b></div></div><div class="row"><button class="btn dark" onclick="this.closest('.modal').remove()">Close</button></div></div>`;document.body.appendChild(m)
+}
+
+/* ================= ROUTER ================= */
+async function render(){
+ const h=location.hash.slice(1)||"home";
+ if(h==="advertise"){$("#app").innerHTML=advertise();return}
+ if(h==="admin"){$("#app").innerHTML=admin?await adminPage():adminLogin();return}
+ $("#app").innerHTML=await home();
+}
+window.addEventListener("hashchange",render);
+
+window.addEventListener("error",e=>{
+  console.error("TRIPRIDE ADS error:",e.error||e.message);
+});
+
+render();
+</script>
+</body>
+</html>
