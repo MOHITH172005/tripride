@@ -478,6 +478,91 @@
       .rentals-orb{width:30px;height:30px;flex-basis:30px}.rentals-arrow{font-size:16px}
     }
 
+  
+    /* ── TRIPRIDE ADS PROMO ── */
+    .ads-launch {
+      width: min(calc(100% - 40px), var(--max));
+      margin: -18px auto 0;
+      padding-bottom: 34px;
+    }
+    .ads-launch-card {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 30px;
+      padding: 28px 32px;
+      border-radius: 24px;
+      background: linear-gradient(110deg, #10233F 0%, #16304F 62%, #244b68 100%);
+      color: #F4F0E6;
+      border: 1px solid rgba(217,174,107,.38);
+      box-shadow: 0 24px 55px rgba(16,35,63,.18);
+    }
+    .ads-launch-card::before {
+      content:"";
+      position:absolute;
+      width:300px;height:300px;
+      right:120px;top:-170px;
+      border-radius:50%;
+      background:rgba(217,174,107,.14);
+      filter:blur(3px);
+    }
+    .ads-launch-copy { position:relative; z-index:1; }
+    .ads-launch-kicker {
+      color: var(--gold-2);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .ads-launch-title {
+      margin-top: 5px;
+      font-family: var(--serif);
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1.05;
+      font-weight: 700;
+    }
+    .ads-launch-copy p {
+      margin-top: 8px;
+      color: rgba(244,240,230,.72);
+      font-size: 13.5px;
+      max-width: 650px;
+    }
+    .ads-launch-button {
+      position:relative;
+      z-index:1;
+      min-width: 220px;
+      min-height: 72px;
+      padding: 0 28px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      border-radius: 16px;
+      background: var(--gold-2);
+      color:#1a1204;
+      font-size: 23px;
+      font-weight: 950;
+      letter-spacing: .08em;
+      box-shadow: 0 16px 35px rgba(0,0,0,.22);
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .ads-launch-button:hover {
+      transform: translateY(-3px) scale(1.02);
+      background:#efd095;
+      box-shadow:0 22px 42px rgba(0,0,0,.28);
+    }
+    .ads-launch-button span {
+      font-size: 12px;
+      letter-spacing: .04em;
+      opacity:.7;
+    }
+    @media(max-width:760px){
+      .ads-launch-card { grid-template-columns:1fr; padding:24px; }
+      .ads-launch-button { width:100%; min-width:0; }
+    }
+
   </style>
 </head>
 
@@ -511,7 +596,10 @@
         <a href="#support">Support</a>
       </div>
 
-      <a class="nav-cta" href="#download">Get the app</a>
+      <div style="display:flex;align-items:center;gap:9px;">
+        <a class="nav-cta" href="ads.html" target="_self" aria-label="Open TripRide Ads">ADS</a>
+        <a class="nav-cta" href="#download">Get the app</a>
+      </div>
     </div>
   </nav>
 
@@ -605,6 +693,19 @@
           </div>
           <div><strong>Simple booking</strong><span>Manage it in the app</span></div>
         </div>
+      </div>
+    </section>
+
+    <section class="ads-launch" aria-label="TripRide Advertising">
+      <div class="ads-launch-card reveal">
+        <div class="ads-launch-copy">
+          <div class="ads-launch-kicker">TripRide Advertising</div>
+          <div class="ads-launch-title">Want your business on TripRide?</div>
+          <p>Upload your short advertisement video, choose your campaign days, pay ₹50/day, and reach TripRide users.</p>
+        </div>
+        <a class="ads-launch-button" href="ads.html" target="_self">
+          TRIPRIDE ADS <span>↗</span>
+        </a>
       </div>
     </section>
 
