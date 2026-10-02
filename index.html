@@ -563,6 +563,91 @@
       .ads-launch-button { width:100%; min-width:0; }
     }
 
+
+    /* ── APP STORE COMING SOON ── */
+    .app-store-coming-soon {
+      border: 1px solid rgba(16,35,63,.14);
+      font-family: var(--sans);
+      cursor: pointer;
+    }
+    .app-store-coming-soon:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+    .coming-soon-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(8,19,33,.62);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .22s ease, visibility .22s ease;
+    }
+    .coming-soon-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .coming-soon-card {
+      width: min(100%, 430px);
+      padding: 34px 28px 28px;
+      border-radius: 26px;
+      background: #fff;
+      border: 1px solid rgba(20,25,32,.1);
+      box-shadow: 0 34px 90px rgba(0,0,0,.28);
+      text-align: center;
+      transform: translateY(12px) scale(.97);
+      transition: transform .22s ease;
+    }
+    .coming-soon-modal.is-open .coming-soon-card {
+      transform: translateY(0) scale(1);
+    }
+    .coming-soon-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 18px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: var(--navy);
+      color: var(--gold-2);
+      font-size: 30px;
+      box-shadow: 0 14px 30px rgba(16,35,63,.18);
+    }
+    .coming-soon-card h3 {
+      font-family: var(--serif);
+      color: var(--navy);
+      font-size: 30px;
+      line-height: 1.1;
+      margin-bottom: 9px;
+    }
+    .coming-soon-card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+    .coming-soon-close {
+      min-height: 46px;
+      padding: 0 24px;
+      border: 0;
+      border-radius: 11px;
+      background: var(--gold);
+      color: #1a1204;
+      font: 750 14px var(--sans);
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .coming-soon-close:hover {
+      transform: translateY(-2px);
+      background: var(--gold-2);
+    }
+
   </style>
 </head>
 
@@ -582,7 +667,7 @@
       </a>
 
 
-      <a class="rentals-switch" href="tripride-rentals.html" aria-label="Open TripRide Rentals">
+      <a class="rentals-switch" href="https://play.google.com/store/apps/details?id=com.tripride.rentals" target="_blank" rel="noopener noreferrer" aria-label="Open TripRide Rentals on Google Play">
         <span class="rentals-orb" aria-hidden="true"><span class="rentals-wheel"></span></span>
         <span class="rentals-label"><small>Explore</small><strong>TripRide Rentals</strong></span>
         <span class="rentals-arrow" aria-hidden="true">↗</span>
@@ -629,7 +714,7 @@
         </div>
 
         <div class="store-badges">
-          <a class="store-badge" href="#download" aria-label="Get it on Google Play">
+          <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.tripride.app" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
             <svg class="store-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M3.6 2.2 14 12 3.6 21.8c-.4-.3-.6-.8-.6-1.3V3.5c0-.5.2-1 .6-1.3Z" fill="#D9AE6B"/>
               <path d="m14 12 3.4-3.4L21 10.7c.9.5.9 1.7 0 2.2l-3.6 2.1L14 12Z" fill="#F4F0E6"/>
@@ -638,13 +723,13 @@
             </svg>
             <span><small>Get it on</small><strong>Google Play</strong></span>
           </a>
-          <a class="store-badge" href="#download" aria-label="Download on the App Store">
+          <button type="button" class="store-badge app-store-coming-soon" aria-label="App Store coming soon">
             <svg class="store-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M16.7 12.6c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.6-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.5 2.1 2.6 2 1-.1 1.4-.7 2.7-.7s1.6.7 2.7.6c1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.4-.9-2.4-3.9Z" fill="#F4F0E6"/>
               <path d="M14.5 6.1c.6-.7 1-1.7.9-2.6-.9 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.5 1 .1 1.9-.5 2.5-1.2Z" fill="#F4F0E6"/>
             </svg>
             <span><small>Download on the</small><strong>App Store</strong></span>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -1127,7 +1212,7 @@
               <path d="M14.5 6.1c.6-.7 1-1.7.9-2.6-.9 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.5 1 .1 1.9-.5 2.5-1.2Z" fill="#F4F0E6"/>
             </svg>
             <span><small>Download on the</small><strong>App Store</strong></span>
-          </a>
+          </button>
         </div>
       </div>
     </section>
@@ -1195,6 +1280,56 @@
         setTimeout(function(){ window.location.href = target; }, 360);
       });
     });
+  </script>
+
+  <!-- App Store Coming Soon modal -->
+  <div class="coming-soon-modal" id="appStoreComingSoon" role="dialog"
+       aria-modal="true" aria-labelledby="comingSoonTitle">
+    <div class="coming-soon-card">
+      <div class="coming-soon-icon" aria-hidden="true"></div>
+      <h3 id="comingSoonTitle">Coming Soon</h3>
+      <p>TripRide is currently available on Google Play. The App Store version is coming soon.</p>
+      <button type="button" class="coming-soon-close" id="comingSoonClose">Got it</button>
+    </div>
+  </div>
+
+  <script>
+    // App Store buttons: show a Coming Soon message instead of navigating.
+    (function () {
+      const modal = document.getElementById('appStoreComingSoon');
+      const closeButton = document.getElementById('comingSoonClose');
+      const appStoreButtons = document.querySelectorAll('.app-store-coming-soon');
+
+      if (!modal) return;
+
+      function openComingSoon(event) {
+        if (event) event.preventDefault();
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        closeButton && closeButton.focus();
+      }
+
+      function closeComingSoon() {
+        modal.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+
+      appStoreButtons.forEach(function (button) {
+        button.addEventListener('click', openComingSoon);
+      });
+
+      closeButton && closeButton.addEventListener('click', closeComingSoon);
+
+      modal.addEventListener('click', function (event) {
+        if (event.target === modal) closeComingSoon();
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+          closeComingSoon();
+        }
+      });
+    })();
   </script>
 
 </body>
