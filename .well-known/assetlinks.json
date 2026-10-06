@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.tripride.app",
+      "sha256_cert_fingerprints": [
+        "CF:6B:AA:6A:2B:30:E4:62:48:CD:AA:F0:56:34:9D:20:53:06:5A:67:5C:A4:3D:5A:47:17:E6:93:F8:7B:00:B7"
+      ]
+    }
+  }
+]
