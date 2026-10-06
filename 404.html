@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>TRIPRIDE Invite</title>
+</head>
+<body>
+<script>
+  const path = window.location.pathname;
+  const match = path.match(/^\/invite\/([A-Za-z]{1,4}[0-9]{4})\/?$/);
+
+  if (match) {
+    const code = match[1].toUpperCase();
+
+    window.location.replace(
+      "/?referral_code=" + encodeURIComponent(code)
+    );
+  } else {
+    window.location.replace("/");
+  }
+</script>
+</body>
+</html>
