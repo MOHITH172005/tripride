@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Notifications | TripRide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+:root{--ink:#0F1B3D;--pri:#6D4AE8;--acc:#FFB703;--bg:#F5F7FB;--mut:#5F6B8A;--line:#E3E8F2;--tint:#EEEAFF}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Figtree,system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+h1,h2,h3,.ttl{font-family:'Bricolage Grotesque',Figtree,system-ui,sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:24px;line-height:1;display:inline-block;font-variation-settings:'FILL' 1,'wght' 500;user-select:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit;text-align:left}
+button:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.hide{display:none!important}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px}
+#boot{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:300}
+.spin{width:38px;height:38px;border:4px solid #e0e7ff;border-top-color:var(--pri);border-radius:50%;animation:s 1s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition:none!important}}
+
+.bar{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.bar-in{display:flex;align-items:center;gap:12px;height:66px}
+.back{width:42px;height:42px;border-radius:14px;background:var(--bg);display:grid;place-items:center;color:var(--ink);text-decoration:none;flex:none}
+.ttl{font-size:21px;font-weight:800;letter-spacing:-.02em;flex:1}
+.cnt{background:var(--pri);color:#fff;font-size:12px;font-weight:800;padding:6px 12px;border-radius:999px}
+
+.intro{padding:34px 0 8px}
+.intro h1{font-size:clamp(30px,5vw,44px);font-weight:800;letter-spacing:-.03em}
+.intro p{margin-top:6px;color:var(--mut);font-size:15px}
+#list{display:grid;gap:14px;padding:18px 0 60px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden;transition:box-shadow .18s,border-color .18s}
+.card.open{border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
+.head{display:flex;align-items:center;gap:14px;width:100%;padding:18px}
+.ic{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;flex:none}
+.tx{flex:1;min-width:0}
+.tx h3{font-size:16.5px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tx p{margin-top:5px;font-size:14px;color:var(--mut);line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card.open .tx p{display:block}
+.meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none;font-size:12px;font-weight:700;color:var(--mut)}
+.dot{width:10px;height:10px;border-radius:50%;background:#E5383B}
+.chev{color:#A3A9C4;transition:transform .2s}
+.card.open .chev{transform:rotate(180deg)}
+.body{display:none;padding:2px 18px 20px}
+.card.open .body{display:block}
+.row{display:flex;align-items:center;gap:14px;padding:9px 0}
+.row i{width:36px;height:36px;border-radius:50%;background:var(--tint);color:var(--pri);display:grid;place-items:center;flex:none}
+.row i .ms{font-size:18px}
+.row small{display:block;font-size:12px;color:var(--mut)}
+.row b{display:block;font-size:14.5px;font-weight:700;margin-top:3px;word-break:break-word}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;height:50px;border-radius:16px;font-weight:800;font-size:14px}
+.btn.pri{background:var(--pri);color:#fff}
+.btn.out{border:1.5px solid var(--line);background:#fff}
+.btn.out:hover{border-color:#E5383B;color:#E5383B}
+.state{text-align:center;padding:70px 20px}
+.state .big{width:96px;height:96px;margin:0 auto;border-radius:30px;background:var(--tint);color:var(--pri);display:grid;place-items:center}
+.state .big .ms{font-size:48px}
+.state h2{margin-top:20px;font-size:24px;font-weight:800}
+.state p{margin-top:8px;color:var(--mut);line-height:1.5}
+.state a{display:inline-block;margin-top:22px;padding:14px 26px;border-radius:999px;background:var(--pri);color:#fff;font-weight:800;text-decoration:none}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);max-width:90%;background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;z-index:400;display:none}
+@media (max-width:420px){.acts{grid-template-columns:1fr}.head{padding:14px}.ic{width:44px;height:44px}}
+</style>
+</head>
+<body>
+<div id="boot"><div class="spin"></div></div>
+
+<header class="bar"><div class="wrap bar-in">
+  <a class="back" href="home.html" aria-label="Back to home"><span class="ms">arrow_back</span></a>
+  <b class="ttl">Notifications</b>
+  <span class="cnt hide" id="cnt"></span>
+</div></header>
+
+<main class="wrap">
+  <div class="intro"><h1>Your updates</h1><p>Bookings, payments and trip updates in one place.</p></div>
+  <div id="list"></div>
+  <div id="state"></div>
+</main>
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getFirestore, doc, collection, query, where, onSnapshot, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+const LOGIN_URL = "login.html";
+const app = getApps()[0] || initializeApp({
+  apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw", authDomain:"tripmate-74df9.firebaseapp.com",
+  databaseURL:"https://tripmate-74df9-default-rtdb.asia-southeast1.firebasedatabase.app", projectId:"tripmate-74df9",
+  storageBucket:"tripmate-74df9.firebasestorage.app", messagingSenderId:"931960941543", appId:"1:931960941543:web:ced98c012dc22fcb776b42"
+});
+const auth = getAuth(app), db = getFirestore(app);
+
+const $ = id => document.getElementById(id);
+function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+let tt; function toast(m){ const t=$("toast"); t.textContent=m; t.style.display="block"; clearTimeout(tt); tt=setTimeout(()=>t.style.display="none",4000); }
+
+// same type -> icon/colour mapping as the Flutter screen
+const TYPES = { ride:["route","#2563EB"], payment:["payment","#16A34A"], refund:["refresh","#EA580C"], wallet:["account_balance_wallet","#7C3AED"] };
+const typeOf = t => TYPES[String(t)] || ["notifications","#6D4AE8"];
+const p2 = n => String(n).padStart(2,"0");
+const dateStr = d => `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;
+const timeStr = d => `${p2(d.getHours())}:${p2(d.getMinutes())}`;
+const toDate = v => v && typeof v.toDate === "function" ? v.toDate() : null;
+const passengerText = list => (Array.isArray(list) ? list : []).map(x => x && typeof x === "object" ? [x.name, x.age ? `(${x.age})` : ""].filter(Boolean).join(" ") : String(x)).join(", ");
+
+const openIds = new Set();
+let docsCache = [];
+
+function setState(icon, title, msg, loginBtn){
+  const s = $("state"); s.textContent = ""; $("list").textContent = ""; $("cnt").classList.add("hide");
+  const w = el("div","state"), b = el("div","big"); b.append(el("span","ms",icon));
+  w.append(b, el("h2",null,title), el("p",null,msg));
+  if (loginBtn) { const a = el("a",null,"Log in again"); a.href = LOGIN_URL; w.append(a); }
+  s.append(w);
+}
+function detail(icon, label, value){
+  const r = el("div","row"), i = el("i"); i.append(el("span","ms",icon));
+  const d = el("div"); d.append(el("small",null,label), el("b",null,value)); r.append(i,d); return r;
+}
+async function markRead(id){
+  try { await updateDoc(doc(db,"notifications",id), { read:true }); }
+  catch(e){ console.warn("Mark notification read error", id, e); toast("Unable to update notification right now. Please try again."); }
+}
+async function remove(id){
+  try { await deleteDoc(doc(db,"notifications",id)); openIds.delete(id); }
+  catch(e){ console.warn("Delete notification error", id, e); toast("Unable to delete notification right now. Please try again."); }
+}
+
+function render(){
+  const list = $("list"); list.textContent = ""; $("state").textContent = "";
+  // newest first, items without createdAt go last (same as Flutter)
+  const items = docsCache.slice().sort((a,b) => {
+    const x = toDate(a.data.createdAt), y = toDate(b.data.createdAt);
+    if (!x && !y) return 0; if (!x) return 1; if (!y) return -1; return y - x;
+  });
+  const unread = items.filter(n => !(n.data.read ?? false)).length;
+  const cnt = $("cnt"); cnt.textContent = unread + " unread"; cnt.classList.toggle("hide", unread === 0);
+  if (!items.length) return setState("notifications_none","No Notifications","You don't have any notifications yet.");
+
+  items.forEach(({id, data}) => {
+    const [icon, color] = typeOf(data.type), when = toDate(data.createdAt);
+    const card = el("div","card"+(openIds.has(id)?" open":""));
+    const head = el("button","head"); head.setAttribute("aria-expanded", openIds.has(id));
+    const ic = el("div","ic"); ic.style.background = color+"1a"; const i = el("span","ms",icon); i.style.color = color; ic.append(i);
+    const tx = el("div","tx"); tx.append(el("h3",null,String(data.title ?? "Notification")), el("p",null,String(data.message ?? "")));
+    const meta = el("div","meta");
+    if (!(data.read ?? false)) meta.append(el("span","dot"));
+    meta.append(el("span",null,when ? timeStr(when) : ""), el("span","ms chev","expand_more"));
+    head.append(ic, tx, meta);
+    head.onclick = () => { const o = card.classList.toggle("open"); head.setAttribute("aria-expanded", o); o ? openIds.add(id) : openIds.delete(id); };
+
+    const body = el("div","body");
+    if (data.type != null) body.append(detail("info","Type",String(data.type)));
+    body.append(detail("calendar_month","Date", when ? dateStr(when) : ""), detail("schedule","Time", when ? timeStr(when) : ""));
+    if (data.tripRoute != null) body.append(detail("route","Trip",String(data.tripRoute)));
+    if (data.amount != null) body.append(detail("currency_rupee","Amount","₹"+data.amount));
+    if (data.paymentMethod != null) body.append(detail("payment","Payment",String(data.paymentMethod)));
+    if (data.passengers != null) body.append(detail("people","Passengers",passengerText(data.passengers)));
+    const acts = el("div","acts");
+    const mr = el("button","btn pri"); mr.append(el("span","ms","done"), el("span",null,"Mark Read")); mr.onclick = () => markRead(id);
+    const dl = el("button","btn out"); dl.append(el("span","ms","delete"), el("span",null,"Delete")); dl.onclick = () => remove(id);
+    acts.append(mr, dl); body.append(acts);
+    card.append(head, body); list.append(card);
+  });
+}
+
+let unsub = null;
+onAuthStateChanged(auth, user => {
+  $("boot").style.display = "none";
+  if (unsub) { unsub(); unsub = null; }
+  if (!user || !user.uid) { setState("lock_clock","Please log in again","Please log in again to view your notifications.", true); return; }
+  unsub = onSnapshot(query(collection(db,"notifications"), where("userId","==",user.uid)), snap => {
+    docsCache = snap.docs.map(d => ({ id:d.id, data:d.data() }));
+    render();
+  }, err => {
+    console.warn("Notifications Firestore error", err);
+    setState("cloud_off","Unable to load notifications","Check your internet connection and try again.");
+  });
+});
+</script>
+</body>
+</html>

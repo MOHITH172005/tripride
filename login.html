@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | Tripride</title>
+<meta name="theme-color" content="#101d36">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#172d50;--secondary:#3730a3;--accent:#d7a85b;--text:#172033;--muted:#718096;--border:#e6eaf1;--bg:#f5f7fb;--green:#10b981}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;color:var(--text);overflow-x:hidden}
+.page{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+.visual{min-height:100vh;background:linear-gradient(145deg,rgba(9,20,40,.88),rgba(35,42,104,.82)),url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1500&q=85') center/cover;color:#fff;padding:45px 8%;position:relative;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.visual::before,.visual::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.12);pointer-events:none}
+.visual::before{width:440px;height:440px;right:-180px;top:15%}
+.visual::after{width:300px;height:300px;left:-150px;bottom:10%}
+.brand{display:flex;align-items:center;gap:12px;position:relative;z-index:1;text-decoration:none;color:#fff}
+.brand-logo{height:48px;width:48px;object-fit:contain;border-radius:13px}
+.brand-name{font-size:23px;font-weight:800;letter-spacing:1.2px}
+.brand-name b{color:var(--accent)}
+.visual-content{max-width:530px;position:relative;z-index:1;margin:auto 0;padding:65px 0}
+.visual-tag{display:inline-flex;align-items:center;gap:9px;padding:9px 15px;border:1px solid rgba(255,255,255,.18);border-radius:30px;background:rgba(255,255,255,.08);font-size:11px;font-weight:700;letter-spacing:1.5px;color:#f5dcae;margin-bottom:27px}
+.visual-content h1{font-family:'Playfair Display',serif;font-size:clamp(38px,5vw,65px);line-height:1.13;font-weight:700;margin-bottom:23px}
+.visual-content h1 em{color:#e9c17d}
+.visual-content p{color:rgba(255,255,255,.75);line-height:1.9;font-size:15px;max-width:420px}
+.visual-features{display:flex;flex-wrap:wrap;gap:22px;margin-top:35px}
+.visual-feature{display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,.85)}
+.visual-feature span{color:#e9c17d;font-size:17px}
+.visual-footer{color:rgba(255,255,255,.5);font-size:11px;position:relative;z-index:1}
+.login-area{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:35px 25px;position:relative}
+.login-top{position:absolute;top:28px;right:35px}
+.language-select{padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:#fff;color:var(--primary);font-family:inherit;font-size:12px;font-weight:700;outline:none;cursor:pointer}
+.login-card{width:100%;max-width:440px;background:#fff;border:1px solid #edf0f5;border-radius:25px;padding:36px;box-shadow:0 18px 60px rgba(15,23,42,.07);animation:appear .7s ease both}
+@keyframes appear{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.card-icon{height:54px;width:54px;display:grid;place-items:center;background:#eef2ff;color:#4f46e5;border-radius:17px;font-size:24px;margin-bottom:22px}
+.login-card h2{font-size:25px;font-weight:800;letter-spacing:-.7px;margin-bottom:8px}
+.subtitle{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:29px}
+.field-group{margin-bottom:19px}
+.field-label{display:block;font-size:12px;font-weight:800;color:#334155;margin-bottom:9px}
+.input-box{height:57px;display:flex;align-items:center;border:1px solid var(--border);border-radius:14px;background:#fff;transition:.2s;overflow:hidden}
+.input-box:focus-within{border-color:#6366f1;box-shadow:0 0 0 4px rgba(99,102,241,.09)}
+.country-code{height:100%;display:flex;align-items:center;padding:0 13px;background:#f8fafc;border-right:1px solid var(--border);gap:7px;font-size:13px;font-weight:800;white-space:nowrap}
+.input-box input{flex:1;width:100%;min-width:0;height:100%;border:none;outline:none;padding:0 14px;font-family:inherit;font-size:14px;color:var(--text);background:transparent}
+.input-box input::placeholder{color:#a0aec0}
+.input-icon{padding:0 15px;color:#94a3b8;cursor:pointer;border:none;background:transparent;font-size:18px}
+.primary-btn{height:57px;width:100%;background:linear-gradient(110deg,#172d50,#3730a3);color:#fff;border:none;border-radius:14px;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;transition:.25s;box-shadow:0 8px 20px rgba(49,46,129,.18)}
+.primary-btn:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(49,46,129,.25)}
+.primary-btn:disabled{opacity:.65;cursor:not-allowed;transform:none}
+.text-btn{background:none;border:none;color:#4f46e5;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.text-btn:disabled{opacity:.5;cursor:default}
+.forgot-row{display:flex;justify-content:flex-end;margin-top:-7px;margin-bottom:17px}
+.error-box,.success-box{display:none;border-radius:12px;padding:12px;font-size:12px;line-height:1.6;margin-bottom:16px}
+.error-box{background:#fef2f2;border:1px solid #fecaca;color:#b91c1c}
+.success-box{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857}
+.security-note{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:23px;color:var(--muted);font-size:10px;font-weight:600}
+.security-note span{color:var(--green);font-size:15px}
+.divider{display:flex;align-items:center;gap:12px;margin:22px 0;color:#a0aec0;font-size:10px}
+.divider::before,.divider::after{content:"";height:1px;flex:1;background:var(--border)}
+.create-account{text-align:center;color:var(--muted);font-size:12px}
+.create-account a{color:#4f46e5;font-weight:800;text-decoration:none}
+.back-btn{display:block;margin:18px auto 0;color:#64748b;font-size:12px;font-weight:700;background:none;border:none;cursor:pointer;font-family:inherit}
+.terms{text-align:center;color:#a0aec0;font-size:10px;line-height:1.8;margin-top:24px}
+.terms a{color:#64748b;text-decoration:none}
+.hidden{display:none!important}
+.spinner{width:19px;height:19px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;display:inline-block;animation:spin .7s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:850px){.page{grid-template-columns:1fr}.visual{min-height:300px;padding:25px 7%}.visual-content{padding:45px 0 20px}.visual-content h1{font-size:39px}.visual-content p{font-size:13px}.visual-features{margin-top:20px;gap:13px}.visual-footer{display:none}.login-area{min-height:auto;padding:65px 20px 35px}.login-top{top:17px;right:20px}}
+@media(max-width:480px){.visual{min-height:250px}.visual-content{padding:30px 0 10px}.visual-content h1{font-size:33px}.visual-content p{font-size:12px}.visual-features{display:none}.login-area{padding:55px 13px 25px}.login-card{padding:25px 19px;border-radius:20px}.login-card h2{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <section class="visual">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" class="brand-logo" alt="Tripride" onerror="this.style.display='none'">
+      <span class="brand-name">TRIP<b>RIDE</b></span>
+    </a>
+    <div class="visual-content">
+      <div class="visual-tag">✦ TRAVEL • EXPLORE • CONNECT</div>
+      <h1>Every journey<br>begins with a <em>connection.</em></h1>
+      <p>Welcome to Tripride. Connect with fellow travellers, discover new destinations, share your rides and make every journey memorable.</p>
+      <div class="visual-features">
+        <div class="visual-feature"><span>✦</span> Travel Together</div>
+        <div class="visual-feature"><span>✦</span> Share &amp; Save</div>
+        <div class="visual-feature"><span>✦</span> Explore Further</div>
+      </div>
+    </div>
+    <div class="visual-footer">© 2026 Tripride. Travel Beyond Ordinary.</div>
+  </section>
+
+  <main class="login-area">
+    <div class="login-top">
+      <select id="language" class="language-select" aria-label="Choose language">
+        <option value="en">🌐 English</option><option value="te">తెలుగు</option><option value="hi">हिन्दी</option>
+        <option value="ta">தமிழ்</option><option value="kn">ಕನ್ನಡ</option><option value="ml">മലയാളം</option>
+        <option value="bn">বাংলা</option><option value="gu">ગુજરાતી</option><option value="mr">मराठी</option>
+        <option value="pa">ਪੰਜਾਬੀ</option><option value="ur">اردو</option><option value="or">ଓଡ଼ିଆ</option><option value="as">অসমীয়া</option>
+      </select>
+    </div>
+
+    <section class="login-card">
+      <div class="card-icon">✈</div>
+      <h2 id="heading">Welcome to Tripride</h2>
+      <p class="subtitle" id="subtitle">Enter your mobile number to continue your journey.</p>
+
+      <div class="error-box" id="errorBox" role="alert" aria-live="polite"></div>
+      <div class="success-box" id="successBox" role="status" aria-live="polite"></div>
+
+      <div class="field-group">
+        <label class="field-label" id="phoneLabel" for="phone">Mobile Number</label>
+        <div class="input-box">
+          <div class="country-code">🇮🇳 +91</div>
+          <input type="tel" id="phone" maxlength="10" inputmode="numeric" autocomplete="tel-national" placeholder="Enter 10 digit mobile number">
+          <button class="input-icon hidden" id="editPhone" type="button" title="Change mobile number">✎</button>
+        </div>
+      </div>
+
+      <div class="field-group hidden" id="passwordGroup">
+        <label class="field-label" id="passwordLabel" for="password">Password</label>
+        <div class="input-box">
+          <input type="password" id="password" autocomplete="current-password" placeholder="Enter your password">
+          <button type="button" class="input-icon" id="togglePassword" aria-label="Show password">◉</button>
+        </div>
+      </div>
+
+      <div class="forgot-row hidden" id="forgotRow">
+        <button class="text-btn" id="forgotBtn" type="button">Forgot Password?</button>
+      </div>
+
+      <div id="resetSection" class="hidden">
+        <div class="field-group">
+          <label class="field-label" for="newPassword">New Password</label>
+          <div class="input-box">
+            <input type="password" id="newPassword" autocomplete="new-password" placeholder="Enter new password">
+            <button class="input-icon" type="button" id="toggleNewPassword">◉</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="confirmPassword">Confirm Password</label>
+          <div class="input-box">
+            <input type="password" id="confirmPassword" autocomplete="new-password" placeholder="Confirm new password">
+            <button class="input-icon" type="button" id="toggleConfirmPassword">◉</button>
+          </div>
+        </div>
+        <div class="field-group hidden" id="otpGroup">
+          <label class="field-label" for="otp">Verification OTP</label>
+          <div class="input-box">
+            <input type="text" id="otp" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="Enter OTP">
+          </div>
+          <div class="forgot-row" style="margin:10px 0 0">
+            <button class="text-btn" id="resendOtp" type="button">Resend OTP</button>
+            <span id="timer" style="font-size:11px;color:#718096;margin-left:10px"></span>
+          </div>
+        </div>
+      </div>
+
+      <button class="primary-btn" id="mainButton" type="button">Continue →</button>
+      <button class="back-btn hidden" id="backLogin" type="button">← Back to Login</button>
+
+      <div class="security-note"><span>✓</span> Secure mobile &amp; password authentication</div>
+      <div class="divider">TRIPRIDE</div>
+      
+    </section>
+
+    <div class="terms">By continuing, you agree to Tripride's<br>
+      <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></div>
+  </main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+// ================= FIREBASE =================
+const firebaseConfig = {
+  apiKey: "AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw",
+  authDomain: "tripmate-74df9.firebaseapp.com",
+  databaseURL: "https://tripmate-74df9-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "tripmate-74df9",
+  storageBucket: "tripmate-74df9.firebasestorage.app",
+  messagingSenderId: "931960941543",
+  appId: "1:931960941543:web:ced98c012dc22fcb776b42"
+};
+const firebaseAuth = getAuth(initializeApp(firebaseConfig));
+
+// ================= CONFIG =================
+// In production this MUST be an HTTPS URL (browsers block HTTP calls from HTTPS pages)
+// and the backend must allow your website domain in CORS.
+const API_BASE_URL = "http://15.235.145.222:10000/";
+const HOME_URL = "home.html";          // dummy home screen (replace with index.html when ready)
+const REGISTER_URL = "register.html";
+const PHONE_CHECK_URL = "auth/check-user";
+const LOGIN_URL = "auth/login-password";
+const SEND_OTP_URL = "auth/forgot-password/send-otp";
+const VERIFY_OTP_URL = "auth/forgot-password/verify-otp";
+
+// ================= ELEMENTS / STATE =================
+const $ = id => document.getElementById(id);
+const phone = $("phone"), password = $("password"), mainButton = $("mainButton");
+const passwordGroup = $("passwordGroup"), forgotRow = $("forgotRow"), resetSection = $("resetSection");
+let userExists = false, loading = false, forgotMode = false, otpSent = false, redirecting = false;
+let otpSessionId = "", otpTimer = null, otpSeconds = 0;
+
+// Already signed in -> go straight to home
+onAuthStateChanged(firebaseAuth, user => {
+  if (user && !loading && !redirecting) location.replace(HOME_URL);
+});
+
+// ================= LANGUAGE =================
+const translations = {
+  en: { welcome: "Welcome to Tripride", mobile: "Mobile Number", phoneHint: "Enter 10 digit mobile number", password: "Password", passwordHint: "Enter your password", continue: "Continue →", login: "Login →", forgot: "Forgot Password?", reset: "Reset your password", send: "Send OTP", verify: "Verify OTP & Update Password", back: "← Back to Login", invalid: "Enter a valid 10 digit mobile number" },
+  te: { welcome: "ట్రిప్‌రైడ్‌కు స్వాగతం", mobile: "మొబైల్ నంబర్", phoneHint: "10 అంకెల ఫోన్ నంబర్ నమోదు చేయండి", password: "పాస్‌వర్డ్", passwordHint: "మీ పాస్‌వర్డ్ నమోదు చేయండి", continue: "కొనసాగించండి →", login: "లాగిన్ →", forgot: "పాస్‌వర్డ్ మర్చిపోయారా?", reset: "పాస్‌వర్డ్ రీసెట్ చేయండి", send: "OTP పంపండి", verify: "OTP నిర్ధారించి పాస్‌వర్డ్ మార్చండి", back: "← లాగిన్‌కు తిరిగి వెళ్లండి", invalid: "సరైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి" },
+  hi: { welcome: "Tripride में आपका स्वागत है", mobile: "मोबाइल नंबर", phoneHint: "10 अंकों का मोबाइल नंबर दर्ज करें", password: "पासवर्ड", passwordHint: "अपना पासवर्ड दर्ज करें", continue: "जारी रखें →", login: "लॉगिन →", forgot: "पासवर्ड भूल गए?", reset: "पासवर्ड रीसेट करें", send: "OTP भेजें", verify: "OTP सत्यापित करें और पासवर्ड बदलें", back: "← लॉगिन पर वापस जाएं", invalid: "सही 10 अंकों का मोबाइल नंबर दर्ज करें" },
+  ta: { welcome: "Tripride-க்கு வரவேற்கிறோம்", mobile: "மொபைல் எண்", phoneHint: "10 இலக்க மொபைல் எண்ணை உள்ளிடவும்", password: "கடவுச்சொல்", passwordHint: "கடவுச்சொல்லை உள்ளிடவும்", continue: "தொடரவும் →", login: "உள்நுழை →", forgot: "கடவுச்சொல் மறந்துவிட்டதா?", reset: "கடவுச்சொல்லை மீட்டமைக்கவும்", send: "OTP அனுப்பு", verify: "OTP சரிபார்த்து கடவுச்சொல்லை மாற்று", back: "← உள்நுழைவுக்குத் திரும்பு", invalid: "சரியான 10 இலக்க மொபைல் எண்ணை உள்ளிடவும்" },
+  kn: { welcome: "Tripride ಗೆ ಸ್ವಾಗತ", mobile: "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ", phoneHint: "10 ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ", password: "ಪಾಸ್‌ವರ್ಡ್", passwordHint: "ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ", continue: "ಮುಂದುವರಿಸಿ →", login: "ಲಾಗಿನ್ →", forgot: "ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿರಾ?", reset: "ಪಾಸ್‌ವರ್ಡ್ ಮರುಹೊಂದಿಸಿ", send: "OTP ಕಳುಹಿಸಿ", verify: "OTP ಪರಿಶೀಲಿಸಿ ಪಾಸ್‌ವರ್ಡ್ ಬದಲಾಯಿಸಿ", back: "← ಲಾಗಿನ್‌ಗೆ ಹಿಂತಿರುಗಿ", invalid: "ಸರಿಯಾದ 10 ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ" },
+  ml: { welcome: "Tripride-ലേക്ക് സ്വാഗതം", mobile: "മൊബൈൽ നമ്പർ", phoneHint: "10 അക്ക മൊബൈൽ നമ്പർ നൽകുക", password: "പാസ്‌വേഡ്", passwordHint: "പാസ്‌വേഡ് നൽകുക", continue: "തുടരുക →", login: "ലോഗിൻ →", forgot: "പാസ്‌വേഡ് മറന്നോ?", reset: "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക", send: "OTP അയയ്ക്കുക", verify: "OTP പരിശോധിച്ച് പാസ്‌വേഡ് മാറ്റുക", back: "← ലോഗിനിലേക്ക് മടങ്ങുക", invalid: "ശരിയായ 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക" }
+};
+const T = () => translations[$("language").value] || translations.en;
+
+function applyLanguage() {
+  const t = T();
+  if (!userExists || forgotMode) $("heading").textContent = forgotMode ? t.reset : t.welcome;
+  $("phoneLabel").textContent = t.mobile;
+  phone.placeholder = t.phoneHint;
+  $("passwordLabel").textContent = t.password;
+  password.placeholder = t.passwordHint;
+  $("forgotBtn").textContent = t.forgot;
+  $("backLogin").textContent = t.back;
+  mainButton.textContent = forgotMode ? (otpSent ? t.verify : t.send) : (userExists ? t.login : t.continue);
+}
+$("language").addEventListener("change", e => {
+  localStorage.setItem("tripride_login_language", e.target.value);
+  applyLanguage();
+});
+const savedLang = localStorage.getItem("tripride_login_language");
+if (savedLang && translations[savedLang]) $("language").value = savedLang;
+applyLanguage();
+
+// ================= HELPERS =================
+const normalisePhone = v => {
+  let r = v.replace(/\D/g, "");
+  if (r.startsWith("91") && r.length === 12) r = r.substring(2);
+  return r;
+};
+const validMobile = n => /^[6-9]\d{9}$/.test(n);
+const showError = m => { $("errorBox").textContent = m; $("errorBox").style.display = "block"; $("successBox").style.display = "none"; };
+const showSuccess = m => { $("successBox").textContent = m; $("successBox").style.display = "block"; $("errorBox").style.display = "none"; };
+const clearMessages = () => { $("errorBox").style.display = "none"; $("successBox").style.display = "none"; };
+
+function setLoading(value) {
+  loading = value;
+  mainButton.disabled = value;
+  if (value) mainButton.innerHTML = '<span class="spinner"></span>';
+  else applyLanguage();
+}
+
+async function apiRequest(endpoint, data) {
+  if (location.protocol === "https:" && API_BASE_URL.startsWith("http:")) {
+    throw new Error("Server URL must use HTTPS. Browsers block HTTP calls from an HTTPS page.");
+  }
+  const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 30000);
+  try {
+    const response = await fetch(API_BASE_URL + endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(data),
+      signal: ctrl.signal
+    });
+    let body = {};
+    try { body = await response.json(); } catch (_) {}
+    if (!response.ok || body.success !== true) {
+      const err = new Error(body.message || body.error || "Something went wrong. Please try again.");
+      err.status = response.status;
+      err.body = body;
+      throw err;
+    }
+    return body;
+  } catch (e) {
+    console.error("API ERROR:", endpoint, e);
+    if (e.name === "AbortError") throw new Error("Request timed out. Please try again.");
+    if (e instanceof TypeError) throw new Error("Cannot reach server (network/CORS error). Please try again.");
+    throw e;
+  } finally { clearTimeout(timer); }
+}
+
+phone.addEventListener("input", () => {
+  phone.value = phone.value.replace(/\D/g, "").slice(0, 10);
+  clearMessages();
+});
+
+// ================= STEP 1: CHECK MOBILE =================
+async function checkMobile() {
+  const number = normalisePhone(phone.value);
+  if (!validMobile(number)) return showError(T().invalid);
+  clearMessages();
+  setLoading(true);
+  try {
+    const result = await apiRequest(PHONE_CHECK_URL, { phone: number });
+    userExists = result.exists === true || result.user_exists === true || result.registered === true;
+    if (userExists) {
+      passwordGroup.classList.remove("hidden");
+      forgotRow.classList.remove("hidden");
+      $("editPhone").classList.remove("hidden");
+      phone.readOnly = true;
+      $("heading").textContent = "Welcome Back!";
+      $("subtitle").textContent = "Your mobile number is registered. Enter your password.";
+      password.focus();
+    } else {
+      goToSignup(number);
+    }
+  } catch (error) {
+    // Some backends answer "user not found" with 404 / success:false instead of exists:false.
+    const msg = String(error.message || "");
+    const b = error.body || {};
+    const notFound = error.status === 404 || b.exists === false || b.user_exists === false || b.registered === false ||
+      /not\s*(found|registered|exist)|no\s+(account|user)|does\s*n[o']t\s+exist|unregistered|new user/i.test(msg);
+    if (notFound) goToSignup(number); else showError(msg);
+  } finally {
+    setLoading(false);
+  }
+}
+
+// No account for this mobile number -> automatically open the signup page (phone is pre-filled there)
+function goToSignup(number) {
+  showSuccess("No account found. Redirecting to signup page...");
+  setTimeout(() => { location.href = REGISTER_URL + "?phone=" + encodeURIComponent(number); }, 900);
+}
+
+// ================= STEP 2: PASSWORD + FIREBASE =================
+async function loginWithPassword() {
+  const number = normalisePhone(phone.value), pass = password.value;
+  if (!validMobile(number)) return showError(T().invalid);
+  if (!pass.trim()) { showError("Please enter your password."); password.focus(); return; }
+
+  clearMessages();
+  setLoading(true);
+  try {
+    // 1. Backend verifies mobile + password
+    const result = await apiRequest(LOGIN_URL, { phone: number, password: pass });
+
+    // 2. Firebase custom token from backend
+    const customToken = String(result.custom_token || result.customToken || result.token || result.firebase_token || "").trim();
+    if (!customToken) throw new Error("Firebase authentication token was not returned by server.");
+
+    // 3. Firebase session
+    redirecting = true;
+    const credential = await signInWithCustomToken(firebaseAuth, customToken);
+    if (!credential.user) throw new Error("Firebase user session was not created.");
+
+    // 4. Non-secret info only
+    localStorage.setItem("userId", credential.user.uid);
+    localStorage.setItem("userPhone", number);
+    password.value = "";
+
+    showSuccess("Login successful! Welcome to Tripride.");
+    setTimeout(() => location.replace(HOME_URL), 700);   // 5. Home screen
+  } catch (error) {
+    redirecting = false;
+    console.error("LOGIN ERROR:", error);
+    const bad = ["auth/invalid-custom-token", "auth/custom-token-mismatch"];
+    showError(bad.includes(error.code) ? "Login session could not be created. Please try again." : (error.message || "Unable to login."));
+  } finally {
+    if (redirecting) { loading = true; } else setLoading(false);
+  }
+}
+
+// ================= MAIN BUTTON / KEYS =================
+mainButton.addEventListener("click", async () => {
+  if (loading) return;
+  if (forgotMode) return otpSent ? verifyForgotOtp() : sendForgotOtp();
+  return userExists ? loginWithPassword() : checkMobile();
+});
+phone.addEventListener("keydown", e => { if (e.key === "Enter") { userExists ? password.focus() : checkMobile(); } });
+password.addEventListener("keydown", e => { if (e.key === "Enter" && !loading) loginWithPassword(); });
+
+$("editPhone").addEventListener("click", () => {
+  userExists = false;
+  passwordGroup.classList.add("hidden");
+  forgotRow.classList.add("hidden");
+  $("editPhone").classList.add("hidden");
+  phone.readOnly = false;
+  password.value = "";
+  $("heading").textContent = T().welcome;
+  $("subtitle").textContent = "Enter your mobile number to continue your journey.";
+  clearMessages();
+  applyLanguage();
+  phone.focus();
+});
+
+$("togglePassword").addEventListener("click", () => {
+  const visible = password.type === "text";
+  password.type = visible ? "password" : "text";
+  $("togglePassword").setAttribute("aria-label", visible ? "Show password" : "Hide password");
+});
+const toggleInput = id => { const i = $(id); i.type = i.type === "password" ? "text" : "password"; };
+$("toggleNewPassword").addEventListener("click", () => toggleInput("newPassword"));
+$("toggleConfirmPassword").addEventListener("click", () => toggleInput("confirmPassword"));
+
+// ================= FORGOT PASSWORD =================
+$("forgotBtn").addEventListener("click", () => {
+  forgotMode = true; otpSent = false; otpSessionId = "";
+  passwordGroup.classList.add("hidden");
+  forgotRow.classList.add("hidden");
+  resetSection.classList.remove("hidden");
+  $("backLogin").classList.remove("hidden");
+  $("subtitle").textContent = "Create a new password for your Tripride account.";
+  ["newPassword", "confirmPassword", "otp"].forEach(i => $(i).value = "");
+  $("otpGroup").classList.add("hidden");
+  clearMessages();
+  applyLanguage();
+});
+
+async function sendForgotOtp() {
+  const number = normalisePhone(phone.value), newPass = $("newPassword").value, confirmPass = $("confirmPassword").value;
+  if (!validMobile(number)) return showError("Enter your registered 10 digit mobile number.");
+  if (newPass.length < 6) return showError("Password must be at least 6 characters.");
+  if (newPass !== confirmPass) return showError("Passwords do not match.");
+  clearMessages();
+  setLoading(true);
+  try {
+    const result = await apiRequest(SEND_OTP_URL, { phone: number });
+    otpSessionId = String(result.session_id || result.sessionId || "").trim();
+    if (!otpSessionId) throw new Error("OTP session was not returned by server.");
+    otpSent = true;
+    $("otpGroup").classList.remove("hidden");
+    $("otp").focus();
+    startOtpTimer();
+    showSuccess("OTP sent to your registered mobile number.");
+  } catch (error) {
+    showError(error.message);
+  } finally {
+    setLoading(false);
+  }
+}
+
+function startOtpTimer() {
+  clearInterval(otpTimer);
+  otpSeconds = 60;
+  updateTimer();
+  $("resendOtp").disabled = true;
+  otpTimer = setInterval(() => {
+    otpSeconds--;
+    updateTimer();
+    if (otpSeconds <= 0) { clearInterval(otpTimer); $("resendOtp").disabled = false; }
+  }, 1000);
+}
+const updateTimer = () => { $("timer").textContent = otpSeconds > 0 ? `Resend in ${otpSeconds}s` : "You can resend OTP"; };
+
+$("resendOtp").addEventListener("click", async () => {
+  if (otpSeconds > 0 || loading) return;
+  await sendForgotOtp();
+});
+
+async function verifyForgotOtp() {
+  const number = normalisePhone(phone.value), otp = $("otp").value.trim();
+  const newPass = $("newPassword").value, confirmPass = $("confirmPassword").value;
+  if (!otpSessionId) return showError("OTP session is missing. Please send OTP again.");
+  if (otp.length < 4) return showError("Enter the OTP sent to your mobile number.");
+  if (newPass.length < 6 || newPass !== confirmPass) return showError("Please enter matching valid passwords.");
+  clearMessages();
+  setLoading(true);
+  try {
+    await apiRequest(VERIFY_OTP_URL, {
+      phone: number, otp,
+      session_id: otpSessionId, sessionId: otpSessionId,
+      new_password: newPass, password: newPass, confirm_password: confirmPass,
+      phone_verified_by: "backend"
+    });
+    leaveForgotMode();
+    password.value = "";
+    $("heading").textContent = "Password Updated";
+    $("subtitle").textContent = "Your password has been changed successfully.";
+    showSuccess("Password updated successfully. Please login with your new password.");
+  } catch (error) {
+    showError(error.message);
+  } finally {
+    setLoading(false);
+  }
+}
+
+function leaveForgotMode() {
+  clearInterval(otpTimer);
+  forgotMode = false; otpSent = false; otpSessionId = "";
+  resetSection.classList.add("hidden");
+  $("backLogin").classList.add("hidden");
+  passwordGroup.classList.remove("hidden");
+  forgotRow.classList.remove("hidden");
+  ["newPassword", "confirmPassword", "otp"].forEach(i => $(i).value = "");
+}
+
+$("backLogin").addEventListener("click", () => {
+  leaveForgotMode();
+  clearMessages();
+  $("heading").textContent = "Welcome Back!";
+  $("subtitle").textContent = "Enter your password to continue.";
+  applyLanguage();
+});
+
+phone.focus();
+</script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101d36">
+<title>Create Account | Tripride</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--p:#172d50;--ind:#4f46e5;--sky:#0284c7;--t:#0f172a;--m:#64748b;--b:#e2e8f0;--ok:#16a34a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f4faff;color:var(--t);padding-bottom:40px}
+.hero{background:linear-gradient(135deg,#eaf7ff,#d8f0ff,#f8fcff);padding:22px 18px 60px;border-radius:0 0 38px 38px;text-align:center}
+.hero h1{font-size:28px;font-weight:800;margin:10px 0 6px;color:var(--p)}
+.hero p{font-size:13px;color:#42627a}
+.brand{font-weight:800;letter-spacing:1px;color:var(--p);text-decoration:none;font-size:20px}
+.avatar{width:112px;height:112px;border-radius:50%;margin:18px auto 6px;background:#334155 center/cover;display:grid;place-items:center;color:#fff;font-size:44px;cursor:pointer;border:4px solid #fff;box-shadow:0 6px 24px #4f46e540}
+.wrap{max-width:520px;margin:-26px auto 0;padding:0 14px;display:grid;gap:16px}
+.card{background:#fff;border:1px solid #e9eef5;border-radius:24px;padding:20px;box-shadow:0 8px 20px #0f172a0b}
+.card h2{font-size:16px;font-weight:800}.card .sub{font-size:11px;color:var(--m);margin:3px 0 16px}
+.f{margin-bottom:13px}
+label{display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:6px}
+input{width:100%;height:50px;padding:0 14px;border:1px solid var(--b);border-radius:14px;background:#f8fafc;font:inherit;font-size:13px;outline:0}
+input:focus{border-color:#6366f1;box-shadow:0 0 0 4px #6366f115}
+input[readonly]{background:#f0fdf4}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 13px;border:1px solid var(--b);border-radius:30px;font-size:12px;font-weight:600;background:#f8fafc;cursor:pointer}
+.chip.on{background:#eef2ff;border-color:#818cf8;color:#3730a3;font-weight:800}
+.type{flex:1;text-align:center;padding:14px 8px;border:1px solid #dceaf3;border-radius:16px;cursor:pointer;font-weight:800;font-size:13px}
+.type small{display:block;font-weight:500;font-size:10px;color:#668195;margin-top:3px}
+.type.on{border:2px solid var(--sky);background:#ddf3ff}
+.btn{width:100%;height:52px;border:0;border-radius:16px;font:inherit;font-weight:800;font-size:14px;color:#fff;background:var(--ind);cursor:pointer;margin-top:8px}
+.btn.sky{background:var(--sky)}.btn:disabled{background:#e2e8f0;color:#94a3b8;cursor:not-allowed}
+.note{font-size:11px;color:var(--m);line-height:1.5;margin-top:6px}
+.good{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;padding:12px;border-radius:14px;font-size:12px;font-weight:700;margin-top:10px}
+.sug{border:1px solid var(--b);border-radius:14px;margin-top:6px;max-height:200px;overflow:auto}
+.sug div{padding:10px 12px;font-size:12px;border-bottom:1px solid #f1f5f9;cursor:pointer}.sug div:hover{background:#eff6ff}
+.hide{display:none!important}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:92%;padding:12px 16px;border-radius:12px;color:#fff;font-size:13px;z-index:99;display:none}
+.ov{position:fixed;inset:0;background:#0f172a99;display:none;place-items:center;z-index:50;padding:20px}
+.ov.show{display:grid}.box{background:#fff;border-radius:22px;padding:24px;max-width:360px;width:100%;text-align:center}
+.spin{width:38px;height:38px;border:4px solid #e0e7ff;border-top-color:var(--ind);border-radius:50%;animation:s 1s linear infinite;margin:0 auto 14px}
+@keyframes s{to{transform:rotate(360deg)}}
+.err{color:#b91c1c;font-size:12px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="hero">
+  <a href="index.html" class="brand">TRIPRIDE</a>
+  <h1>Become a Verified Traveler</h1>
+  <p>Create your trusted Tripride identity and connect with verified travelers.</p>
+  <div class="avatar" id="avatar" onclick="$('photo').click()">👤</div>
+  <b style="font-size:13px">Add profile photo</b><div class="note">Tap the photo to upload (auto-compressed to 500 KB)</div>
+  <input type="file" id="photo" accept="image/*" class="hide">
+</div>
+
+<div class="wrap">
+  <div class="card">
+    <h2>Personal Details</h2><div class="sub">Tell us a little about yourself</div>
+    <div class="f"><label>Full Name</label><input id="name" placeholder="As per Government ID" autocomplete="name" maxlength="60"></div>
+    <div class="f"><label>Mobile Number (+91)</label><input id="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10 digit mobile number"></div>
+    <div class="f"><label>Age</label><input id="age" inputmode="numeric" maxlength="3" placeholder="Enter your age"></div>
+    <div class="f"><label>Password</label><input id="pw" type="password" placeholder="Min 6 characters" autocomplete="new-password"></div>
+    <div class="f"><label>Confirm Password</label><input id="pw2" type="password" placeholder="Re-enter your password" autocomplete="new-password"></div>
+    <label>Gender</label>
+    <div class="chips" id="genders">
+      <span class="chip" data-v="Male">♂ Male</span><span class="chip" data-v="Female">♀ Female</span><span class="chip on" data-v="Prefer not to say">Prefer not to say</span>
+    </div>
+    <div class="f" style="margin-top:14px"><label>City</label><input id="city" placeholder="Where do you live?" autocomplete="off">
+      <div id="sug" class="sug hide"></div><div id="cityOk" class="note hide" style="color:#15803d;font-weight:700">✓ Location coordinates saved for nearby suggestions</div></div>
+  </div>
+
+  <div class="card">
+    <h2>🎁 Refer &amp; Earn</h2><div class="sub">Optional • Get ₹25 after a successful referral</div>
+    <input id="ref" maxlength="8" placeholder="Example: RAME3210" style="text-transform:uppercase">
+    <div id="refInfo" class="note"></div>
+  </div>
+
+  <div class="card">
+    <h2>Safety Contact</h2><div class="sub">Used only when safety assistance is needed during your journey.</div>
+    <div class="f"><label>Emergency Contact Name</label><input id="eName" placeholder="Parent, friend or guardian"></div>
+    <div class="f"><label>Emergency Contact Number</label><input id="ePhone" type="tel" inputmode="numeric" maxlength="10" placeholder="10 digit mobile number"></div>
+  </div>
+
+  <div class="card">
+    <h2>Identity Verification</h2><div class="sub">Choose one document only. Verified securely through FinPay.</div>
+    <div class="row" style="margin-bottom:14px">
+      <div class="type on" data-t="Aadhaar">Aadhaar Card<small>OTP verification</small></div>
+      <div class="type" data-t="PAN">PAN Card<small>Instant verification</small></div>
+    </div>
+    <div id="aadhaarBox">
+      <div class="f"><label>Aadhaar number</label><input id="aadhaar" inputmode="numeric" maxlength="12" placeholder="Enter 12-digit Aadhaar number"></div>
+      <div class="note">OTP is requested automatically once all 12 digits are entered.</div>
+      <div id="idOtpBox" class="hide">
+        <div class="f" style="margin-top:12px"><label>Aadhaar OTP</label><input id="idOtp" inputmode="numeric" maxlength="8" placeholder="OTP received on your mobile"></div>
+        <button class="btn sky" id="verAadhaar" type="button">Verify Aadhaar OTP</button>
+      </div>
+    </div>
+    <div id="panBox" class="hide">
+      <div class="f"><label>PAN number</label><input id="pan" maxlength="10" placeholder="ABCDE1234F" style="text-transform:uppercase"></div>
+      <button class="btn sky" id="verPan" type="button">Verify PAN now</button>
+    </div>
+    <div id="idBusy" class="note hide" style="text-align:center">Connecting securely to FinPay…</div>
+    <div id="idOk" class="good hide"><span id="idOkTxt"></span><br><small>Verified securely by FinPay</small>
+      <div><a href="#" id="idChange" style="font-size:12px;color:var(--sky)">Change number</a></div></div>
+  </div>
+
+  <div class="card" style="background:#eef2ff;border-color:#c7d2fe">
+    <b style="font-size:13px;color:#312e81">Your identity stays protected</b>
+    <div class="note">Your verification helps build trust between Tripride travelers. Sensitive identity details are not shown publicly.</div>
+  </div>
+
+  <button class="btn" id="submit" type="button" disabled style="height:58px">Send OTP &amp; Create Account →</button>
+
+</div>
+
+<div class="ov" id="loading"><div class="box"><div class="spin"></div><b>Creating your Tripride account…</b><div class="note">Please wait. Do not close the page.</div></div></div>
+<div class="ov" id="otpOv"><div class="box">
+  <b style="font-size:17px">📱 Verify Mobile OTP</b>
+  <div class="note">We sent an OTP to +91 <span id="otpPhone"></span></div>
+  <input id="otp" inputmode="numeric" maxlength="6" placeholder="6 digit OTP" style="margin-top:14px;text-align:center;letter-spacing:4px">
+  <div id="otpErr" class="err"></div>
+  <div class="row" style="margin-top:14px"><button class="btn" style="background:#e2e8f0;color:#334155;margin:0" id="otpCancel" type="button">Cancel</button><button class="btn" style="margin:0" id="otpOk" type="button">Verify OTP</button></div>
+</div></div>
+<div id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script>
+// ===================== CONFIG =====================
+// Must be HTTPS when this page is served over HTTPS (browsers block mixed content).
+const API = "http://15.235.145.222:10000/";
+// Google Maps key: enable "Maps JavaScript API" + "Places API (New)" and restrict by HTTP referrer (your domain).
+const MAPS_KEY = "AIzaSyBBHjG4-btvLZoZIba-jB8WvqL2TTkHx6w";
+firebase.initializeApp({
+  apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw",
+  authDomain:"tripmate-74df9.firebaseapp.com",
+  databaseURL:"https://tripmate-74df9-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"tripmate-74df9",
+  storageBucket:"tripmate-74df9.firebasestorage.app",
+  messagingSenderId:"931960941543",
+  appId:"1:931960941543:web:ced98c012dc22fcb776b42"
+});
+const auth=firebase.auth(), db=firebase.firestore(), storage=firebase.storage();
+
+// ===================== HELPERS =====================
+const $=id=>document.getElementById(id);
+const S={type:"Aadhaar",idSession:null,idRef:null,idVerified:false,idType:"",otpSession:null,lat:null,lng:null,
+  refLocked:false,refSource:"",photo:null,gender:"Prefer not to say",autoOtp:false,busy:false};
+const digits=s=>String(s||"").replace(/\D/g,"");
+const normRef=v=>String(v||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"");
+const REF_RE=/^[A-Z]{1,4}\d{4}$/;
+let tt;function toast(m,err){const t=$("toast");t.textContent=m;t.style.background=err?"#b91c1c":"#166534";t.style.display="block";clearTimeout(tt);tt=setTimeout(()=>t.style.display="none",4500)}
+async function post(path,body,ms=30000){
+  if(/YOUR-API-DOMAIN/.test(API))throw new Error("API URL is not configured in register.html (const API).");
+  if(location.protocol==="https:"&&API.startsWith("http:"))throw new Error("API must use HTTPS. Browser blocks HTTP calls from an HTTPS page.");
+  const c=new AbortController(),id=setTimeout(()=>c.abort(),ms);
+  try{
+    const r=await fetch(API+path,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(body),signal:c.signal});
+    let d={};try{d=await r.json()}catch(_){}
+    return {ok:r.ok,status:r.status,data:d};
+  }catch(e){console.error("API CALL FAILED:",API+path,e);throw new Error(e.name==="AbortError"?"Request timed out. Please try again.":"Cannot reach server (network/CORS error). Check API URL and CORS settings.")}
+  finally{clearTimeout(id)}
+}
+const msg=(d,f)=>(d&&(d.error||d.message))||f;
+function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
+
+// Verhoeff checksum: rejects mistyped / fake Aadhaar numbers before any API call.
+const VD=[[0,1,2,3,4,5,6,7,8,9],[1,2,3,4,0,6,7,8,9,5],[2,3,4,0,1,7,8,9,5,6],[3,4,0,1,2,8,9,5,6,7],[4,0,1,2,3,9,5,6,7,8],[5,9,8,7,6,0,4,3,2,1],[6,5,9,8,7,1,0,4,3,2],[7,6,5,9,8,2,1,0,4,3],[8,7,6,5,9,3,2,1,0,4],[9,8,7,6,5,4,3,2,1,0]];
+const VP=[[0,1,2,3,4,5,6,7,8,9],[1,5,7,6,2,8,3,0,9,4],[5,8,0,3,7,9,6,1,4,2],[8,9,1,6,0,4,3,5,2,7],[9,4,5,3,1,2,6,8,7,0],[4,2,8,6,5,7,3,9,0,1],[2,7,9,3,8,0,6,4,1,5],[7,0,4,6,9,1,3,2,5,8]];
+function aadhaarValid(n){
+  if(!/^[2-9]\d{11}$/.test(n)||/^(\d)\1{11}$/.test(n))return false;
+  let c=0;n.split("").reverse().forEach((ch,i)=>{c=VD[c][VP[i%8][+ch]]});return c===0;
+}
+
+// ===================== PHOTO (compress to <=500KB) =====================
+const MAX=500*1024;
+$("photo").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!f)return;
+  if(!f.type.startsWith("image/"))return toast("Please choose an image file.",1);
+  if(f.size>15*1024*1024)return toast("This image is larger than 15 MB. Please choose a smaller image.",1);
+  try{
+    S.photo=await compress(f);
+    $("avatar").style.backgroundImage=`url(${URL.createObjectURL(S.photo)})`;$("avatar").textContent="";
+    refresh();
+  }catch(err){toast(err.message||"Unable to select profile photo",1)}
+});
+function compress(file){
+  return new Promise((res,rej)=>{
+    const img=new Image(),url=URL.createObjectURL(file);
+    img.onload=async()=>{
+      URL.revokeObjectURL(url);
+      for(const w of [1800,1500,1300,1100,900,700]){
+        const sc=Math.min(1,w/Math.max(img.width,img.height)),c=document.createElement("canvas");
+        c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);
+        c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+        for(const q of [.88,.8,.72,.64,.56,.48,.4,.32,.25]){
+          const b=await new Promise(r=>c.toBlob(r,"image/jpeg",q));
+          if(b&&b.size<=MAX)return res(b);
+        }
+      }
+      rej(new Error("Image could not be reduced below 500 KB"));
+    };
+    img.onerror=()=>rej(new Error("Unable to read this image"));img.src=url;
+  });
+}
+
+// ===================== FORM BASICS =====================
+$("phone").addEventListener("input",e=>{e.target.value=digits(e.target.value).slice(0,10);refresh()});
+$("ePhone").addEventListener("input",e=>{e.target.value=digits(e.target.value).slice(0,10);refresh()});
+$("age").addEventListener("input",e=>{e.target.value=digits(e.target.value).slice(0,3)});
+["name","pw","pw2","eName","city"].forEach(i=>$(i).addEventListener("input",refresh));
+const qp=new URLSearchParams(location.search);
+if(qp.get("phone"))$("phone").value=digits(qp.get("phone")).slice(-10);
+$("genders").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;
+  S.gender=c.dataset.v;[...$("genders").children].forEach(x=>x.classList.toggle("on",x===c))});
+
+// ===================== CITY SEARCH (Google Maps JavaScript API - Places) =====================
+let placesP=null,sessionToken=null,cityGen=0,mapsWarned=false;
+window.gm_authFailure=()=>toast("Google Maps key rejected. Check key, enabled APIs and allowed domains.",1);
+function loadPlaces(){
+  if(placesP)return placesP;
+  placesP=new Promise((res,rej)=>{
+    if(!MAPS_KEY||MAPS_KEY.startsWith("YOUR_"))return rej(new Error("Google Maps API key is not configured."));
+    window.__mapsReady=async()=>{try{res(await google.maps.importLibrary("places"))}catch(e){rej(e)}};
+    const s=document.createElement("script");
+    s.src="https://maps.googleapis.com/maps/api/js?key="+encodeURIComponent(MAPS_KEY)+"&v=weekly&loading=async&callback=__mapsReady";
+    s.onerror=()=>rej(new Error("Google Maps failed to load"));
+    document.head.appendChild(s);
+  });
+  placesP.catch(()=>{placesP=null});
+  return placesP;
+}
+const CITY_TYPES=["locality","sublocality","administrative_area_level_3"];
+async function suggest(q,lib){
+  if(!sessionToken)sessionToken=new lib.AutocompleteSessionToken();
+  const r=await lib.AutocompleteSuggestion.fetchAutocompleteSuggestions({input:q,includedRegionCodes:["in"],includedPrimaryTypes:CITY_TYPES,language:"en",sessionToken});
+  return r.suggestions||[];
+}
+async function pickPrediction(pp){
+  const place=pp.toPlace();
+  await place.fetchFields({fields:["location","displayName"]});
+  sessionToken=null;
+  return {name:place.displayName||pp.mainText.toString(),lat:place.location.lat(),lng:place.location.lng()};
+}
+const searchCity=debounce(async q=>{
+  const gen=++cityGen;q=q.trim();const box=$("sug");
+  if(q.length<3){box.classList.add("hide");return}
+  try{
+    const lib=await loadPlaces(),list=(await suggest(q,lib)).slice(0,7);
+    if(gen!==cityGen)return;
+    box.innerHTML="";
+    list.forEach(s=>{
+      const pp=s.placePrediction,d=document.createElement("div");d.textContent=pp.text.toString();
+      d.onclick=async()=>{
+        box.classList.add("hide");
+        try{const p=await pickPrediction(pp);$("city").value=p.name;S.lat=p.lat;S.lng=p.lng}
+        catch(e){console.warn(e);$("city").value=pp.mainText.toString();S.lat=S.lng=null}
+        $("cityOk").classList.toggle("hide",S.lat==null);refresh();
+      };
+      box.appendChild(d);
+    });
+    box.classList.toggle("hide",!list.length);
+  }catch(e){
+    console.warn("CITY SEARCH ERROR",e);box.classList.add("hide");
+    if(!mapsWarned){mapsWarned=true;toast("City suggestions unavailable: "+(e.message||"check Google Maps key"),1)}
+  }
+},250);
+$("city").addEventListener("input",e=>{S.lat=S.lng=null;$("cityOk").classList.add("hide");searchCity(e.target.value)});
+async function resolveLocation(){
+  if(S.lat!=null&&S.lng!=null)return{lat:S.lat,lng:S.lng};
+  const q=$("city").value.trim();if(!q)return null;
+  try{
+    const lib=await loadPlaces(),list=await suggest(q,lib);
+    if(!list.length)return null;
+    const p=await pickPrediction(list[0].placePrediction);
+    S.lat=p.lat;S.lng=p.lng;return{lat:p.lat,lng:p.lng};
+  }catch(_){return null}
+}
+
+// ===================== REFERRAL =====================
+function refFromUrl(){
+  let c=qp.get("referralCode")||qp.get("referral_code")||qp.get("ref")||qp.get("code");
+  if(!c){const s=location.pathname.split("/").filter(Boolean),i=s.findIndex(x=>x.toLowerCase()==="invite");if(i>=0&&s[i+1])c=s[i+1]}
+  return c?normRef(c):"";
+}
+let refGen=0;
+const lookupRef=debounce(async code=>{
+  const gen=++refGen;$("refInfo").style.color="";
+  if(!REF_RE.test(code)){$("refInfo").textContent="";return}
+  $("refInfo").textContent="Checking referral code…";
+  try{
+    const {ok,data}=await post("referral/lookup",{referral_code:code,referralCode:code},8000);
+    if(gen!==refGen)return;
+    const name=String(data.name||data.fullName||data.full_name||data.displayName||"").trim();
+    const uid=String(data.uid||data.userId||data.ownerUid||"").trim();
+    if(ok&&name&&uid){$("refInfo").textContent="✓ Referred by "+name;$("refInfo").style.color="#166534"}
+    else{$("refInfo").textContent=msg(data,"Referral code not found. Please check the code.");$("refInfo").style.color="#b91c1c"}
+  }catch(e){console.error("REFERRAL LOOKUP ERROR",e);if(gen===refGen){$("refInfo").textContent=e.message||"Unable to verify referral code right now.";$("refInfo").style.color="#b91c1c"}}
+},450);
+$("ref").addEventListener("input",e=>{if(S.refLocked)return;e.target.value=normRef(e.target.value);lookupRef(e.target.value)});
+(function(){const c=refFromUrl();
+  if(c&&REF_RE.test(c)){$("ref").value=c;$("ref").readOnly=true;S.refLocked=true;S.refSource="Invite link";
+    lookupRef(c);toast("Referral code "+c+" applied automatically.")}
+  else $("refInfo").textContent="No invite link? Enter a referral code manually, or leave it empty."})();
+
+// ===================== IDENTITY (FinPay) =====================
+document.querySelectorAll(".type").forEach(t=>t.onclick=()=>{if(S.busy||S.type===t.dataset.t)return;S.type=t.dataset.t;
+  document.querySelectorAll(".type").forEach(x=>x.classList.toggle("on",x===t));resetId(true)});
+function resetId(clear){
+  S.idVerified=false;S.idRef=null;S.idType="";S.idSession=null;S.autoOtp=false;
+  if(clear){$("aadhaar").value="";$("pan").value="";}
+  $("idOtp").value="";$("idOtpBox").classList.add("hide");$("idOk").classList.add("hide");
+  $("aadhaarBox").classList.toggle("hide",S.type!=="Aadhaar");$("panBox").classList.toggle("hide",S.type!=="PAN");
+  $("aadhaar").readOnly=$("pan").readOnly=false;refresh();
+}
+$("idChange").onclick=e=>{e.preventDefault();resetId(true)};
+function idBusy(b){S.busy=b;$("idBusy").classList.toggle("hide",!b);$("verAadhaar").disabled=$("verPan").disabled=b;refresh()}
+function idDone(type,ref){
+  S.idVerified=true;S.idType=type;S.idRef=ref;$("idOkTxt").textContent="✓ "+(type==="AADHAAR"?"Aadhaar":"PAN")+" verified successfully";
+  $("idOk").classList.remove("hide");$("idOtpBox").classList.add("hide");$("aadhaar").readOnly=$("pan").readOnly=true;refresh();
+}
+$("aadhaar").addEventListener("input",e=>{
+  e.target.value=digits(e.target.value).slice(0,12);
+  if(e.target.value.length!==12){S.autoOtp=false;if(S.idVerified||S.idSession){S.idVerified=false;S.idRef=null;S.idSession=null;$("idOtpBox").classList.add("hide");$("idOk").classList.add("hide");refresh()}return}
+  if(!S.autoOtp&&!S.busy&&!S.idVerified){S.autoOtp=true;sendAadhaarOtp()}
+});
+async function sendAadhaarOtp(){
+  const a=$("aadhaar").value,ph=$("phone").value;
+  if(!aadhaarValid(a)){S.autoOtp=false;return toast("Enter a valid 12-digit Aadhaar number.",1)}
+  if(!/^[6-9]\d{9}$/.test(ph)){S.autoOtp=false;return toast("Enter your 10-digit mobile number first.",1)}
+  idBusy(true);
+  try{
+    const {ok,data}=await post("auth/identity/aadhaar/send-otp",{aadhaar_number:a,phone:ph});
+    if(!ok||data.success!==true)throw new Error(msg(data,"FinPay Aadhaar OTP request failed."));
+    S.idSession=String(data.session_id||data.sessionId||"");
+    if(!S.idSession)throw new Error("FinPay session ID was not returned.");
+    $("idOtpBox").classList.remove("hide");toast("Aadhaar OTP sent by FinPay. Enter it below.");
+  }catch(e){S.autoOtp=false;toast(e.message,1)}finally{idBusy(false)}
+}
+$("verAadhaar").onclick=async()=>{
+  const otp=digits($("idOtp").value);
+  if(!S.idSession||!otp)return toast("Request Aadhaar OTP and enter the OTP first.",1);
+  idBusy(true);
+  try{
+    const {ok,data}=await post("auth/identity/aadhaar/verify-otp",{aadhaar_number:$("aadhaar").value,otp,session_id:S.idSession,phone:$("phone").value});
+    if(!ok||data.verified!==true)throw new Error(msg(data,"FinPay Aadhaar verification failed."));
+    const ref=String(data.verification_reference||data.verification_id||"");
+    if(!ref)throw new Error("Verification reference was not returned.");
+    idDone("AADHAAR",ref);toast("Aadhaar verified successfully by FinPay.");
+  }catch(e){toast(e.message,1)}finally{idBusy(false)}
+};
+$("pan").addEventListener("input",e=>{
+  e.target.value=e.target.value.replace(/[^A-Za-z0-9]/g,"").toUpperCase().slice(0,10);
+  if(S.idVerified){S.idVerified=false;S.idRef=null;$("idOk").classList.add("hide");refresh()}
+  if(/^[A-Z]{5}\d{4}[A-Z]$/.test(e.target.value)&&!S.busy)verifyPan();
+});
+$("verPan").onclick=()=>verifyPan();
+async function verifyPan(){
+  const pan=$("pan").value,ph=$("phone").value;
+  if(!/^[A-Z]{5}\d{4}[A-Z]$/.test(pan))return toast("Enter a valid PAN number, e.g. ABCDE1234F.",1);
+  if(!/^[6-9]\d{9}$/.test(ph))return toast("Enter your 10-digit mobile number first.",1);
+  idBusy(true);
+  try{
+    const {ok,data}=await post("auth/identity/pan/verify",{pan_number:pan,phone:ph});
+    if(!ok||data.verified!==true)throw new Error(msg(data,"FinPay PAN verification failed."));
+    const ref=String(data.verification_reference||data.verification_id||"");
+    if(!ref)throw new Error("Verification reference was not returned.");
+    idDone("PAN",ref);toast("PAN verified successfully by FinPay.");
+  }catch(e){toast(e.message,1)}finally{idBusy(false)}
+}
+// Changing the phone after identity verification invalidates it (identity is tied to the phone).
+$("phone").addEventListener("change",()=>{if(S.idVerified||S.idSession)resetId(false)});
+
+// ===================== SUBMIT =====================
+function refresh(){$("submit").disabled=!S.idVerified||S.busy}
+function validate(){
+  if(!S.idVerified||!S.idRef||!S.idType)return "Verify either Aadhaar OTP or PAN through FinPay first.";
+  const miss=[];
+  if(!S.photo)miss.push("Profile Photo");
+  if(!$("name").value.trim())miss.push("Full Name");
+  if(!$("age").value.trim())miss.push("Age");
+  if(!$("city").value.trim())miss.push("City");
+  if(!$("eName").value.trim())miss.push("Emergency Contact Name");
+  if($("ePhone").value.length!==10)miss.push("Emergency Contact Number");
+  if(miss.length)return miss.length===1?miss[0]+" is missing. Please add it.":"Missing fields: "+miss.join(", ");
+  if(!/^[6-9]\d{9}$/.test($("phone").value))return "Enter a valid 10 digit Indian mobile number.";
+  const age=+$("age").value;if(!(age>=18&&age<=100))return "Please enter a valid age (18+).";
+  if(!/^[6-9]\d{9}$/.test($("ePhone").value))return "Enter valid 10 digit emergency contact number";
+  if($("ePhone").value===$("phone").value)return "Emergency contact must be a different number from yours.";
+  if($("pw").value.length<6)return "Password must be at least 6 characters";
+  if($("pw").value!==$("pw2").value)return "Passwords do not match";
+  const rc=normRef($("ref").value);if(rc&&!REF_RE.test(rc))return "Enter a valid referral code like RAME3210";
+  return null;
+}
+function askOtp(phone,verify){
+  return new Promise(resolve=>{
+    $("otp").value="";$("otpErr").textContent="";$("otpPhone").textContent=phone;$("otpOv").classList.add("show");$("otp").focus();
+    let busy=false;
+    const close=v=>{$("otpOv").classList.remove("show");$("otpOk").onclick=$("otpCancel").onclick=null;resolve(v)};
+    $("otpCancel").onclick=()=>{if(!busy)close(false)};
+    $("otpOk").onclick=async()=>{
+      if(busy)return;const o=digits($("otp").value);
+      if(!/^\d{4,8}$/.test(o)){$("otpErr").textContent="Enter the OTP correctly.";return}
+      busy=true;$("otpOk").disabled=true;$("otpOk").textContent="Verifying…";$("otpErr").textContent="";
+      try{await verify(o);close(true)}
+      catch(e){$("otpErr").textContent=e.message||"OTP verification failed. Please try again."}
+      finally{busy=false;$("otpOk").disabled=false;$("otpOk").textContent="Verify OTP"}
+    };
+  });
+}
+$("submit").onclick=async()=>{
+  if(S.busy)return;
+  const err=validate();if(err)return toast(err,1);
+  const phone=$("phone").value,password=$("pw").value,refCode=normRef($("ref").value);
+  S.busy=true;refresh();$("submit").textContent="Sending OTP…";
+  try{
+    // 1. Backend (FinPay) registration OTP
+    let r=await post("auth/register/send-otp",{phone});
+    if(!r.ok||r.data.success===false)throw new Error(msg(r.data,"Unable to send OTP. Please try again."));
+    const sid=String(r.data.session_id||r.data.sessionId||"").trim();
+    if(!sid)throw new Error("Backend did not return an OTP session ID. Please contact support.");
+    S.busy=false;$("submit").textContent="Send OTP & Create Account →";
+    const verified=await askOtp(phone,async otp=>{
+      const v=await post("auth/register/verify-otp",{phone,otp,session_id:sid,sessionId:sid});
+      if(!v.ok||v.data.success===false)throw new Error(msg(v.data,"Invalid OTP. Please try again."));
+    });
+    if(!verified){refresh();return}
+
+    // 2. Create account (only after OTP verified)
+    S.busy=true;$("loading").classList.add("show");
+    r=await post("auth/register",{phone,password,confirm_password:password,name:$("name").value.trim(),
+      referral_code:refCode,referralCode:refCode,identity_document_type:S.idType,identity_verification_reference:S.idRef});
+    if(!r.ok||r.data.success===false)throw new Error(msg(r.data,"Account creation failed"));
+    const uid=r.data.uid||r.data.user_uid,token=r.data.customToken||r.data.custom_token;
+    if(!uid)throw new Error("Account created but user ID was not returned");
+    if(!token)throw new Error("Account created but Firebase session was not returned");
+
+    // 3. Temporary session for upload + profile save
+    await auth.signOut();
+    const cred=await auth.signInWithCustomToken(token),cu=cred.user;
+    if(!cu)throw new Error("Unable to start account session");
+    const ref=storage.ref("users/"+cu.uid+"/profile.jpg");
+    await ref.put(S.photo,{contentType:"image/jpeg",cacheControl:"public,max-age=86400",customMetadata:{uploadSizeLimit:"500KB"}});
+    const url=await ref.getDownloadURL();
+    const loc=await resolveLocation();
+    await db.collection("users").doc(cu.uid).set({
+      documentType:S.idType,documentVerified:true,identityProvider:"finpay_ultra",
+      identityVerificationReference:S.idRef,verified:true,uid:cu.uid,
+      name:$("name").value.trim(),age:+$("age").value,gender:S.gender,city:$("city").value.trim(),
+      registeredLatitude:loc?loc.lat:null,registeredLongitude:loc?loc.lng:null,
+      cityLatitude:loc?loc.lat:null,cityLongitude:loc?loc.lng:null,
+      emergencyName:$("eName").value.trim(),emergencyPhone:$("ePhone").value,
+      phone,phoneNumber:phone,referralCodeUsed:refCode,referralSource:S.refSource||"manual",
+      profilePhoto:url,profilePhotoUrl:url,profilePhotoBase64:"",trustScore:100,
+      verifiedAt:firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    },{merge:true});
+    await auth.signOut();
+    $("loading").classList.remove("show");
+    toast("Account created successfully! Redirecting to login…");
+    setTimeout(()=>location.href="login.html",1600);
+  }catch(e){
+    console.error("REGISTRATION ERROR",e);
+    try{await auth.signOut()}catch(_){}
+    $("loading").classList.remove("show");
+    toast(String(e.message||e).replace(/^Exception:\s*/,""),1);
+    S.busy=false;$("submit").textContent="Send OTP & Create Account →";refresh();
+  }
+};
+</script>
+</body>
+</html>

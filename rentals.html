@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rentals | Tripride</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,800&display=swap" rel="stylesheet">
+<script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+<style>
+:root{--bg:#FBF7F2;--card:#fff;--ink:#1B2433;--mut:#6A7585;--line:#E6DCCD;--sun:#F26B2A;--ok:#178A4B;--okb:#E6F6EC;--bad:#B42318;--warn:#FFEBDD;--chip:#F1E9DD}
+@media(prefers-color-scheme:dark){:root{--bg:#0C1422;--card:#14223A;--ink:#EEF2F8;--mut:#97A5BA;--line:#223250;--sun:#FF8A4C;--ok:#4ADE80;--okb:#12301F;--bad:#FF9A8F;--warn:#3A2616;--chip:#1B2C49}}
+*{box-sizing:border-box;margin:0}body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}[hidden]{display:none!important}
+.w{width:min(1100px,100% - 28px);margin:auto}
+.nav{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}.nav .w{display:flex;justify-content:space-between;align-items:center;height:58px;gap:8px}
+.brand{font:800 1.3rem Fraunces,serif;color:var(--ink);text-decoration:none}.brand b{color:var(--sun)}
+.btn{border:0;border-radius:12px;padding:11px 18px;font-weight:700;background:var(--sun);color:#fff;text-decoration:none;display:inline-block}.btn:disabled{opacity:.5}
+.btn.g{background:none;border:1.5px solid var(--sun);color:var(--sun)}.btn.r{background:none;border:1.5px solid var(--bad);color:var(--bad)}.btn.b{display:block;width:100%;padding:14px;margin-top:10px}.btn.s{padding:8px 14px;font-size:.88rem}
+h1,h2,h3{font-family:Fraunces,serif}.hero{padding:30px 0 10px}.hero h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05}.hero p{color:var(--mut);margin-top:8px}
+.sv{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:20px 0}
+.svc{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;cursor:pointer}.svc .i{font-size:2.6rem}.svc h3{font-size:1.4rem;margin:6px 0}.svc li{margin:4px 0 0 18px;color:var(--mut);font-size:.9rem}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.bar input,.bar select,.f input{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--card);min-height:44px}.bar input{flex:1;min-width:180px}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:8px 0}.chip{flex:none;border:1.5px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;font-size:.88rem;color:var(--mut)}.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px;margin:14px 0 50px}
+.car{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;cursor:pointer}.car .p{height:170px;background:var(--chip);display:grid;place-items:center;font-size:3rem}.car img{width:100%;height:170px;object-fit:cover}.car .t{padding:14px}
+.tag{background:var(--chip);color:var(--mut);border-radius:99px;padding:3px 10px;font-size:.76rem;font-weight:700;margin-right:4px}
+.price{font-size:1.3rem;font-weight:800}.price small{font-size:.75rem;color:var(--mut);font-weight:400}
+.st{text-align:center;padding:44px 20px;background:var(--card);border:1px dashed var(--line);border-radius:20px;margin:14px 0}.st p{color:var(--mut);margin:6px 0 14px}
+dialog{border:0;border-radius:22px;padding:0;width:min(580px,calc(100% - 20px));max-height:92vh;background:var(--card);color:var(--ink);margin:auto}dialog::backdrop{background:rgba(8,14,26,.65)}
+.d{padding:22px;position:relative}.d h2{margin-right:36px}.x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:0;background:var(--chip)}
+.rw{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:.92rem}.rw span{color:var(--mut)}.box{border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0;background:var(--bg)}
+.f{margin:8px 0}.f label{display:block;font-size:.74rem;font-weight:700;color:var(--mut);margin-bottom:3px}.f input{width:100%}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.otp{font:800 2.2rem monospace;letter-spacing:8px;text-align:center}.ob{border-radius:16px;padding:14px;margin:10px 0;text-align:center;background:var(--warn)}.ob.g{background:var(--okb)}
+.tl{display:flex;margin:12px 0}.tl div{flex:1;text-align:center;font-size:.68rem;color:var(--mut)}.tl i{display:block;width:20px;height:20px;border-radius:50%;background:var(--line);margin:0 auto 4px}.tl .on{color:var(--ok)}.tl .on i{background:var(--ok)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:92%}.toast.show{opacity:1}
+.err{color:var(--bad);font-weight:700;font-size:.85rem}.note{font-size:.78rem;color:var(--mut)}#rc{height:0;overflow:hidden}
+</style></head><body>
+<header class="nav"><div class="w"><a class="brand" href="index.html">TRIP<b>RIDE</b></a>
+<div style="display:flex;gap:8px"><a class="btn g s" href="tour-packages.html">Tours</a><button class="btn g s" id="auth">Sign in</button></div></div></header>
+<main class="w"><div id="app"></div></main>
+<dialog id="dlg"></dialog><div class="toast" id="toast"></div>
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+import {getFirestore,collection,query,where,getDocs,getDoc,doc,onSnapshot,runTransaction,serverTimestamp,Timestamp,GeoPoint,deleteField} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import {getAuth,onAuthStateChanged,RecaptchaVerifier,signInWithPhoneNumber,signOut} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+const FB={apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw",authDomain:"tripmate-74df9.firebaseapp.com",projectId:"tripmate-74df9",storageBucket:"tripmate-74df9.firebasestorage.app",messagingSenderId:"931960941543",appId:"1:931960941543:web:ced98c012dc22fcb776b42"};
+const GKEY='AIzaSyBBHjG4-btvLZoZIba-jB8WvqL2TTkHx6w';
+// Same backends as the Flutter screens. NOTE: the bike backend is plain http -> only works from file:// or an http page.
+const SV={car:{svc:'Car Rental',path:'car-rental',name:'Car',ico:'🚗',back:'https://tripride-payment-backend.onrender.com/'},
+          bike:{svc:'Bike Rental',path:'bike-rental',name:'Bike',ico:'🏍️',back:'http://15.235.145.222:10000/'}};
+const DONE=new Set(['cancelled','canceled','rejected','completed','done','finished']);
+const TERM=new Set(['completed','returned','return completed','cancelled','canceled','rejected','finished','done']);
+const db=getFirestore(initializeApp(FB)),auth=getAuth();
+const $=s=>document.querySelector(s),dlg=$('#dlg');
+const S={user:null,sv:null,agents:[],res:{},loading:0,pos:null,loc:'Current location',pick:new Date(),ret:new Date(Date.now()+864e5),q:'',cat:'All',ag:'',sel:null,step:0,promo:'',ok:false,offer:null,offers:[],helmet:false,terms:false,busy:0,act:{},name:'Traveler',phone:''};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const M=n=>'₹'+Math.round(n||0).toLocaleString('en-IN'),dOnly=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate()),iso=d=>new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const fd=d=>d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'}),num=v=>Number.isFinite(+v)?+v:0,norm=s=>String(s||'').trim().toLowerCase().replace(/_/g,' ');
+const tdate=v=>!v?null:v.toDate?v.toDate():v instanceof Date?v:new Date(v);
+const days=()=>Math.max(1,Math.round((dOnly(S.ret)-dOnly(S.pick))/864e5));
+const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),4500)};
+const show=h=>{dlg.innerHTML=h;if(!dlg.open)dlg.showModal()};
+const otp6=()=>String(crypto.getRandomValues(new Uint32Array(1))[0]%1e6).padStart(6,'0');
+const km=(a,b,c,d)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 12742*Math.asin(Math.sqrt(h))};
+const pick=(o,ks)=>{for(const k of ks){const v=o[k];if(v!=null&&String(v).trim())return String(v).trim()}return ''};
+
+/* ---------- pricing (same rules as the Dart screens) ---------- */
+const PS=new Date(2026,8,22),PE=new Date(2026,11,22,23,59,59);
+const fee=()=>(S.ok&&S.promo==='CHITTU2005')||(new Date()>=PS&&new Date()<=PE)?1:50;
+function calc(){const c=S.sel.car,d=days(),base=c.price*d,help=S.sv==='car'&&S.helmet?80*d:0;let disc=0;
+ if(S.ok&&S.promo!=='CHITTU2005'){if(!S.offer)disc=base*.1;else{const v=num(S.offer.discountValue??S.offer.discount);disc=norm(S.offer.discountType||'percent')==='percent'?base*v/100:v}disc=Math.min(Math.max(disc,0),base)}
+ const f=fee(),gst=f*.18,online=f+gst+15;let tax,total,remain;
+ if(S.sv==='car'){tax=(base+help-disc)*.05;total=base+help-disc+tax;remain=total}else{tax=(base-disc)*.05;remain=base-disc+tax;total=remain+f}
+ return {d,base,help,disc,tax,f,gst,online,total,remain}}
+
+/* ---------- data ---------- */
+const free=c=>!(S.res[c.id]||[]).some(([a,b])=>!(dOnly(S.ret)<a)&&!(dOnly(S.pick)>b));
+async function loadAgents(){const T=SV[S.sv];S.loading=1;S.agents=[];S.res={};render();
+ try{const ps=await getDocs(query(collection(db,'partners'),where('services','array-contains',T.svc),where('status','==','active')));
+  for(const p of ps.docs){const x=p.data(),g=x.gpsLocationGeoPoint;if(!g)continue;
+   const [vs,bs]=await Promise.all([getDocs(query(collection(p.ref,'vehicles'),where('serviceType','==',T.svc))),getDocs(query(collection(db,'bookings'),where('partnerId','==',p.id)))]);
+   bs.forEach(b=>{const y=b.data();if(norm(y.serviceType||y.service)!==T.svc.toLowerCase()||DONE.has(norm(y.status)))return;const vid=String(y.vehicleId||y.carId||y.bikeId||'').trim(),a=tdate(y.pickupDate||y.pickupDateTime||y.startDate),r=tdate(y.returnDate||y.dropDate||y.endDate);if(vid&&a&&r)(S.res[vid]=S.res[vid]||[]).push([dOnly(a),dOnly(r)])});
+   const cars=vs.docs.filter(d=>['active','available','booked'].includes(norm(d.data().status))).map(d=>{const v=d.data();return {id:d.id,pid:p.id,model:v.vehicleModel||T.name,no:v.vehicleNumber||'',price:typeof v.pricePerDay==='number'?v.pricePerDay:299,img:v.photo1Url||'',cat:v.category||v.vehicleCategory||T.name,dep:num(v.securityDeposit)}});
+   if(cars.length)S.agents.push({id:p.id,name:x.name||'Partner',city:x.city||'',loc:pick(x,['locationName','address','agencyAddress','fullAddress','pickupAddress','location','city'])||'Agency location',phone:pick(x,['mobile','phone','phoneNumber','mobileNumber','contactNumber','ownerPhone']),lat:g.latitude,lng:g.longitude,rating:typeof x.rating==='number'?x.rating:4.6,cars})}
+ }catch(e){console.error(e);S.err=e.code==='permission-denied'?'Permission denied. Sign in again or check Firestore rules.':e.message}
+ S.loading=0;render()}
+function locate(){navigator.geolocation?.getCurrentPosition(async p=>{S.pos=[p.coords.latitude,p.coords.longitude];try{const r=await(await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${S.pos}&key=${GKEY}`)).json();const a=r.results?.[0]?.formatted_address;if(a)S.loc=a}catch(e){}render()},()=>{},{enableHighAccuracy:true,timeout:10000})}
+function list(){const out=[];for(const a of S.agents){const dist=S.pos?km(S.pos[0],S.pos[1],a.lat,a.lng):0;if(dist>50||(S.ag&&S.ag!==a.id))continue;
+ for(const c of a.cars)if(free(c)&&(S.cat==='All'||c.cat.toLowerCase()===S.cat.toLowerCase())&&`${c.model} ${c.no} ${a.name}`.toLowerCase().includes(S.q.toLowerCase()))out.push({a,c,dist})}
+ return out.sort((x,y)=>S.sort==='p'?x.c.price-y.c.price:x.dist-y.dist)}
+
+/* ---------- rental state helpers ---------- */
+const rOtp=d=>pick(d,['returnOtp','returnVerificationOtp','returnOtpCode','dropOtp']);
+const hDone=d=>d.handoverOtpVerified===true||d.otpVerified===true||d.handoverCompleted===true||['active','rental active'].includes(norm(d.status||d.bookingStatus));
+const rDone=d=>d.returnOtpVerified===true||d.returnVerified===true||TERM.has(norm(d.status||d.bookingStatus));
+function watch(){S.unsub?.();S.act={};if(!S.user)return;
+ S.unsub=onSnapshot(query(collection(db,'bookings'),where('userId','==',S.user.uid)),s=>{S.act={};
+  const L=s.docs.filter(d=>!rDone(d.data()));L.sort((a,b)=>(tdate(b.data().createdAt)||0)-(tdate(a.data().createdAt)||0));
+  for(const d of L){const k=norm(d.data().serviceType)==='car rental'?'car':norm(d.data().serviceType)==='bike rental'?'bike':'';if(k&&!S.act[k])S.act[k]={id:d.id,...d.data()}}
+  for(const k in S.act){const b=S.act[k];if(hDone(b)&&!rOtp(b))repairReturn(b.id)}render()},e=>console.warn(e))}
+async function repairReturn(id){if(repairReturn.b)return;repairReturn.b=1;try{const r=doc(db,'bookings',id);await runTransaction(db,async tx=>{const s=await tx.get(r),c=s.data()||{};if(!s.exists()||rOtp(c)||!hDone(c))return;const o=otp6();
+ tx.update(r,{status:'Active',bookingStatus:'Active',rentalStatus:'Active',handoverCompleted:true,returnOtp:o,returnVerificationOtp:o,returnOtpCode:o,returnOtpStatus:'Pending',returnOtpVerified:false,returnOtpGeneratedAt:serverTimestamp(),updatedAt:serverTimestamp()})})}catch(e){console.warn(e)}repairReturn.b=0}
+async function cancelB(id){const b=Object.values(S.act).find(x=>x.id===id);if(!b||hDone(b))return toast('Cancellation is unavailable after handover.');
+ if(!confirm('Cancel this booking? The booking fee, GST and online charges are non-refundable.'))return;
+ try{const r=doc(db,'bookings',id),vr=b.partnerId&&b.vehicleId?doc(db,'partners',b.partnerId,'vehicles',b.vehicleId):null;
+  await runTransaction(db,async tx=>{const s=await tx.get(r),c=s.data()||{};if(c.userId!==S.user.uid)throw Error('Not your booking.');if(hDone(c)||TERM.has(norm(c.status)))throw Error('This booking can no longer be cancelled.');const vs=vr?await tx.get(vr):null;
+   tx.update(r,{status:'Cancelled',bookingStatus:'Cancelled',rentalStatus:'Cancelled',cancelledBy:S.user.uid,cancellationReason:'Cancelled by user before handover',cancelledAt:serverTimestamp(),refundStatus:'Not Applicable - Non-refundable booking charges',refundAmount:0,updatedAt:serverTimestamp()});
+   if(vs?.exists()&&vs.data().bookingId===id)tx.set(vr,{status:'active',bookedBy:deleteField(),bookingId:deleteField(),updatedAt:serverTimestamp()},{merge:true})});
+  toast('Booking cancelled.');loadAgents()}catch(e){toast(e.message)}}
+
+/* ---------- render ---------- */
+const empty=(i,t,p,b='')=>`<div class="st"><div style="font-size:2rem">${i}</div><h3>${t}</h3><p>${p}</p>${b}</div>`;
+function render(){const A=$('#app');$('#auth').textContent=S.user?'Sign out':'Sign in';
+ if(!S.sv){A.innerHTML=`<section class="hero"><h1>Rent a car or bike.<br>Your dates. Your way.</h1><p>Nearby rental partners, online booking, pay the rental balance directly to the owner.</p></section>
+ <div class="sv">${Object.entries(SV).map(([k,v])=>`<div class="svc" data-sv="${k}"><div class="i">${v.ico}</div><h3>${v.name} Rental</h3><ul><li>Choose pickup &amp; return dates</li><li>Nearby rental partners</li><li>Online booking &amp; payment</li></ul><button class="btn b">Rent a ${v.name}</button></div>`).join('')}</div>`;return}
+ const T=SV[S.sv];let h=`<section class="hero"><button class="btn g s" data-home>← Back</button><h1 style="margin-top:12px">${T.ico} ${T.name} Rental</h1><p>📍 ${esc(S.loc)} · agencies within 50 km</p></section>`;
+ if(!S.user)h+=empty('🔐','Please sign in','Sign in with the same mobile number as your Tripride app to see nearby partners.','<button class="btn" data-login>Sign in</button>');
+ else if(S.act[S.sv])h+=locked(S.act[S.sv]);
+ else if(S.loading)h+=empty('⏳','Loading nearby '+T.name.toLowerCase()+'s…','');
+ else if(S.err)h+=empty('⚠️','Could not load',esc(S.err),'<button class="btn" data-reload>Retry</button>');
+ else{const L=list(),cats=['All',...new Set(S.agents.flatMap(a=>a.cars.map(c=>c.cat)))];
+  h+=`<div class="bar"><input id="q" placeholder="Search model, number or partner" value="${esc(S.q)}"><div class="f" style="margin:0"><input type="date" id="dp" min="${iso(new Date())}" value="${iso(S.pick)}" title="Pickup"></div><div class="f" style="margin:0"><input type="date" id="dr" min="${iso(new Date(dOnly(S.pick).getTime()+864e5))}" value="${iso(S.ret)}" title="Return"></div>
+  <select id="so"><option value="n">Nearest</option><option value="p" ${S.sort==='p'?'selected':''}>Lowest price</option></select></div>
+  <div class="chips">${cats.map(c=>`<button class="chip ${S.cat===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+  <div class="chips"><button class="chip ${!S.ag?'on':''}" data-ag="">All agencies</button>${S.agents.map(a=>`<button class="chip ${S.ag===a.id?'on':''}" data-ag="${a.id}">${esc(a.name)} (${a.cars.length})</button>`).join('')}</div>
+  <h3>${L.length} ${T.name.toLowerCase()}s available · ${days()} day${days()>1?'s':''}</h3>
+  ${L.length?`<div class="grid">${L.map(({a,c,dist})=>`<article class="car" data-car="${a.id}:${c.id}"><div class="p">${c.img?`<img src="${esc(c.img)}" alt="" referrerpolicy="no-referrer">`:T.ico}</div><div class="t"><h3>${esc(c.model)}</h3><div style="margin:6px 0"><span class="tag">${esc(c.cat)}</span><span class="tag">⭐ ${a.rating.toFixed(1)}</span>${S.pos?`<span class="tag">${dist.toFixed(1)} km</span>`:''}</div><div class="note">${esc(a.name)}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><div class="price">${M(c.price)}<small> /day</small></div><span class="btn s">Book</span></div></div></article>`).join('')}</div>`:empty('🧭','No '+T.name.toLowerCase()+'s available','Try other dates, category or search.')}`}
+ A.innerHTML=h}
+
+function locked(b){const done=rDone(b),ho=hDone(b),ro=rOtp(b),st=done?'Returned / Completed':ho?'Rental Active':'Booking Confirmed',ci=done?4:ro?3:ho?2:0,ho_otp=pick(b,['handoverOtp','otp']);
+ return `<div class="box" style="background:var(--card)"><h2>${st}</h2><p class="note">This rental stays locked until the owner verifies the return OTP.</p>
+ <div class="tl">${['Confirmed','Handover','Active','Return','Completed'].map((x,i)=>`<div class="${i<=ci?'on':''}"><i></i>${x}</div>`).join('')}</div>
+ <div class="rw"><span>Vehicle</span><b>${esc(b.vehicleModel)} ${esc(b.vehicleNumber)}</b></div><div class="rw"><span>Owner</span><b>${esc(b.partnerName)}</b></div><div class="rw"><span>Dates</span><b>${fd(tdate(b.pickupDate))} – ${fd(tdate(b.returnDate))}</b></div>
+ <div class="rw"><span>Booking fee paid</span><b>${M(b.bookingFeePaid)}</b></div><div class="rw"><span>Pay to owner</span><b>${M(b.remainingAmount)}</b></div>${b.securityDeposit>0?`<div class="rw"><span>Security deposit</span><b>${M(b.securityDeposit)}</b></div>`:''}<div class="rw"><span>Booking ID</span><b>${b.id}</b></div>
+ ${!ho&&ho_otp?`<div class="ob"><b>HANDOVER OTP</b><div class="otp">${esc(ho_otp)}</div><p class="note">Tell this OTP to the owner at pickup.</p></div><button class="btn r b" data-cancel="${b.id}">Cancel booking</button><p class="note">Cancellation is allowed before handover only. Booking charges are non-refundable.</p>`:''}
+ ${ho&&!ro?'<div class="ob">⏳ Waiting for Return OTP…</div>':''}${ro?`<div class="ob g"><b>RETURN OTP</b><div class="otp">${esc(ro)}</div><p class="note">Give this OTP to the owner when returning.</p></div>`:''}</div>`}
+
+/* ---------- details + checkout ---------- */
+function sheet(){const {a,car}=S.sel,T=SV[S.sv];
+ if(S.step===1)return show(`<div class="d"><button class="x" data-x>×</button>${car.img?`<img src="${esc(car.img)}" style="width:100%;height:190px;object-fit:cover;border-radius:16px;margin-bottom:10px" referrerpolicy="no-referrer">`:''}<h2>${esc(car.model)}</h2><p class="note">${esc(a.name)} · ${esc(a.loc)}</p>
+ <div class="box"><div class="rw"><span>Price / day</span><b>${M(car.price)}</b></div><div class="rw"><span>Category</span><b>${esc(car.cat)}</b></div><div class="rw"><span>Rating</span><b>⭐ ${a.rating.toFixed(1)}</b></div>${car.dep>0?`<div class="rw"><span>Security deposit</span><b>${M(car.dep)}</b></div>`:''}<div class="rw"><span>Dates</span><b>${fd(S.pick)} → ${fd(S.ret)} (${days()}d)</b></div></div>
+ <button class="btn b" data-next>Continue • ${M(car.price*days())}</button></div>`);
+ const k=calc();
+ show(`<div class="d"><button class="x" data-x>×</button><h2>Checkout</h2><p class="note">${esc(car.model)} · ${esc(a.name)}</p>
+ <div class="two"><div class="f"><label>Pickup date</label><input type="date" id="cp" min="${iso(new Date())}" value="${iso(S.pick)}"></div><div class="f"><label>Return date</label><input type="date" id="cr" min="${iso(new Date(dOnly(S.pick).getTime()+864e5))}" value="${iso(S.ret)}"></div></div>
+ <div class="box"><div class="rw"><span>📍 Pickup</span><b>${esc(S.loc)}</b></div><div class="rw"><span>🏪 Return to agency</span><b>${esc(a.loc)}</b></div><a class="note" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${a.lat},${a.lng}">Open agency in Google Maps</a></div>
+ ${S.sv==='car'?`<label style="display:flex;gap:8px;margin:8px 0"><input type="checkbox" id="hl" ${S.helmet?'checked':''}> Helmet add-on (₹80/day)</label>`:''}
+ <div style="display:flex;gap:8px"><div class="f" style="flex:1;margin:0"><input id="pc" placeholder="Coupon code" value="${esc(S.promo)}"></div><button class="btn g s" data-coupon>${S.ok?'Applied':'Apply'}</button></div>${S.offers.length?`<p class="note">Offers: ${S.offers.map(o=>esc(String(o.code||'').toUpperCase())).join(', ')}</p>`:''}
+ <div class="box"><div class="rw"><span>Rental amount (${k.d}d)</span><b>${M(k.base-k.disc)}</b></div>${k.help?`<div class="rw"><span>Helmet</span><b>${M(k.help)}</b></div>`:''}<div class="rw"><span>Tax (5%)</span><b>${M(k.tax)}</b></div><div class="rw"><span>Paid to owner directly</span><b>${M(k.remain)}</b></div></div>
+ <div class="box" style="background:var(--okb)"><b>Pay now (TripRide)</b><div class="rw"><span>Booking fee</span><b>${M(k.f)}</b></div><div class="rw"><span>GST (18%)</span><b>${M(k.gst)}</b></div><div class="rw"><span>Tax</span><b>₹15</b></div><div class="rw"><b>Total online</b><b>${M(k.online)}</b></div></div>
+ ${S.sv==='bike'?`<label style="display:flex;gap:8px;font-size:.82rem"><input type="checkbox" id="tm" ${S.terms?'checked':''}> I agree to the Bike Rental Terms: return the bike on time and in good condition, follow traffic and helmet rules, no unauthorized riders or prohibited use, fines/damage are the customer's responsibility per the owner's disclosed terms, and never share OTPs except for the official handover/return.</label>`:''}
+ <p class="err" id="er"></p><button class="btn b" data-pay ${S.busy?'disabled':''}>${S.busy?'Processing…':`Pay ${M(k.online)} & Confirm Booking`}</button></div>`)}
+
+async function openCar(aid,cid){const a=S.agents.find(x=>x.id===aid);S.sel={a,car:a.cars.find(c=>c.id===cid)};S.step=1;S.promo='';S.ok=false;S.offer=null;S.helmet=false;S.terms=false;S.offers=[];sheet();
+ try{const s=await getDocs(collection(db,'partners',aid,'offers'));S.offers=s.docs.map(d=>d.data()).filter(d=>d.active!==false)}catch(e){}}
+
+async function api(p,body){const r=await fetch(SV[S.sv].back+p,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+await S.user.getIdToken(true)},body:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}return {ok:r.ok,j}}
+async function pay(){if(S.busy)return;const {a,car}=S.sel,T=SV[S.sv],k=calc(),er=m=>{$('#er').textContent=m};
+ if(S.sv==='bike'&&!S.terms)return er('Please accept the Bike Rental Terms before payment.');
+ if(!(S.ret>S.pick))return er('Return date must be after pickup date.');if(!free(car))return er('This vehicle is no longer available for these dates.');
+ S.busy=1;sheet();
+ try{const r=await api(T.path+'/create-order',{partner_id:a.id,vehicle_id:car.id,pickup_location:S.loc,drop_location:a.loc,pickup_date:S.pick.toISOString(),return_date:S.ret.toISOString(),
+   booking_fee:k.f,booking_fee_gst:+k.gst.toFixed(2),booking_fee_gst_rate:.18,online_tax:15,total_booking_charge:+k.online.toFixed(2),total_amount:+k.online.toFixed(2),total_rental_amount:+k.total.toFixed(2),remaining_amount:+k.remain.toFixed(2),coupon_code:S.promo.toUpperCase()});
+  const j=r.j;if(!r.ok||j.success!==true)throw Error(j.message||'Unable to prepare payment.');
+  const P={intent:String(j.intent_id||''),mode:String(j.payment_mode||'razorpay').toLowerCase(),wallet:num(j.wallet_used),rz:num(j.razorpay_amount),k,a,car};if(!P.intent)throw Error('Invalid payment intent.');
+  if(P.rz<=0)return verify(P,{payment_mode:'wallet'});
+  if(!j.key_id||!j.order_id||typeof Razorpay!=='function')throw Error('Payment checkout is not ready. Try again.');
+  dlg.close();const z=new Razorpay({key:j.key_id,amount:j.amount,currency:j.currency||'INR',order_id:j.order_id,name:'TRIPRIDE',description:T.name+' Rental Booking Fee',prefill:{contact:S.phone},theme:{color:'#F26B2A'},
+   handler:x=>verify(P,{payment_mode:P.mode,razorpay_payment_id:x.razorpay_payment_id,razorpay_order_id:x.razorpay_order_id,razorpay_signature:x.razorpay_signature}),modal:{ondismiss:()=>{S.busy=0}}});
+  z.on('payment.failed',()=>{S.busy=0;toast('Payment failed. No booking was created.')});z.open()
+ }catch(e){S.busy=0;if(dlg.open){sheet();$('#er').textContent=e.message}else toast(e.message)}}
+async function verify(P,extra){try{const r=await api(SV[S.sv].path+'/verify-payment',{intent_id:P.intent,...extra});if(!r.ok||r.j.success!==true||r.j.verified!==true)throw Error(r.j.message||'Payment verification failed. Contact support before paying again.');await book(P,r.j)}
+ catch(e){toast(e.message)}finally{S.busy=0}}
+async function book(P,pay){const {a,car,k}=P,T=SV[S.sv],u=S.user,ho=otp6(),vr=doc(db,'partners',a.id,'vehicles',car.id),br=doc(collection(db,'bookings'));
+ const ex=await getDocs(query(collection(db,'bookings'),where('partnerId','==',a.id),where('vehicleId','==',car.id)));
+ for(const d of ex.docs){const y=d.data();if(DONE.has(norm(y.status)))continue;const p=tdate(y.pickupDate||y.startDate),r=tdate(y.returnDate||y.endDate);if(p&&r&&!(dOnly(S.ret)<dOnly(p))&&!(dOnly(S.pick)>dOnly(r)))throw Error('Payment succeeded, but this vehicle was booked by someone else. Contact support for a refund.')}
+ const ud=(await getDoc(doc(db,'users',u.uid))).data()||{},pos=S.pos;
+ await runTransaction(db,async tx=>{const v=await tx.get(vr);if(!v.exists()||!['active','available','booked'].includes(norm(v.data().status)))throw Error('Vehicle is no longer available.');
+  tx.set(br,{userId:u.uid,customerId:u.uid,customerName:ud.name||u.displayName||'Customer',customerPhone:ud.phone||ud.mobile||'',partnerId:a.id,partnerName:a.name,partnerPhone:a.phone,partnerCity:a.city,partnerLocationName:a.loc,partnerLatitude:a.lat,partnerLongitude:a.lng,
+   vehicleId:car.id,vehicleModel:car.model,vehicleNumber:car.no,serviceType:T.svc,days:k.d,pricePerDay:car.price,totalPrice:k.total,totalRentalAmount:k.total,baseFare:k.base,discount:k.disc,tax:k.tax,securityDeposit:car.dep,
+   bookingFee:k.f,bookingFeeGst:k.gst,bookingFeeGstRate:.18,onlineTax:15,totalBookingCharge:k.online,bookingFeePaid:k.online,remainingAmount:k.remain,ownerPaymentStatus:'Pending',ownerPaymentMethod:'Direct',ownerPaymentRequired:true,
+   pickupLocation:S.loc,pickupLocationName:S.loc,currentLocationName:S.loc,pickupLatitude:pos?pos[0]:null,pickupLongitude:pos?pos[1]:null,dropLocation:a.loc,returnLocationName:a.loc,returnAgencyLocationName:a.loc,returnAgencyLatitude:a.lat,returnAgencyLongitude:a.lng,agencyLocationName:a.loc,agencyLatitude:a.lat,agencyLongitude:a.lng,
+   pickupDate:Timestamp.fromDate(S.pick),returnDate:Timestamp.fromDate(S.ret),userLocation:pos?new GeoPoint(pos[0],pos[1]):null,addons:S.sv==='car'?{helmet:S.helmet}:{},
+   paymentMethod:P.wallet>=k.online?'wallet_booking_fee_gst_tax':P.wallet>0?'wallet_plus_razorpay_booking_fee_gst_tax':'razorpay_booking_fee_gst_tax',paymentStatus:'Booking Fee Paid',bookingFeePaymentStatus:'Paid',paymentId:pay.payment_id||'',razorpayOrderId:pay.order_id||'',paymentIntentId:P.intent,walletAmount:num(pay.wallet_used??P.wallet),razorpayAmount:num(pay.razorpay_amount??P.rz),
+   bookingStatus:'Confirmed',status:'Confirmed',rentalStatus:'Confirmed',handoverCompleted:false,returnOtpStatus:'Not Generated',returnOtpVerified:false,returnVerified:false,handoverOtp:ho,otp:ho,otpStatus:'Pending',otpVerified:false,otpGeneratedAt:serverTimestamp(),createdAt:serverTimestamp()});
+  tx.set(vr,{status:'booked',bookedBy:u.uid,bookingId:br.id,updatedAt:serverTimestamp()},{merge:true})});
+ dlg.close();toast('Booking confirmed! Show the handover OTP to the owner.');render()}
+
+/* ---------- auth ---------- */
+const AE={'auth/invalid-phone-number':'Enter a valid 10-digit mobile number.','auth/too-many-requests':'Too many attempts. Wait a few minutes.','auth/invalid-verification-code':'That OTP is not correct.','auth/code-expired':'OTP expired. Request a new one.','auth/unauthorized-domain':'This domain is not authorized in Firebase Authentication.'};
+const l1=m=>{show(`<div class="d"><button class="x" data-x>×</button><h2>Sign in</h2><p class="note">Use the same mobile number as your Tripride app.</p><div class="f"><label>Mobile number</label><input id="ph" inputmode="numeric" maxlength="10" placeholder="98765 43210"></div><p class="err">${esc(m||'')}</p><div id="rc"></div><button class="btn b" data-otp>Send OTP</button></div>`)};
+const l2=(p,m)=>{show(`<div class="d"><button class="x" data-x>×</button><h2>Enter OTP</h2><p class="note">Code sent to +91 ${esc(p)}</p><div class="f"><input id="ot" inputmode="numeric" maxlength="6" placeholder="123456"></div><p class="err">${esc(m||'')}</p><button class="btn b" data-ver>Verify & sign in</button></div>`)};
+onAuthStateChanged(auth,async u=>{S.user=u;S.phone=u?.phoneNumber||'';if(u){try{const d=(await getDoc(doc(db,'users',u.uid))).data()||{};S.name=d.name||'Traveler';S.phone=d.phone||S.phone}catch(e){}}watch();render();if(u&&S.sv&&!S.agents.length)loadAgents()});
+
+/* ---------- events ---------- */
+document.addEventListener('click',async e=>{const t=e.target.closest('[data-sv],[data-home],[data-login],[data-reload],[data-cat],[data-ag],[data-car],[data-x],[data-next],[data-coupon],[data-pay],[data-cancel],[data-otp],[data-ver]'),D=t?.dataset;if(!D)return;
+ if('x'in D)return dlg.close();if('home'in D){S.sv=null;return render()}if('login'in D)return l1();if('reload'in D){S.err='';return loadAgents()}
+ if(D.sv){S.sv=D.sv;S.err='';S.agents=[];render();locate();if(S.user)loadAgents();return}
+ if(D.cat!==undefined){S.cat=D.cat;return render()}if(D.ag!==undefined){S.ag=D.ag;return render()}if(D.car){const[a,c]=D.car.split(':');return openCar(a,c)}
+ if('next'in D){S.step=2;return sheet()}if('pay'in D)return pay();if(D.cancel)return cancelB(D.cancel);
+ if('coupon'in D){const c=$('#pc').value.trim().toUpperCase();S.promo=c;const m=S.offers.find(o=>String(o.code||'').trim().toUpperCase()===c);
+  if(c==='CHITTU2005'){S.offer=null;S.ok=true;toast('CHITTU2005 applied — booking fee is ₹1')}else if(m){S.offer=m;S.ok=true;toast(c+' applied')}else if(c==='TRIP10'){S.offer=null;S.ok=true;toast('10% coupon applied')}else{S.ok=false;toast('Invalid or inactive coupon')}return sheet()}
+ if('otp'in D){const p=($('#ph').value||'').replace(/\D/g,'');if(!/^[6-9]\d{9}$/.test(p))return l1('Enter a valid 10-digit mobile number.');t.disabled=true;t.textContent='Sending…';
+  try{S.rcv?.clear();S.rcv=new RecaptchaVerifier(auth,'rc',{size:'invisible'});S.cf=await signInWithPhoneNumber(auth,'+91'+p,S.rcv);S.ph=p;l2(p)}catch(x){l1(AE[x.code]||'Could not send OTP ('+(x.code||'error')+').')}return}
+ if('ver'in D){const c=($('#ot').value||'').replace(/\D/g,'');if(c.length!==6)return l2(S.ph,'Enter the 6-digit OTP.');try{await S.cf.confirm(c);dlg.close();toast('Signed in.')}catch(x){l2(S.ph,AE[x.code]||'Could not verify OTP.')}}});
+document.addEventListener('input',e=>{if(e.target.id==='q'){S.q=e.target.value;const p=e.target.selectionStart;render();const q=$('#q');q.focus();q.setSelectionRange(p,p)}});
+document.addEventListener('change',e=>{const t=e.target,v=t.value?new Date(t.value+'T00:00'):null;
+ if(t.id==='dp'||t.id==='cp'){if(v){S.pick=v;if(S.ret<=v)S.ret=new Date(v.getTime()+864e5);S.sel&&!free(S.sel.car)&&(dlg.close(),toast('That vehicle is booked for these dates.'));render();if(dlg.open)sheet()}}
+ else if(t.id==='dr'||t.id==='cr'){if(v){S.ret=v;render();if(dlg.open)sheet()}}else if(t.id==='so'){S.sort=t.value;render()}else if(t.id==='hl'){S.helmet=t.checked;sheet()}else if(t.id==='tm')S.terms=t.checked});
+$('#auth').onclick=()=>S.user?signOut(auth).then(()=>toast('Signed out.')):l1();
+render();
+</script></body></html>

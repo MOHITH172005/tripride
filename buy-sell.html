@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Used Cars &amp; Bikes | Tripride Market</title>
+<meta name="description" content="Buy used cars and bikes within 200 km, or list yours and go live after payment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+<script>try{var t=localStorage.getItem('tr_theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#FBF7F2;--card:#fff;--ink:#1B2433;--muted:#6A7585;--line:#E6DCCD;--sun:#F26B2A;--sun-d:#D9561A;--sky:#1478B8;--ok:#178A4B;--ok-bg:#E6F6EC;--bad:#B42318;--chip:#F1E9DD;--sh:0 14px 34px rgba(60,40,10,.1);--sans:'DM Sans',system-ui,sans-serif;--serif:'Fraunces',Georgia,serif}
+:root[data-theme=dark]{--bg:#0C1422;--card:#14223A;--ink:#EEF2F8;--muted:#97A5BA;--line:#223250;--sun:#FF8A4C;--sun-d:#FF7430;--sky:#5BB4F0;--ok:#4ADE80;--ok-bg:#12301F;--bad:#FF9A8F;--chip:#1B2C49;--sh:0 14px 34px rgba(0,0,0,.45)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0C1422;--card:#14223A;--ink:#EEF2F8;--muted:#97A5BA;--line:#223250;--sun:#FF8A4C;--sun-d:#FF7430;--sky:#5BB4F0;--ok:#4ADE80;--ok-bg:#12301F;--bad:#FF9A8F;--chip:#1B2C49;--sh:0 14px 34px rgba(0,0,0,.45)}}
+*{box-sizing:border-box;margin:0}
+html{color-scheme:light dark}:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;padding-bottom:env(safe-area-inset-bottom)}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.wrap{width:min(1100px,100% - 28px);margin-inline:auto}[hidden]{display:none!important}
+.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:8px}
+.brand{font-family:var(--serif);font-weight:800;font-size:1.35rem;color:var(--ink);text-decoration:none}.brand b{color:var(--sun)}
+.nr{display:flex;gap:8px;align-items:center}
+.ib{width:40px;height:40px;border-radius:12px;border:1.5px solid var(--line);background:var(--card)}
+.wallet{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:8px 12px;font-weight:700;font-size:.88rem}
+.btn{border:0;border-radius:12px;padding:11px 18px;font-weight:700;background:var(--sun);color:#fff;text-decoration:none;display:inline-block;text-align:center}
+.btn:hover{background:var(--sun-d)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.ghost{background:transparent;border:1.5px solid var(--sun);color:var(--sun)}
+.btn.sm{padding:8px 14px;font-size:.88rem}.btn.block{display:block;width:100%;padding:14px}
+.tabs{display:flex;gap:8px;margin:18px 0 6px}
+.tab{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:8px 18px;font-weight:700;color:var(--muted)}
+.tab[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+h1{font-family:var(--serif);font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.08;margin:10px 0 6px}
+.muted{color:var(--muted);font-size:.92rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.act{border:0;border-radius:24px;height:170px;padding:18px;color:#fff;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.act .em{position:absolute;right:-6px;top:-4px;font-size:5.5rem;opacity:.22}
+.act b{font-family:var(--serif);font-size:1.9rem;line-height:1}.act span{font-size:.85rem;opacity:.9;margin-top:4px}
+.buy{background:linear-gradient(135deg,#2563EB,#4F46E5)}.sell{background:linear-gradient(135deg,#F97316,#E11D48)}
+.strip{border-radius:16px;padding:13px 15px;margin-bottom:10px;background:var(--chip);font-size:.9rem}.strip b{display:block}
+.note{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;font-size:.84rem;color:var(--muted);margin:16px 0 50px}
+.note b{color:var(--ink);display:block;margin-bottom:3px}
+.top{display:flex;align-items:center;gap:10px;margin:16px 0 12px;flex-wrap:wrap}.top h2{font-family:var(--serif);font-size:1.6rem;flex:1}
+.sum{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:14px}
+.sum .r{display:flex;justify-content:space-between;font-weight:700}.sum input[type=range]{width:100%;accent-color:var(--sun);margin:8px 0 2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:50px}
+.vc{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:10px;cursor:pointer;text-align:left;width:100%}
+.vc:hover{box-shadow:var(--sh)}
+.ph{width:112px;height:112px;border-radius:14px;background:var(--chip);flex:none;overflow:hidden;display:grid;place-items:center;font-size:2.4rem}
+.ph img{width:100%;height:100%;object-fit:cover}
+.vi{flex:1;min-width:0}.vi h3{font-size:1.02rem;line-height:1.25}.vi small{color:var(--muted)}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0}
+.pill{background:var(--chip);color:var(--muted);border-radius:8px;padding:3px 8px;font-size:.72rem;font-weight:700}
+.pr{display:flex;justify-content:space-between;align-items:center}.pr b{color:var(--sky);font-size:1.15rem}.pr span{font-size:.76rem;color:var(--muted);font-weight:700}
+.st{font-size:.68rem;font-weight:800;border-radius:8px;padding:3px 8px;text-transform:uppercase}
+.st.active{background:var(--ok-bg);color:var(--ok)}.st.sold{background:#FFEBDD;color:#B4460F}.st.removed{background:var(--chip);color:var(--muted)}
+.mine{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:10px;margin-bottom:12px}
+.mine .row{display:flex;gap:12px}.mine .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.state{text-align:center;padding:50px 20px;background:var(--card);border:1px dashed var(--line);border-radius:20px;margin:14px 0 50px}
+.state h3{font-family:var(--serif);font-size:1.4rem}.state p{color:var(--muted);max-width:44ch;margin:6px auto 14px}
+.sk{height:136px;border-radius:20px;background:linear-gradient(100deg,var(--card) 30%,var(--chip) 50%,var(--card) 70%);background-size:200% 100%;animation:sh 1.3s infinite}@keyframes sh{to{background-position:-200% 0}}
+.hero2{border-radius:22px;padding:18px;color:#fff;margin:12px 0}.hero2 b{display:block;font-family:var(--serif);font-size:1.4rem}.hero2.car{background:linear-gradient(135deg,#1D4ED8,#4338CA)}.hero2.bike{background:linear-gradient(135deg,#EA580C,#E11D48)}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px}.sec h3{font-size:1rem;margin-bottom:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fl{margin-bottom:10px;position:relative}.fl label{display:block;font-size:.74rem;font-weight:700;color:var(--muted);margin:0 0 4px 4px}
+.fl input,.fl select{width:100%;height:46px;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;background:var(--bg)}
+.fl input:focus,.fl select:focus{border-color:var(--sun);outline:none}
+.sugg{position:absolute;left:0;right:0;top:100%;z-index:8;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);max-height:220px;overflow:auto}
+.sugg button{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;padding:10px 13px;font-size:.85rem}.sugg button:hover{background:var(--chip)}
+.loc{background:color-mix(in srgb,var(--sky) 10%,transparent);border-radius:14px;padding:12px;font-size:.82rem;font-weight:700;color:var(--sky);display:flex;gap:8px;align-items:center;justify-content:space-between}
+.thumbs{display:flex;gap:8px;overflow-x:auto;margin-top:10px}
+.th{position:relative;flex:none}.th img{width:84px;height:84px;object-fit:cover;border-radius:12px}
+.th button{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;line-height:1}
+.wal{background:var(--ok-bg);border:1px solid color-mix(in srgb,var(--ok) 35%,transparent);border-radius:16px;padding:13px;margin-bottom:12px;display:flex;justify-content:space-between;font-weight:800;color:var(--ok);font-size:.9rem}
+.fee{background:#FFF6DC;border:1px solid #F3DC8A;color:#7A5200;border-radius:16px;padding:13px;margin-bottom:14px;font-size:.82rem;font-weight:700}
+.gate{position:relative;margin:14px 0 50px;min-height:460px;display:grid;place-items:center}
+.gbg{position:absolute;inset:0;overflow:hidden;display:grid;grid-auto-rows:min-content;gap:14px;filter:blur(7px);opacity:.5;pointer-events:none;user-select:none}
+.gbg .vc{cursor:default}.bar{height:12px;border-radius:6px;background:var(--line);margin:9px 0}
+.gc{position:relative;width:min(410px,100%);background:var(--card);border:1px solid var(--line);border-radius:26px;padding:28px 24px 22px;text-align:center;box-shadow:var(--sh);margin:36px 0}
+.gi{width:64px;height:64px;border-radius:20px;background:color-mix(in srgb,var(--sun) 14%,transparent);display:grid;place-items:center;font-size:1.9rem;margin:0 auto 14px}
+.gc h3{font-family:var(--serif);font-size:1.5rem;line-height:1.15}.gc p{color:var(--muted);font-size:.92rem;margin:8px 0 16px}
+.gl{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:7px;text-align:left;font-size:.85rem;font-weight:500}.gl li::before{content:"✓";color:var(--ok);font-weight:800;margin-right:8px}
+dialog{border:0;border-radius:24px;padding:0;width:min(560px,calc(100% - 24px));max-height:92vh;overflow:auto;background:var(--card);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.4);margin:auto}
+dialog::backdrop{background:rgba(8,14,26,.65);backdrop-filter:blur(3px)}
+.d{padding:24px 22px 22px;position:relative}.d h2{font-family:var(--serif);font-size:1.6rem;line-height:1.15;margin:0 40px 6px 0}.d .sub{color:var(--muted);margin-bottom:12px}
+.x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:0;background:var(--chip);font-size:1.2rem}
+.car-s{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:18px}.car-s img{width:100%;flex:none;height:260px;object-fit:cover;scroll-snap-align:center}
+.kv{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.88rem}.kv span{width:132px;flex:none;color:var(--muted)}.kv b{flex:1;word-break:break-word}
+.d h4{margin:16px 0 4px}.cta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.ch button{border:0;border-radius:22px;height:130px;color:#fff;font-family:var(--serif);font-size:1.6rem;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.ch small{font-family:var(--sans);font-size:.78rem;font-weight:500;opacity:.9}
+.err{color:var(--bad);font-size:.84rem;font-weight:700;margin:8px 0}
+.phone{display:flex;gap:8px}.phone span{display:grid;place-items:center;border:1.5px solid var(--line);border-radius:12px;padding:0 14px;background:var(--bg);font-weight:700}.phone input{flex:1}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-size:.9rem;opacity:0;pointer-events:none;transition:.25s;z-index:9999;max-width:calc(100% - 28px)}.toast.show{opacity:1;transform:translate(-50%,0)}
+#rc{height:0;overflow:hidden}
+@media(max-width:560px){.g2.keep{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.wallet{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <a href="index.html" class="brand">TRIP<b>RIDE</b></a>
+  <div class="nr">
+    <span class="wallet" id="walletChip" hidden></span>
+    <a class="btn sm ghost" href="trips.html">Trips</a>
+    <button class="ib" id="themeBtn" aria-label="Switch theme">◐</button>
+    <button class="btn sm ghost" id="authBtn" type="button">Sign in</button>
+  </div>
+</div></header>
+<main class="wrap">
+  <div class="tabs" role="group" aria-label="Sections">
+    <button class="tab" data-tab="market" aria-pressed="true">Market</button>
+    <button class="tab" data-tab="mine" aria-pressed="false">My listings</button>
+  </div>
+  <div id="view"></div>
+</main>
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+import {getFirestore,collection,query,where,onSnapshot,doc,setDoc,updateDoc,runTransaction,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import {getAuth,onAuthStateChanged,RecaptchaVerifier,signInWithPhoneNumber,signOut} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+import {getStorage,ref,uploadBytes,getDownloadURL} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js';
+
+/* ===== CONFIG (same project as the trips page) ===== */
+const FB={apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw",authDomain:"tripmate-74df9.firebaseapp.com",projectId:"tripmate-74df9",storageBucket:"tripmate-74df9.firebasestorage.app",messagingSenderId:"931960941543",appId:"1:931960941543:web:ced98c012dc22fcb776b42"};
+const PLACES_KEY='AIzaSyBBHjG4-btvLZoZIba-jB8WvqL2TTkHx6w';   // restrict to your website domain (HTTP referrers)
+const RZP_KEY='YOUR_RAZORPAY_KEY_ID';                          // put your Razorpay Key ID here (same as the app's TRIPRIDE_RAZORPAY_KEY_ID)
+const FEE={car:2000,bike:1000}, MAXR=200, LABEL={car:'Car',bike:'Bike'}, ICON={car:'🚗',bike:'🏍️'};
+
+const app=initializeApp(FB), db=getFirestore(app), auth=getAuth(app), storage=getStorage(app);
+const S={view:'home',tab:'market',mode:'buy',type:'car',pos:null,place:'',locErr:'',user:null,wallet:0,unW:null,unL:null,items:[],mine:[],radius:200,imgs:[],ans:null,after:null,rc:null,confirm:null,phone:'',busy:false,sReq:0,sTimer:null,authReady:false};
+const $=s=>document.querySelector(s), dlg=$('#dlg');
+
+/* ===== helpers ===== */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:0});
+const safeImg=u=>/^https:\/\//.test(u||'')?u:'';
+const km=(a,b,c,d)=>{const r=Math.PI/180,x=(c-a)*r,y=(d-b)*r,h=Math.sin(x/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)**2;return 12742*Math.asin(Math.sqrt(h))};
+const dist=v=>S.pos?km(S.pos.lat,S.pos.lng,v.latitude,v.longitude):0;
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),3800)}
+function show(h){dlg.innerHTML=h;if(!dlg.open)dlg.showModal()}
+const X='<button class="x" data-act="close" aria-label="Close">×</button>';
+const mapV=d=>{const x=d.data(),n=v=>Number.isFinite(+v)?+v:0;return{...x,id:d.id,type:x.type||'car',price:n(x.price),year:n(x.year),registrationYear:n(x.registrationYear),kmDriven:n(x.kmDriven),owners:n(x.owners),latitude:n(x.latitude),longitude:n(x.longitude),photos:Array.isArray(x.photos)?x.photos.filter(Boolean):[],status:x.listingStatus||'active',sellerType:x.sellerType||'owner',created:x.createdAt&&x.createdAt.toDate?x.createdAt.toDate():new Date(0)}};
+
+/* ===== location ===== */
+function locate(){
+  return new Promise(res=>{
+    if(!navigator.geolocation){S.locErr='This browser cannot share location.';return res(false)}
+    navigator.geolocation.getCurrentPosition(p=>{S.pos={lat:p.coords.latitude,lng:p.coords.longitude};S.locErr='';geocode();res(true)},
+      ()=>{S.locErr='Allow location access to find vehicles within 200 km.';res(false)},{enableHighAccuracy:true,timeout:12000,maximumAge:60000});
+  });
+}
+async function geocode(){
+  try{const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=14&lat=${S.pos.lat}&lon=${S.pos.lng}`);const j=await r.json();S.place=j.display_name||'';}catch(e){S.place=''}
+  const el=$('#locName');if(el)el.textContent=S.place?`Present location: ${S.place}`:'Present location detected';
+}
+async function placeSearch(text){
+  const r=await fetch('https://places.googleapis.com/v1/places:searchText',{method:'POST',headers:{'Content-Type':'application/json','X-Goog-Api-Key':PLACES_KEY,'X-Goog-FieldMask':'places.displayName,places.formattedAddress'},body:JSON.stringify({textQuery:text,languageCode:'en',regionCode:'IN',pageSize:6})});
+  if(!r.ok)throw new Error('Places '+r.status);const j=await r.json();
+  return(j.places||[]).map(p=>(p.formattedAddress||(p.displayName&&p.displayName.text)||'').trim()).filter(Boolean);
+}
+
+/* ===== auth + wallet ===== */
+const AERR={'auth/invalid-phone-number':'Enter a valid 10-digit mobile number.','auth/too-many-requests':'Too many attempts. Wait a few minutes and try again.','auth/invalid-verification-code':'That OTP is not correct.','auth/code-expired':'That OTP has expired. Request a new one.','auth/captcha-check-failed':'Security check failed. Refresh and try again.','auth/unauthorized-domain':'This domain is not authorized in Firebase Authentication.','auth/network-request-failed':'Network error. Check your connection.'};
+function login1(msg){show(`<div class="d">${X}<h2>Sign in</h2><p class="sub">Use the same mobile number as your Tripride app.</p>
+  <div class="fl"><label for="ph">Mobile number</label><div class="phone"><span>+91</span><input id="ph" inputmode="numeric" maxlength="10" placeholder="98765 43210" autocomplete="tel-national"></div></div>
+  ${msg?`<p class="err">${esc(msg)}</p>`:''}<div id="rc"></div><button class="btn block" id="otpBtn" data-act="sendOtp">Send OTP</button></div>`);setTimeout(()=>$('#ph')&&$('#ph').focus(),50)}
+function login2(phone,msg){show(`<div class="d">${X}<h2>Enter the OTP</h2><p class="sub">We sent a 6-digit code to +91 ${esc(phone)}.</p>
+  <div class="fl"><label for="otp">OTP</label><input id="otp" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="one-time-code"></div>
+  ${msg?`<p class="err">${esc(msg)}</p>`:''}<button class="btn block" id="vBtn" data-act="verifyOtp">Verify &amp; sign in</button>
+  <p style="text-align:center;margin-top:10px"><button type="button" class="tab" data-act="chPhone">Change number</button></p></div>`);setTimeout(()=>$('#otp')&&$('#otp').focus(),50)}
+const openLogin=after=>{S.after=after||null;login1()};
+async function sendOtp(){
+  const phone=($('#ph').value||'').replace(/\D/g,'');if(!/^[6-9]\d{9}$/.test(phone))return login1('Enter a valid 10-digit mobile number.');
+  const b=$('#otpBtn');b.disabled=true;b.textContent='Sending…';
+  try{if(S.rc){try{S.rc.clear()}catch(e){}}S.rc=new RecaptchaVerifier(auth,'rc',{size:'invisible'});S.confirm=await signInWithPhoneNumber(auth,'+91'+phone,S.rc);S.phone=phone;login2(phone)}
+  catch(e){console.error(e);if(S.rc){try{S.rc.clear()}catch(_){}S.rc=null}login1(AERR[e.code]||`Could not send OTP (${e.code||'error'}).`)}
+}
+async function verifyOtp(){
+  const code=($('#otp').value||'').replace(/\D/g,'');if(code.length!==6)return login2(S.phone,'Enter the 6-digit OTP.');
+  const b=$('#vBtn');b.disabled=true;b.textContent='Verifying…';
+  try{await S.confirm.confirm(code);dlg.close();toast('Signed in.');const n=S.after;S.after=null;if(n)setTimeout(n,250)}
+  catch(e){login2(S.phone,AERR[e.code]||`Could not verify OTP (${e.code||'error'}).`)}
+}
+onAuthStateChanged(auth,u=>{
+  S.user=u;$('#authBtn').textContent=u?'Sign out':'Sign in';
+  if(S.unW){S.unW();S.unW=null}
+  if(u)S.unW=onSnapshot(doc(db,'wallets',u.uid),s=>{S.wallet=Number(s.data()&&s.data().balance)||0;paintWallet()},()=>{});else{S.wallet=0;paintWallet()}
+  S.authReady=true;go(S.view);
+});
+function paintWallet(){
+  const w=$('#walletChip');w.hidden=!S.user;w.textContent=`Wallet ₹${S.wallet.toFixed(2)}`;
+  const b=$('#walBox');if(b)b.innerHTML=S.user?`<span>TripRide Wallet: ₹${money(S.wallet)}</span><span>${S.wallet+.01>=FEE[S.type]?'CAN PAY':''}</span>`:'<span>Sign in to pay from your wallet</span>';
+  const p=$('#pubBtn');if(p&&!S.busy)p.textContent=`Pay ₹${money(FEE[S.type])} & publish`+(S.wallet+.01>=FEE[S.type]?' (wallet available)':'');
+}
+
+/* ===== navigation ===== */
+function go(view,type){
+  if(S.unL){S.unL();S.unL=null}
+  S.view=view;if(type)S.type=type;
+  S.tab=view==='mine'?'mine':'market';
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-pressed',String(t.dataset.tab===S.tab)));
+  window.scrollTo(0,0);
+  ({home:homeView,list:listView,sell:sellView,mine:mineView})[view]();
+}
+function choose(mode){
+  S.mode=mode;
+  show(`<div class="d">${X}<h2>${mode==='buy'?'What do you want to buy?':'What do you want to sell?'}</h2><p class="sub">${mode==='buy'?'Only active listings within 200 km are shown.':'Choose your vehicle, pay the listing fee and go live.'}</p>
+  <div class="ch"><button data-act="pickType" data-t="car" style="background:linear-gradient(135deg,#1D4ED8,#4F46E5)">${ICON.car} Car<small>${mode==='buy'?'Within 200 km':'₹2,000 fee'}</small></button>
+  <button data-act="pickType" data-t="bike" style="background:linear-gradient(135deg,#EA580C,#E11D48)">${ICON.bike} Bike<small>${mode==='buy'?'Within 200 km':'₹1,000 fee'}</small></button></div></div>`);
+}
+
+/* ===== HOME ===== */
+function homeView(){
+  $('#view').innerHTML=`<h1>Used cars &amp; bikes</h1><p class="muted">Buy nearby. Sell easily. Connect directly with the seller.</p>
+  <div class="two"><button class="act buy" data-act="buy"><span class="em">🛍️</span><b>Buy</b><span>Find a used vehicle</span></button>
+  <button class="act sell" data-act="sell"><span class="em">🏷️</span><b>Sell</b><span>List your vehicle</span></button></div>
+  <div class="strip"><b>Buy radius</b>Active cars and bikes are shown within 200 km of your location.</div>
+  <div class="strip"><b>Sell fees</b>Car ₹2,000 · Bike ₹1,000. Successful payment publishes the listing live.</div>
+  <div class="strip"><b>Direct seller contact</b>Owner or representative details are shown so buyers know who is selling.</div>
+  <div class="note"><b>Transparent marketplace</b>TripRide does not verify or approve individual listings. Buyers should independently check RC, insurance, PUC and vehicle condition before purchase.</div>`;
+}
+
+/* ===== BUY ===== */
+async function listView(){
+  $('#view').innerHTML=`<div class="top"><button class="btn sm ghost" data-act="home">← Back</button><h2>Buy used ${S.type==='car'?'cars':'bikes'}</h2><button class="btn sm ghost" data-act="relocate">Update location</button></div><div id="lst"><div class="grid">${'<div class="sk"></div>'.repeat(3)}</div></div>`;
+  if(!S.authReady)return;
+  if(!S.user){$('#lst').innerHTML=gate('Sign in to browse vehicles','Listings include seller contact details, so please sign in first. It takes a few seconds with your mobile number.',['See cars and bikes within 200 km','Call or chat with sellers directly','Same account as your Tripride app']);return}
+  if(!S.pos&&!(await locate()))return paintList();
+  S.items=[];
+  S.unL=onSnapshot(query(collection(db,'used_vehicles'),where('type','==',S.type),where('listingStatus','==','active')),
+    s=>{S.items=s.docs.map(mapV);paintList()},
+    e=>{$('#lst').innerHTML=stateCard('⚠️','Could not load listings',esc(e.code||e.message))});
+}
+function stateCard(i,t,p,b){return`<div class="state"><div style="font-size:2rem">${i}</div><h3>${t}</h3><p>${p}</p>${b||''}</div>`}
+function gate(t,p,list){
+  const bar='<div class="vc"><div class="ph"></div><div class="vi"><div class="bar" style="width:70%"></div><div class="bar" style="width:45%"></div><div class="bar" style="width:30%"></div></div></div>';
+  return`<div class="gate"><div class="gbg" aria-hidden="true">${bar.repeat(4)}</div><div class="gc"><div class="gi" aria-hidden="true">🔐</div><h3>${t}</h3><p>${p}</p><button class="btn block" data-act="login">Sign in with mobile number</button><ul class="gl">${list.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`;
+}
+const waitView=()=>{$('#view').innerHTML='<div class="grid">'+'<div class="sk"></div>'.repeat(2)+'</div>'};
+function paintList(){
+  const box=$('#lst');if(!box||S.view!=='list')return;
+  if(!S.pos){box.innerHTML=stateCard('📍','Location needed',esc(S.locErr||'Allow location access to continue.'),'<button class="btn" data-act="relocate">Try again</button>');return}
+  if(!$('#grid')){box.innerHTML=`<div class="sum"><div class="r"><span id="cnt"></span><span id="rad" style="color:var(--sky)"></span></div><input type="range" id="radius" min="10" max="${MAXR}" step="10" value="${S.radius}" aria-label="Search radius"><small class="muted">Maximum available radius: ${MAXR} km</small></div><div id="grid"></div>`;
+    $('#radius').addEventListener('input',e=>{S.radius=+e.target.value;paintList()})}
+  const list=S.items.filter(v=>dist(v)<=S.radius).sort((a,b)=>dist(a)-dist(b));
+  $('#cnt').textContent=`${list.length} vehicle${list.length===1?'':'s'} found`;$('#rad').textContent=`${S.radius} km`;
+  $('#grid').innerHTML=list.length?`<div class="grid">${list.map(card).join('')}</div>`:stateCard('🛣️','No vehicles nearby','No active listings match this vehicle type and radius right now.');
+}
+function card(v){
+  const img=safeImg(v.photos[0]);
+  return`<button class="vc" data-open="${esc(v.id)}"><div class="ph">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:ICON[v.type]}</div>
+  <div class="vi"><h3>${esc(`${v.brand||''} ${v.model||''}`.trim())}</h3><small>${esc(v.variant||'Used vehicle')}</small>
+  <div class="pills"><span class="pill">${v.year}</span><span class="pill">${money(v.kmDriven)} km</span>${v.fuel?`<span class="pill">${esc(v.fuel)}</span>`:''}</div>
+  <div class="pr"><b>₹${money(v.price)}</b><span>📍 ${dist(v).toFixed(0)} km</span></div></div></button>`;
+}
+function detail(v){
+  const kv=(l,x)=>x!==''&&x!=null&&String(x)!=='0'?`<div class="kv"><span>${l}</span><b>${esc(x)}</b></div>`:'';
+  const kv2=(l,x)=>`<div class="kv"><span>${l}</span><b>${esc(x||'Not provided')}</b></div>`;
+  const imgs=v.photos.map(safeImg).filter(Boolean), rep=v.sellerType==='representative', ph=String(v.sellerPhone||'').replace(/[^0-9+]/g,'');
+  show(`<div class="d">${X}<h2>${esc(`${v.brand||''} ${v.model||''}`)}</h2>
+  ${imgs.length?`<div class="car-s">${imgs.map(u=>`<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`:`<div class="ph" style="width:100%;height:200px">${ICON[v.type]}</div>`}
+  <div class="pr" style="margin-top:12px"><b style="font-size:1.4rem">₹${money(v.price)}</b><span>${dist(v).toFixed(0)} km away</span></div>
+  <p class="muted">${esc(v.variant||'')}</p>
+  <h4>Vehicle &amp; registration</h4>${kv('Registration',v.registrationNumber)}${kv('Registration year',v.registrationYear)}${kv('Year',v.year)}${kv('KM driven',money(v.kmDriven))}${kv('Owners',v.owners)}${kv('Fuel',v.fuel)}${kv('Transmission',v.transmission)}${kv('RC details',v.rcDetails)}${kv('Insurance',v.insurance)}${kv('PUC',v.puc)}${kv('Location',v.city)}
+  <h4>Seller information</h4>${kv2('Seller',v.sellerName)}${kv2('Seller phone',v.sellerPhone)}${kv2('Seller type',rep?'Selling for registered owner':'Registered owner')}
+  ${rep?kv2('Actual owner',v.ownerName)+kv2('Owner phone',v.ownerPhone)+kv2('Relationship',v.sellerRelationship):''}
+  <h4>Buyer reminder</h4><p class="muted">Before paying the seller, independently inspect the vehicle and verify the original RC, registration number, insurance, PUC, ownership and applicable transfer documents.</p>
+  <div class="cta"><a class="btn ghost" ${ph?`href="tel:${esc(ph)}"`:'aria-disabled="true"'}>Call</a><a class="btn" ${ph?`href="https://wa.me/${esc(ph.replace('+',''))}" target="_blank" rel="noopener"`:'aria-disabled="true"'}>Chat</a></div></div>`);
+}
+
+/* ===== SELL ===== */
+const fld=(n,l,t='text',r=1)=>`<div class="fl"><label for="f_${n}">${l}${r?' *':''}</label><input id="f_${n}" name="${n}" type="${t}" ${r?'required':''} ${t==='number'?'min="0" step="any" inputmode="decimal"':''} autocomplete="off"></div>`;
+function sellView(){
+  if(!S.authReady)return waitView();
+  if(!S.user){$('#view').innerHTML=`<div class="top"><button class="btn sm ghost" data-act="home">← Back</button><h2>Sell ${S.type==='car'?'car':'bike'}</h2></div>`+gate('Sign in to sell your vehicle','Create your listing, pay the fee from your wallet or Razorpay and go live in minutes.',['Car listing ₹2,000 · Bike listing ₹1,000','Goes live right after payment','Same account and wallet as your Tripride app']);return}
+  S.imgs=[];const car=S.type==='car',fee=FEE[S.type];
+  $('#view').innerHTML=`<div class="top"><button class="btn sm ghost" data-act="home">← Back</button><h2>Sell ${car?'car':'bike'}</h2></div>
+  <div class="hero2 ${S.type}"><b>Sell your ${car?'car':'bike'}</b>Listing fee ₹${money(fee)} · No admin approval</div>
+  <form id="sf" autocomplete="off">
+  <div class="sec"><h3>Vehicle details</h3>${fld('brand','Brand')}${fld('model','Model')}${fld('variant','Variant','text',0)}
+   <div class="g2">${fld('year','Manufacturing year','number')}${fld('registrationYear','Registration year','number')}${fld('fuel','Fuel')}${fld('transmission','Transmission')}${fld('kmDriven','KM driven','number')}${fld('owners','No. of owners','number')}</div>${fld('registrationNumber','Registration number')}</div>
+  <div class="sec"><h3>Documents</h3>${fld('rcDetails','RC details','text',0)}${fld('insurance','Insurance details','text',0)}${fld('puc','PUC details','text',0)}</div>
+  <div class="sec"><h3>Seller &amp; registered owner</h3>
+   <div class="fl"><label for="f_sellerType">Selling as</label><select id="f_sellerType" name="sellerType"><option value="owner">Registered owner</option><option value="representative">Selling for someone else</option></select></div>
+   ${fld('sellerName','Seller name')}${fld('sellerPhone','Seller phone','tel')}
+   <div id="repBox" hidden>${fld('ownerName','Actual registered owner name','text',0)}${fld('ownerPhone','Actual owner phone','tel',0)}${fld('sellerRelationship','Relationship / authorization','text',0)}</div></div>
+  <div class="sec"><h3>Price &amp; location</h3>${fld('price','Expected selling price (₹)','number')}
+   <div class="fl"><label for="f_city">Location / city / locality *</label><input id="f_city" name="city" required autocomplete="off"><div class="sugg" id="sg" hidden></div></div>
+   <div class="loc"><span id="locName">${S.pos?(S.place?`Present location: ${esc(S.place)}`:'Present location detected'):'Getting present location…'}</span><button type="button" class="btn sm ghost" data-act="useLoc">Use</button></div></div>
+  <div class="sec"><h3>Vehicle photos</h3><input type="file" id="phIn" accept="image/*" multiple hidden>
+   <button type="button" class="btn ghost block" data-act="pickPh" id="phBtn">Add photos</button><div class="thumbs" id="thumbs"></div>
+   <p class="muted" style="margin-top:8px;font-size:.78rem">Add clear front, back, side, interior, dashboard and RC/document photos (up to 12).</p></div>
+  <div class="wal" id="walBox"></div>
+  <div class="fee">Listing fee: ${car?'Car ₹2,000':'Bike ₹1,000'}. The fee is non-refundable once published. A confirmed payment makes the listing live immediately; there is no admin verification step.</div>
+  <p class="err" id="sErr" hidden></p><button class="btn block" id="pubBtn" type="submit"></button></form><div style="height:50px"></div>`;
+  const f=$('#sf');f.sellerName.value=S.user.displayName||'';f.sellerPhone.value=S.user.phoneNumber||'';
+  f.sellerType.addEventListener('change',()=>{$('#repBox').hidden=f.sellerType.value!=='representative'});
+  $('#phIn').addEventListener('change',e=>{S.imgs=[...e.target.files].slice(0,12);paintThumbs()});
+  f.city.addEventListener('input',()=>{
+    clearTimeout(S.sTimer);const v=f.city.value.trim(),id=++S.sReq,sg=$('#sg');
+    if(v.length<2){sg.hidden=true;return}
+    S.sTimer=setTimeout(async()=>{try{const r=await placeSearch(v);if(id!==S.sReq)return;sg.innerHTML=r.map(a=>`<button type="button" data-sg="${esc(a)}">${esc(a)}</button>`).join('');sg.hidden=!r.length}catch(e){sg.hidden=true}},350);
+  });
+  f.addEventListener('submit',e=>{e.preventDefault();publish()});
+  paintWallet();if(!S.pos)locate().then(()=>{if(S.pos)geocode()});
+}
+function paintThumbs(){
+  $('#phBtn').textContent=S.imgs.length?`${S.imgs.length} photos selected`:'Add photos';
+  $('#thumbs').innerHTML=S.imgs.map((f,i)=>`<div class="th"><img src="${URL.createObjectURL(f)}" alt=""><button type="button" data-rm="${i}" aria-label="Remove photo">×</button></div>`).join('');
+}
+function ask(title,body,btns){
+  return new Promise(res=>{S.ans=res;show(`<div class="d">${X}<h2>${title}</h2><p class="sub" style="white-space:pre-line">${body}</p><div class="cta">${btns.map(([l,v,g])=>`<button class="btn ${g?'ghost':''}" data-ans="${v}">${l}</button>`).join('')}</div></div>`)});
+}
+const shrink=async f=>{const b=await createImageBitmap(f),s=Math.min(1,1800/b.width),c=document.createElement('canvas');c.width=Math.round(b.width*s);c.height=Math.round(b.height*s);c.getContext('2d').drawImage(b,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,'image/jpeg',.82))};
+
+async function walletPay(fee){
+  const uid=S.user.uid,pRef=doc(collection(db,'wallets',uid,'usedVehicleListingPayments')),wRef=doc(db,'wallets',uid),hRef=doc(collection(db,'users',uid,'walletTransactions'));
+  try{
+    await runTransaction(db,async tx=>{
+      const s=await tx.get(wRef),bal=Number(s.data()&&s.data().balance)||0;
+      if(bal+.01<fee)throw new Error('Insufficient TripRide Wallet balance.');
+      tx.set(wRef,{balance:bal-fee,updatedAt:serverTimestamp()},{merge:true});
+      const base={type:'debit',transactionType:'used_vehicle_listing_fee',service:'Used Vehicle Marketplace',vehicleType:S.type,amount:fee,status:'completed',createdAt:serverTimestamp()};
+      tx.set(pRef,{...base,balanceBefore:bal,balanceAfter:bal-fee});
+      tx.set(hRef,{...base,description:`${LABEL[S.type]} marketplace listing fee`});
+    });
+    return{id:'wallet_'+pRef.id,order:'',sig:''};
+  }catch(e){toast('Wallet payment failed: '+(e.message||e));return null}
+}
+async function walletRefund(payId,fee){
+  const uid=S.user.uid,pRef=doc(db,'wallets',uid,'usedVehicleListingPayments',payId.slice(7)),wRef=doc(db,'wallets',uid),hRef=doc(collection(db,'users',uid,'walletTransactions'));
+  try{await runTransaction(db,async tx=>{
+    const p=await tx.get(pRef);if(!p.exists()||p.data().status==='refunded')return;
+    const s=await tx.get(wRef),bal=Number(s.data()&&s.data().balance)||0;
+    tx.set(wRef,{balance:bal+fee,updatedAt:serverTimestamp()},{merge:true});
+    tx.update(pRef,{status:'refunded',refundedAt:serverTimestamp()});
+    tx.set(hRef,{type:'credit',transactionType:'used_vehicle_listing_fee_refund',service:'Used Vehicle Marketplace',vehicleType:S.type,amount:fee,status:'completed',description:'Listing fee refunded because listing publication failed.',createdAt:serverTimestamp()});
+  })}catch(e){console.error('REFUND ERROR',e)}
+}
+function rzpPay(fee){
+  return new Promise(res=>{
+    if(!RZP_KEY||RZP_KEY.startsWith('YOUR_')){toast('Razorpay key is not configured. Set RZP_KEY in the page script.');return res(null)}
+    if(typeof window.Razorpay!=='function'){toast('Payment checkout is still loading. Try again in a moment.');return res(null)}
+    const rz=new window.Razorpay({key:RZP_KEY,amount:Math.round(fee*100),currency:'INR',name:'TripRide',description:`${LABEL[S.type]} listing fee`,
+      prefill:{contact:S.user.phoneNumber||'',email:S.user.email||''},
+      notes:{purpose:'used_vehicle_listing',vehicle_type:S.type,listing_fee:String(fee),user_id:S.user.uid},theme:{color:'#F26B2A'},
+      handler:r=>res({id:r.razorpay_payment_id||'',order:r.razorpay_order_id||'',sig:r.razorpay_signature||''}),
+      modal:{ondismiss:()=>res(null)}});
+    rz.on('payment.failed',()=>{toast('Payment failed. Please try again.');res(null)});rz.open();
+  });
+}
+async function payFee(){
+  const fee=FEE[S.type];
+  if(S.wallet+.01>=fee){
+    const a=await ask('Pay listing fee',`TripRide Wallet balance: ₹${money(S.wallet)}\n${LABEL[S.type]} listing fee: ₹${money(fee)}\n\nUse your wallet to publish this listing immediately?`,[['Pay from wallet','wallet'],['Razorpay','rzp',1]]);
+    if(a==null)return null;
+    if(a==='wallet'){const r=await walletPay(fee);if(r)toast(`₹${money(fee)} paid from TripRide Wallet. Publishing…`);return r}
+  }
+  const r=await rzpPay(fee);if(r)toast('Payment successful. Publishing your listing…');return r;
+}
+function sErr(m){const e=$('#sErr');if(e){e.textContent=m;e.hidden=!m}}
+async function publish(){
+  if(S.busy)return;const f=$('#sf');sErr('');
+  if(!S.user)return openLogin(()=>go('sell'));
+  if(!f.reportValidity())return;
+  const g=n=>f[n].value.trim(), rep=g('sellerType')==='representative';
+  if(rep&&(!g('ownerName')||!g('ownerPhone')||!g('sellerRelationship')))return sErr('Enter the actual owner’s name, phone and your relationship or authorization.');
+  if(!S.pos){sErr('Present location is required. Allow location access and try again.');await locate();return}
+  if(!S.imgs.length)return sErr('Please add at least one vehicle photo.');
+  const pay=await payFee();if(!pay)return;
+  S.busy=true;const b=$('#pubBtn');b.disabled=true;b.textContent='Publishing…';
+  const fee=FEE[S.type],uid=S.user.uid,lRef=doc(collection(db,'used_vehicles'));
+  try{
+    const urls=[];
+    for(let i=0;i<S.imgs.length;i++){const r=ref(storage,`used_vehicles/${lRef.id}/photo_${i}.jpg`);await uploadBytes(r,await shrink(S.imgs[i]),{contentType:'image/jpeg'});urls.push(await getDownloadURL(r))}
+    const n=k=>parseInt(g(k),10)||0;
+    await setDoc(lRef,{type:S.type,sellerId:uid,sellerName:g('sellerName'),sellerPhone:g('sellerPhone'),sellerType:g('sellerType'),
+      ownerName:rep?g('ownerName'):g('sellerName'),ownerPhone:rep?g('ownerPhone'):g('sellerPhone'),sellerRelationship:rep?g('sellerRelationship'):'',
+      brand:g('brand'),model:g('model'),variant:g('variant'),year:n('year'),registrationYear:n('registrationYear'),registrationNumber:g('registrationNumber').toUpperCase(),
+      fuel:g('fuel'),transmission:g('transmission'),kmDriven:n('kmDriven'),owners:n('owners')||1,rcDetails:g('rcDetails'),insurance:g('insurance'),puc:g('puc'),
+      price:parseFloat(g('price'))||0,city:g('city'),latitude:S.pos.lat,longitude:S.pos.lng,photos:urls,listingStatus:'active',listingFee:fee,
+      paymentStatus:pay.id.startsWith('wallet_')?'wallet_paid':'gateway_success_unverified',paymentId:pay.id,paymentOrderId:pay.order,paymentSignature:pay.sig,
+      createdAt:serverTimestamp(),updatedAt:serverTimestamp(),publishedAt:serverTimestamp()});
+    S.busy=false;
+    show(`<div class="d" style="text-align:center"><h2 style="margin:0 0 8px">Live now</h2><p class="sub">Your vehicle is now visible to buyers within 200 km.</p><button class="btn block" data-act="doneSell">Done</button></div>`);
+  }catch(e){
+    console.error('PUBLISH ERROR',e);
+    if(pay.id.startsWith('wallet_'))await walletRefund(pay.id,fee);
+    S.busy=false;b.disabled=false;paintWallet();
+    sErr('Publish failed: '+(e.message||e)+(pay.id.startsWith('wallet_')?' Your wallet fee was refunded.':' Your payment was received; contact Tripride Support before paying again.'));
+  }
+}
+
+/* ===== MY LISTINGS ===== */
+function mineView(){
+  if(!S.authReady)return waitView();
+  if(!S.user){$('#view').innerHTML='<div class="top"><h2>My selling products</h2></div>'+gate('Sign in to see your listings','Your active, sold and removed vehicles are saved to your account.',['Edit price, mark sold or remove','Works with the Tripride app listings']);return}
+  $('#view').innerHTML=`<div class="top"><h2>My selling products</h2></div><div id="mn"><div class="grid">${'<div class="sk"></div>'.repeat(2)}</div></div>`;
+  S.unL=onSnapshot(query(collection(db,'used_vehicles'),where('sellerId','==',S.user.uid)),s=>{S.mine=s.docs.map(mapV).sort((a,b)=>b.created-a.created);paintMine()},e=>{$('#mn').innerHTML=stateCard('⚠️','Could not load listings',esc(e.code||e.message))});
+}
+function paintMine(){
+  const box=$('#mn');if(!box||S.view!=='mine')return;
+  if(!S.mine.length){box.innerHTML=stateCard('📦','No selling products','Your active, sold and removed listings will appear here.','<button class="btn" data-act="sell">Sell a vehicle</button>');return}
+  box.innerHTML=S.mine.map(v=>{const img=safeImg(v.photos[0]),a=v.status==='active';
+    return`<div class="mine"><div class="row"><div class="ph">${img?`<img src="${esc(img)}" alt="" referrerpolicy="no-referrer">`:ICON[v.type]}</div><div class="vi"><h3>${esc(`${v.brand||''} ${v.model||''}`)}</h3><div class="pr" style="justify-content:flex-start;gap:10px;margin:6px 0"><b>₹${money(v.price)}</b><span class="st ${esc(v.status)}">${esc(v.status)}</span></div></div></div>
+    <div class="btns">${a?`<button class="btn sm ghost" data-act="editPrice" data-id="${esc(v.id)}">Edit price</button><button class="btn sm ghost" data-act="status" data-id="${esc(v.id)}" data-s="removed">Remove</button><button class="btn sm ghost" data-act="status" data-id="${esc(v.id)}" data-s="sold">Mark sold</button>`:`<button class="btn sm ghost" data-act="status" data-id="${esc(v.id)}" data-s="active">Make active</button>`}</div></div>`}).join('');
+}
+const setStatus=(id,s)=>updateDoc(doc(db,'used_vehicles',id),{listingStatus:s,updatedAt:serverTimestamp()}).catch(e=>toast('Could not update: '+(e.code||e.message)));
+
+/* ===== events ===== */
+document.addEventListener('click',async e=>{
+  if(!e.target.closest('.fl')){const sg=$('#sg');if(sg)sg.hidden=true}
+  const el=e.target.closest('[data-act],[data-open],[data-tab],[data-ans],[data-sg],[data-rm]');if(!el)return;const d=el.dataset;
+  if(d.ans!==undefined){const r=S.ans;S.ans=null;dlg.close();if(r)r(d.ans);return}
+  if(d.sg!==undefined){$('#f_city').value=d.sg;$('#sg').hidden=true;return}
+  if(d.rm!==undefined){S.imgs.splice(+d.rm,1);return paintThumbs()}
+  if(d.tab){return go(d.tab==='mine'?'mine':'home')}
+  if(d.open){const v=S.items.find(x=>x.id===d.open);return v&&detail(v)}
+  switch(d.act){
+    case'close':return dlg.close();
+    case'home':return go('home');
+    case'buy':return choose('buy');
+    case'sell':return S.user?choose('sell'):openLogin(()=>choose('sell'));
+    case'pickType':dlg.close();return go(S.mode==='buy'?'list':'sell',d.t);
+    case'relocate':S.pos=null;return go('list');
+    case'login':return openLogin(null);
+    case'sendOtp':return sendOtp();case'verifyOtp':return verifyOtp();case'chPhone':return login1();
+    case'pickPh':return $('#phIn').click();
+    case'useLoc':if(!S.pos){await locate()}if(S.place)$('#f_city').value=S.place;else toast('Present location is not available yet.');return;
+    case'status':return setStatus(d.id,d.s);
+    case'editPrice':{const v=S.mine.find(x=>x.id===d.id);if(!v)return;
+      show(`<div class="d">${X}<h2>Edit selling price</h2><div class="fl" style="margin-top:12px"><label for="np">New price (₹)</label><input id="np" type="number" min="1" value="${v.price}" inputmode="numeric"></div><button class="btn block" data-act="savePrice" data-id="${esc(v.id)}">Save</button></div>`);return}
+    case'savePrice':{const p=parseFloat($('#np').value);if(!(p>0))return toast('Enter a valid price.');dlg.close();return updateDoc(doc(db,'used_vehicles',d.id),{price:p,updatedAt:serverTimestamp()}).catch(er=>toast('Could not update: '+(er.code||er.message)))}
+    case'doneSell':dlg.close();return go('mine');
+  }
+});
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+dlg.addEventListener('close',()=>{if(S.ans){const r=S.ans;S.ans=null;r(null)}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='ph'){e.preventDefault();sendOtp()}if(e.key==='Enter'&&e.target.id==='otp'){e.preventDefault();verifyOtp()}});
+$('#authBtn').addEventListener('click',async()=>{if(S.user){try{await signOut(auth);toast('Signed out.')}catch(e){toast('Could not sign out.')}}else openLogin(null)});
+$('#themeBtn').addEventListener('click',()=>{const r=document.documentElement,dk=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dk?'light':'dark';try{localStorage.setItem('tr_theme',r.dataset.theme)}catch(e){}});
+go('home');
+</script>
+</body>
+</html>

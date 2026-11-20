@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Place to Place Rides | Tripride</title>
+<meta name="description" content="Find rides from one place to another. Search pickup and drop, pick your seats and book.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+<script>try{var t=localStorage.getItem('tr_theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#FBF7F2;--card:#FFFFFF;--ink:#1B2433;--muted:#6A7585;--line:#E6DCCD;--sun:#F26B2A;--sun-d:#D9561A;--sky:#1478B8;--ok:#178A4B;--ok-bg:#E6F6EC;--bad:#B42318;--warn-bg:#FFEBDD;--chip:#F1E9DD;--shadow:0 14px 34px rgba(60,40,10,.10);--hero:linear-gradient(165deg,#FFD9A8 0%,#FFB27A 38%,#F26B2A 100%);--hero-ink:#2A1405;--sans:'DM Sans',system-ui,sans-serif;--serif:'Fraunces',Georgia,serif}
+:root[data-theme=dark]{--bg:#0C1422;--card:#14223A;--ink:#EEF2F8;--muted:#97A5BA;--line:#223250;--sun:#FF8A4C;--sun-d:#FF7430;--sky:#5BB4F0;--ok:#4ADE80;--ok-bg:#12301F;--bad:#FF9A8F;--warn-bg:#3A2616;--chip:#1B2C49;--shadow:0 14px 34px rgba(0,0,0,.45);--hero:linear-gradient(165deg,#13264A 0%,#1F2F5E 45%,#7A3A55 80%,#E2733F 125%);--hero-ink:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0C1422;--card:#14223A;--ink:#EEF2F8;--muted:#97A5BA;--line:#223250;--sun:#FF8A4C;--sun-d:#FF7430;--sky:#5BB4F0;--ok:#4ADE80;--ok-bg:#12301F;--bad:#FF9A8F;--warn-bg:#3A2616;--chip:#1B2C49;--shadow:0 14px 34px rgba(0,0,0,.45);--hero:linear-gradient(165deg,#13264A 0%,#1F2F5E 45%,#7A3A55 80%,#E2733F 125%);--hero-ink:#fff}}
+*{box-sizing:border-box;margin:0}
+html{color-scheme:light dark;scroll-behavior:smooth}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.wrap{width:min(1140px,100% - 32px);margin-inline:auto}[hidden]{display:none!important}
+.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:10px}
+.brand{font-family:var(--serif);font-weight:800;font-size:1.4rem;color:var(--ink);text-decoration:none}.brand b{color:var(--sun)}
+.nav-r{display:flex;gap:8px;align-items:center}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);display:grid;place-items:center;font-size:1.1rem}
+.wallet{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:8px 12px;font-weight:700;font-size:.9rem}
+.btn{border:0;border-radius:12px;padding:11px 18px;font-weight:700;background:var(--sun);color:#fff;text-decoration:none;display:inline-block;text-align:center;transition:background .15s,transform .1s}
+.btn:hover{background:var(--sun-d)}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn.ghost{background:transparent;border:1.5px solid var(--sun);color:var(--sun)}.btn.ghost:hover{background:color-mix(in srgb,var(--sun) 12%,transparent)}
+.btn.sm{padding:9px 15px;font-size:.9rem}.btn.block{display:block;width:100%;padding:14px}
+.hero{background:var(--hero);color:var(--hero-ink);padding:48px 0 96px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;left:-5%;right:-5%;bottom:-2px;height:70px;background:var(--bg);clip-path:ellipse(60% 100% at 50% 100%)}
+.hero h1{font-family:var(--serif);font-size:clamp(2.2rem,5.4vw,4rem);line-height:1.04;max-width:15ch;font-weight:800}
+.hero p{margin-top:14px;max-width:48ch;font-size:1.05rem;opacity:.9}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.22);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.88rem;max-width:100%}
+.pill .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dot{width:9px;height:9px;border-radius:50%;background:#22C55E;flex:none;animation:ping 1.8s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}0%{box-shadow:0 0 0 0 rgba(34,197,94,.7)}}
+.search{margin-top:-56px;position:relative;z-index:6;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--shadow);display:grid;grid-template-columns:1.3fr 1.3fr 1fr auto auto;gap:10px}
+.search label,.fld label{display:block;font-size:.74rem;font-weight:700;color:var(--muted);margin:0 0 4px 4px}
+.search input,.fld input,.fld select{width:100%;height:46px;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;background:var(--bg)}
+.search input:focus,.fld input:focus,.fld select:focus{border-color:var(--sun);outline:none}
+.search .btn{align-self:end;height:46px}
+.f1{position:relative}
+.locbtn{position:absolute;right:6px;top:25px;width:34px;height:34px;border-radius:9px;border:0;background:var(--chip);color:var(--sun);font-size:1rem}
+.f1 input.hasloc{padding-right:44px}
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);max-height:280px;overflow:auto;z-index:20}
+.sg{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:11px 14px}
+.sg:last-child{border-bottom:0}.sg:hover{background:var(--chip)}.sg .pin{color:var(--sun)}
+.sg b{display:block;font-size:.92rem}.sg small{display:block;color:var(--muted);font-size:.78rem;line-height:1.3}
+.sugg .msg{padding:12px 14px;color:var(--muted);font-size:.86rem}
+.bar{margin:24px 0 6px;display:grid;gap:10px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 15px;font-weight:500;font-size:.9rem;color:var(--muted)}
+.chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.toolbar h2{font-family:var(--serif);font-size:1.35rem}
+.toolbar .sub{color:var(--muted);font-size:.9rem;display:flex;align-items:center;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px;margin:16px 0 60px}
+.ticket{position:relative;background:var(--card);border-radius:20px;border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;transition:box-shadow .2s,transform .2s}
+.ticket:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.t-top{padding:18px 18px 14px;flex:1}
+.who{display:flex;align-items:center;gap:10px}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--chip);color:var(--sun);display:grid;place-items:center;font-weight:800;flex:none;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.who>div{flex:1;min-width:0}.who small{display:block;color:var(--muted);font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who strong{font-size:.95rem}.ver{color:var(--sky);margin-left:4px}
+.pr{font-size:1.35rem;font-weight:800;color:var(--ok)}
+.route{position:relative;padding-left:26px;display:grid;gap:16px;margin:16px 0 2px}
+.route::before{content:"";position:absolute;left:7px;top:9px;bottom:9px;border-left:2px dashed var(--line)}
+.stop{position:relative;font-weight:500;font-size:.93rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.stop::before{content:"";position:absolute;left:-26px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--card);border:3px solid var(--ok)}
+.stop.end::before{border-color:var(--sun);background:var(--sun)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.tag{background:var(--chip);color:var(--muted);border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
+.perf{position:relative;border-top:2px dashed var(--line);margin:0 12px}
+.perf::before,.perf::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--line)}
+.perf::before{left:-23px}.perf::after{right:-23px}
+.t-bot{padding:14px 18px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.t-bot small{color:var(--muted);font-size:.75rem;max-width:180px;line-height:1.3}
+.sk{height:330px;border-radius:20px;background:linear-gradient(100deg,var(--card) 30%,var(--chip) 50%,var(--card) 70%);background-size:200% 100%;animation:sh 1.3s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.state{text-align:center;padding:56px 22px;background:var(--card);border:1px dashed var(--line);border-radius:20px;margin:16px 0 60px}
+.state h3{font-family:var(--serif);font-size:1.5rem;margin-bottom:6px}.state p{color:var(--muted);margin:0 auto 18px;max-width:46ch}
+.state .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.state .ico{font-size:2rem;margin-bottom:8px}
+dialog{border:0;border-radius:24px;padding:0;width:min(560px,calc(100% - 24px));max-height:92vh;overflow:auto;background:var(--card);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.4);margin:auto}
+dialog::backdrop{background:rgba(8,14,26,.65);backdrop-filter:blur(3px)}
+.d{padding:26px 24px 24px;position:relative}
+.d h2{font-family:var(--serif);font-size:1.7rem;line-height:1.15;margin:0 40px 6px 0}.d h4{font-size:.95rem;margin:16px 0 8px}
+.d .sub{color:var(--muted);margin-bottom:12px}
+.x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:0;background:var(--chip);font-size:1.2rem}
+.note{font-size:.8rem;color:var(--muted);text-align:center;margin-top:10px}
+.fld{margin-bottom:10px;position:relative}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two.pa{grid-template-columns:2fr 1fr}
+.pax{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;background:var(--bg)}
+.pax .h{font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:8px}.pax .fld{margin:0}
+.offer{background:var(--ok-bg);border:1px solid color-mix(in srgb,var(--ok) 35%,transparent);border-radius:16px;padding:14px;margin:14px 0}
+.offer .top{display:flex;justify-content:space-between;font-weight:800;color:var(--ok)}.offer p{font-size:.8rem;color:var(--muted);margin-top:6px}
+.rows div{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:.92rem}
+.rows .tot{border-top:1px solid var(--line);margin-top:6px;padding-top:12px;font-weight:800;font-size:1.05rem}
+.stepper{display:flex;align-items:center;justify-content:space-between;margin:16px 0}
+.stepper .c{display:flex;align-items:center;gap:14px;font-weight:800;font-size:1.15rem}
+.stepper button{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--sun);background:transparent;color:var(--sun);font-size:1.3rem;line-height:1}
+.stepper button:disabled{opacity:.35;cursor:not-allowed}
+.terms{background:color-mix(in srgb,var(--sky) 9%,transparent);border:1px solid color-mix(in srgb,var(--sky) 30%,transparent);border-radius:16px;padding:12px;margin:6px 0 16px}
+.terms h5{font-size:.95rem;margin-bottom:6px}.terms li,.terms p{font-size:.78rem;color:var(--muted)}
+.terms ul{padding-left:18px;margin:8px 0;display:grid;gap:3px}
+.ck{display:flex;gap:10px;align-items:flex-start;font-size:.84rem;font-weight:700;cursor:pointer;margin:8px 0}
+.ck input{margin-top:3px;width:18px;height:18px;accent-color:var(--sun);flex:none}
+.phone{display:flex;gap:8px}.phone span{display:grid;place-items:center;border:1.5px solid var(--line);border-radius:12px;padding:0 14px;background:var(--bg);font-weight:700}.phone input{flex:1}
+.err{color:var(--bad);font-size:.84rem;font-weight:700;margin:8px 0}
+.win{text-align:center}
+.win .big{width:96px;height:96px;border-radius:50%;margin:6px auto 16px;display:grid;place-items:center;font-size:3rem;color:#fff;background:linear-gradient(135deg,#22C55E,#16A34A);box-shadow:0 10px 24px rgba(34,197,94,.3);animation:pop .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.6)}}
+.win .box{margin:18px 0;padding:16px;border-radius:18px;background:var(--warn-bg)}.win .box b{display:block;font-family:var(--serif);font-size:1.1rem;margin-bottom:8px}
+.win .ok{display:inline-block;background:var(--card);color:var(--ok);font-weight:800;font-size:.85rem;padding:6px 14px;border-radius:999px;margin-top:6px}
+.busy{text-align:center;padding:30px 26px}
+.busy .sp{width:44px;height:44px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--sun);animation:rot .8s linear infinite;margin:0 auto 18px}
+@keyframes rot{to{transform:rotate(360deg)}}
+.toggles{display:grid;gap:8px;margin:6px 0 12px}.toggles .ck{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--bg);margin:0}
+.toggles small{display:block;font-weight:500;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-weight:500;font-size:.92rem;opacity:0;pointer-events:none;transition:.25s;z-index:9999;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+#rc{height:0;overflow:hidden}
+footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:.88rem;text-align:center}
+@media (max-width:900px){.search{grid-template-columns:1fr 1fr}.search .f1{grid-column:1/-1}.wallet{display:none}}
+@media (max-width:560px){#createBtn{padding:8px 10px;font-size:.8rem}.two{grid-template-columns:1fr}.two.pa{grid-template-columns:2fr 1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <a href="index.html" class="brand">TRIP<b>RIDE</b></a>
+  <div class="nav-r">
+    <span class="wallet" id="walletChip" hidden></span>
+    <button class="icon-btn" id="themeBtn" aria-label="Switch theme">◐</button>
+    <button class="btn sm ghost" id="createBtn" type="button">＋ Create ride</button>
+    <button class="btn sm ghost" id="authBtn" type="button">Sign in</button>
+    <a class="btn sm" href="tripsreal.html">Group trips</a>
+  </div>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="pills">
+    <div class="pill"><span class="dot"></span><span class="t" id="liveCount">Connecting…</span></div>
+    <div class="pill"><span aria-hidden="true">📍</span><span class="t" id="whereAmI">Finding your location…</span></div>
+  </div>
+  <h1>From here to there.</h1>
+  <p>Rides posted by drivers, place to place. Search your pickup and drop, choose seats and book in minutes.</p>
+</div></section>
+
+<main class="wrap">
+  <form class="search" id="searchForm" autocomplete="off">
+    <div class="f1"><label for="qFrom">From</label><input id="qFrom" class="hasloc" placeholder="Pickup location"><button type="button" class="locbtn" data-act="useLoc" title="Use current location" aria-label="Use current location">◎</button><div class="sugg" id="sg-from" hidden></div></div>
+    <div class="f1"><label for="qTo">To</label><input id="qTo" placeholder="Destination"><div class="sugg" id="sg-to" hidden></div></div>
+    <div><label for="date">Travel date</label><input id="date" type="date"></div>
+    <button class="btn" type="submit" id="searchBtn">Search rides</button>
+    <button class="btn ghost" type="reset">Reset</button>
+  </form>
+  <div class="bar">
+    <div class="chips" id="filters" role="group" aria-label="Filters"></div>
+    <div class="toolbar"><h2 id="title">Nearby Rides Today</h2><p class="sub" id="count" aria-live="polite"></p></div>
+  </div>
+  <div id="list"></div>
+</main>
+<footer><div class="wrap">© <span id="yr"></span> Tripride. Travel Beyond Ordinary.</div></footer>
+
+<dialog id="dlg"></dialog>
+<dialog id="busy"><div class="d busy"><div class="sp"></div><h2 id="busyT">Confirming your payment</h2><p class="sub">Please wait a moment.</p></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+import { getFirestore, collection, query, where, orderBy, onSnapshot, Timestamp, doc, getDoc, addDoc, setDoc, increment, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { getAuth, onAuthStateChanged, RecaptchaVerifier, signInWithPhoneNumber, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+
+/* ============ CONFIG (same as the Flutter app) ============ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw",
+  authDomain: "tripmate-74df9.firebaseapp.com",
+  databaseURL: "https://tripmate-74df9-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "tripmate-74df9",
+  storageBucket: "tripmate-74df9.firebasestorage.app",
+  messagingSenderId: "931960941543",
+  appId: "1:931960941543:web:ced98c012dc22fcb776b42"
+};
+// The website is HTTPS, so this backend must also be HTTPS (and allow this site in CORS).
+const BACKEND = 'http://15.235.145.222:10000';
+const GOOGLE_KEY = 'AIzaSyBBHjG4-btvLZoZIba-jB8WvqL2TTkHx6w';
+const NEARBY_KM = 60;        // nearbyRadiusKm in place_to_place_screen.dart
+const MATCH_KM = 50;         // pickup / drop match radius when searching
+const FEE = 1, NORMAL_FEE = 50, PRICING_V = '2';
+const FILTERS = ['All','Car','Bike','Women Only','AC','Fast Ride','Verified'];
+
+const app = initializeApp(FIREBASE_CONFIG), db = getFirestore(app), auth = getAuth(app);
+const $ = s => document.querySelector(s), dlg = $('#dlg'), busy = $('#busy');
+
+/* ============ STATE ============ */
+const S = {trips:[], loaded:false, error:'', loc:'asking', pos:null, place:'', from:null, to:null, curMode:false,
+  date:'', filter:'All', searched:false, user:null, wallet:0, unW:null, sugg:{from:[],to:[]}, sreq:{from:0,to:0}, sdeb:{}, cache:new Map(),
+  bk:null, pending:null, afterLogin:null, rc:null, confirm:null, phone:'', C:null};
+
+/* ============ HELPERS ============ */
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num = v => { const x = typeof v === 'number' ? v : parseFloat(v); return Number.isFinite(x) ? x : null; };
+const rs = n => Number.isInteger(n) ? String(n) : Number(n).toFixed(2);
+const money = n => '₹' + Number(n || 0).toLocaleString('en-IN');
+const sameDay = (a,b) => a.toDateString() === b.toDateString();
+const isoDay = () => new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+const fmtDate = d => { const n = new Date(); if (sameDay(d,n)) return 'Today'; const t = new Date(n); t.setDate(n.getDate()+1); if (sameDay(d,t)) return 'Tomorrow'; return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); };
+const fmtTime = d => d.toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase();
+const safeImg = u => /^https:\/\//.test(u || '') ? u : '';
+const km = (a,b,c,d) => { const r = Math.PI/180, x = (c-a)*r, y = (d-b)*r, h = Math.sin(x/2)**2 + Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)**2; return 12742*Math.asin(Math.sqrt(h)); };
+const distMe = t => (S.pos && t.pLat !== null) ? km(S.pos.lat, S.pos.lng, t.pLat, t.pLng) : null;
+function toast(t){ const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 3800); }
+function show(html){ dlg.innerHTML = html; if (!dlg.open) dlg.showModal(); }
+const isMine = t => !!(S.user && t.owner && t.owner === S.user.uid);
+
+/* ============ DATA: realtime "trips" collection (same as the Flutter app) ============ */
+function mapDoc(d){
+  const x = d.data(), raw = x.rideDate || x.departureTime;
+  const date = raw && raw.toDate ? raw.toDate() : null;
+  const seats = Math.max(0, Math.round(num(x.availableSeats ?? x.seats) ?? 0));
+  return {...x, id:d.id, date, seats, total:Math.max(seats, Math.round(num(x.totalSeats) ?? seats)), price:num(x.price ?? x.seatPrice) ?? 0,
+    pLat:num(x.pickupLat), pLng:num(x.pickupLng), dLat:num(x.dropLat), dLng:num(x.dropLng),
+    from:x.from || x.tripStartLocation || 'Pickup', to:x.to || x.tripEndLocation || 'Destination',
+    owner:x.creatorId || x.driverId || x.hostUid || '', name:x.creatorName || x.driverName || 'Driver', photo:x.creatorPhoto || x.driverPhoto || ''};
+}
+const rideOpen = t => ['open','active','available'].includes(String(t.status || 'open').toLowerCase());
+const bookable = t => t.date && t.date > new Date() && rideOpen(t) && t.seats > 0;
+function subscribe(){
+  const q = query(collection(db,'trips'), where('rideDate','>=',Timestamp.now()), orderBy('rideDate'));
+  onSnapshot(q, snap => { S.trips = snap.docs.map(mapDoc); S.loaded = true; S.error = ''; render(); },
+    err => { console.error(err); S.error = err.code || String(err); S.loaded = true; render(); });
+}
+
+/* ============ LOCATION ============ */
+function locate(){
+  if (!navigator.geolocation) { S.loc = 'denied'; return render(); }
+  navigator.geolocation.getCurrentPosition(p => { S.pos = {lat:p.coords.latitude, lng:p.coords.longitude}; S.loc = 'ready'; render(); reverseGeocode(); },
+    () => { if (!S.pos) { S.loc = 'denied'; render(); } }, {enableHighAccuracy:true, timeout:12000, maximumAge:120000});
+}
+async function reverseGeocode(){
+  try {
+    const r = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${S.pos.lat},${S.pos.lng}&key=${GOOGLE_KEY}&language=en&region=in`);
+    const j = await r.json(), f = j.results && j.results[0] && j.results[0].formatted_address;
+    S.place = f || '';
+  } catch(e){ S.place = ''; }
+  render();
+}
+async function geocode(text){
+  try {
+    const r = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(text)}&key=${GOOGLE_KEY}&language=en&region=in`);
+    const l = (await r.json()).results?.[0]?.geometry?.location;
+    return l ? {lat:l.lat, lng:l.lng} : null;
+  } catch(e){ return null; }
+}
+
+/* ============ GOOGLE PLACES ============ */
+async function placeSearch(text){
+  const key = text.toLowerCase(); if (S.cache.has(key)) return S.cache.get(key);
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 7000);
+  try {
+    const r = await fetch('https://places.googleapis.com/v1/places:searchText', {method:'POST', signal:ctl.signal,
+      headers:{'Content-Type':'application/json','X-Goog-Api-Key':GOOGLE_KEY,'X-Goog-FieldMask':'places.displayName,places.formattedAddress,places.location'},
+      body:JSON.stringify({textQuery:text, languageCode:'en', regionCode:'IN', pageSize:7})});
+    if (!r.ok) throw new Error('Places ' + r.status);
+    const j = await r.json();
+    const out = (j.places || []).map(p => ({name:(p.displayName && p.displayName.text) || (p.formattedAddress || '').split(',')[0] || 'Place', address:p.formattedAddress || '',
+      lat:num(p.location && p.location.latitude), lng:num(p.location && p.location.longitude)})).filter(p => p.lat !== null && p.lng !== null);
+    S.cache.set(key, out); return out;
+  } finally { clearTimeout(timer); }
+}
+// k = 'from' | 'to' on the search bar; 'cfrom' | 'cto' inside the create-ride form
+function suggest(k, text){
+  clearTimeout(S.sdeb[k]); const id = S.sreq[k] = (S.sreq[k] || 0) + 1;
+  if (text.trim().length < 3) { S.sugg[k] = []; return drawSugg(k); }
+  S.sdeb[k] = setTimeout(async () => {
+    try { const res = await placeSearch(text.trim()); if (id !== S.sreq[k]) return; S.sugg[k] = res; if (!res.length) S.sugg[k] = [{none:1}]; }
+    catch(e){ if (id !== S.sreq[k]) return; S.sugg[k] = [{err:1}]; }
+    drawSugg(k);
+  }, 300);
+}
+function drawSugg(k){
+  const box = $('#sg-' + k); if (!box) return; const a = S.sugg[k] || [];
+  box.innerHTML = a.map((p,i) => p.err ? '<div class="msg">Place suggestions are unavailable right now.</div>' : p.none ? '<div class="msg">No locations found.</div>'
+    : `<button type="button" class="sg" data-pick="${k}:${i}"><span class="pin">📍</span><span><b>${esc(p.name)}</b>${p.address ? `<small>${esc(p.address)}</small>` : ''}</span></button>`).join('');
+  box.hidden = !a.length;
+}
+
+/* ============ FILTER + SEARCH (same rules as place_to_place_screen.dart) ============ */
+function matchesFilter(t){
+  const v = String(t.vehicle || '').toLowerCase();
+  switch (S.filter) {
+    case 'Car': return v.includes('car');
+    case 'Bike': return v.includes('bike') || v.includes('motor');
+    case 'Women Only': return t.womenOnly === true;
+    case 'AC': return t.acAvailable === true || t.ac === true;
+    case 'Fast Ride': return t.fastRide === true;
+    case 'Verified': return t.verified === true || t.isVerified === true;
+    default: return true;
+  }
+}
+function visible(){
+  const now = new Date(); let list = S.trips.filter(bookable);
+  if (S.searched && S.from) {
+    const day = new Date(S.date + 'T00:00');
+    list = list.filter(t => sameDay(t.date, day) && t.pLat !== null && t.dLat !== null)
+      .map(t => ({t, pk:km(S.from.lat, S.from.lng, t.pLat, t.pLng), dp:S.curMode ? 0 : km(S.to.lat, S.to.lng, t.dLat, t.dLng)}))
+      .filter(o => o.pk <= MATCH_KM && (S.curMode || o.dp <= MATCH_KM))
+      .sort((a,b) => (a.pk + a.dp) - (b.pk + b.dp)).map(o => o.t);
+  } else {
+    list = list.filter(t => sameDay(t.date, now) && t.pLat !== null && distMe(t) <= NEARBY_KM).sort((a,b) => distMe(a) - distMe(b));
+  }
+  return list.filter(matchesFilter);
+}
+function doSearch(){
+  if (!S.from) return toast('Please select From location from suggestions');
+  if (!S.curMode && !S.to) return toast('Please select To location from suggestions');
+  if (!S.date) S.date = isoDay();
+  S.searched = true; render();
+}
+function clearSearch(){ S.searched = false; render(); }
+
+/* ============ RENDER ============ */
+const stateCard = (icon, title, text, btns) => `<div class="state"><div class="ico" aria-hidden="true">${icon}</div><h3>${title}</h3><p>${text}</p><div class="row">${btns || ''}</div></div>`;
+function render(){
+  $('#filters').innerHTML = FILTERS.map(f => `<button type="button" class="chip" data-filter="${f}" aria-pressed="${S.filter===f}">${f}</button>`).join('');
+  $('#whereAmI').textContent = S.loc === 'ready' ? (S.place ? S.place : 'Location ready') : S.loc === 'denied' ? 'Location is off' : 'Finding your location…';
+  $('#title').textContent = S.searched ? 'Search Results' : 'Nearby Rides Today';
+  if (S.error) { $('#liveCount').textContent = 'Offline'; $('#count').textContent = '';
+    return $('#list').innerHTML = stateCard('⚠️','Unable to load rides', S.error === 'permission-denied' ? 'Firestore rules are blocking this page. Allow read access on the trips collection (permission-denied).' : `Check your connection and refresh. Error: ${esc(S.error)}`, '<button class="btn" data-act="reload">Refresh</button>'); }
+  if (!S.searched && S.loc === 'denied')
+    return ($('#liveCount').textContent = 'Location needed', $('#count').textContent = '', $('#list').innerHTML = stateCard('📍','Turn on location to see nearby rides','Allow location access, or search a pickup and drop above.','<button class="btn" data-act="locate">Allow location</button>'));
+  if (!S.loaded || (!S.searched && S.loc !== 'ready')) { $('#liveCount').textContent = 'Connecting…'; $('#count').textContent = '';
+    return $('#list').innerHTML = `<div class="grid">${'<div class="sk"></div>'.repeat(3)}</div>`; }
+  const live = S.trips.filter(bookable).length; $('#liveCount').textContent = `${live} ride${live===1?'':'s'} live`;
+  const list = visible();
+  $('#count').innerHTML = list.length ? `<span class="dot"></span>${list.length} ride${list.length>1?'s':''} · updates live${S.searched ? ' · <a href="#" data-act="clear" style="color:var(--sun)">Clear</a>' : ''}` : (S.searched ? '<a href="#" data-act="clear" style="color:var(--sun)">Clear</a>' : '');
+  $('#list').innerHTML = list.length ? `<div class="grid">${list.map(card).join('')}</div>`
+    : stateCard('🛣️','No rides found','Try another route or create a ride.', '<button class="btn" data-act="create">＋ Create ride</button>');
+}
+function card(t){
+  const d = distMe(t), img = safeImg(t.photo), mine = isMine(t), verified = t.verified === true || t.isVerified === true;
+  return `<article class="ticket"><div class="t-top" data-open="${esc(t.id)}" tabindex="0" role="button" aria-label="View ride">
+    <div class="who"><span class="avatar">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : esc((t.name || 'D').trim().charAt(0).toUpperCase())}</span>
+      <div><strong>${esc(t.name)}${verified ? '<span class="ver" title="Verified">✔</span>' : ''}</strong><small>${esc(t.vehicle || 'Vehicle')} • ${fmtDate(t.date)}, ${fmtTime(t.date)}</small></div>
+      <span class="pr">${money(t.price)}</span></div>
+    <div class="route"><div class="stop">${esc(t.from)}</div><div class="stop end">${esc(t.to)}</div></div>
+    <div class="tags">${d !== null ? `<span class="tag">${d.toFixed(1)} km away</span>` : ''}<span class="tag">${t.seats} seat${t.seats>1?'s':''} available</span>${t.acAvailable ? '<span class="tag">AC</span>' : ''}${t.womenOnly ? '<span class="tag">Women only</span>' : ''}</div></div>
+    <div class="perf"></div>
+    <div class="t-bot"><small>Booking fee ${money(FEE)} · rest of the ride price is paid to the driver</small>
+      <button class="btn sm" data-join="${esc(t.id)}" ${mine ? 'disabled' : ''}>${mine ? 'Your ride' : 'Book seat'}</button></div></article>`;
+}
+function detail(t){
+  const mine = isMine(t);
+  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>${esc(t.from)} → ${esc(t.to)}</h2><p class="sub">${esc(t.name)} · ${esc(t.vehicle || '')}</p>
+    <div class="rows">
+      <div><span>Date & time</span><b>${fmtDate(t.date)} • ${fmtTime(t.date)}</b></div>
+      <div><span>Vehicle</span><b>${esc(t.vehicle || '')} ${esc(t.vehicleNumber || '')}</b></div>
+      ${t.meetingPoint ? `<div><span>Meeting point</span><b>${esc(t.meetingPoint)}</b></div>` : ''}
+      <div><span>Seats left</span><b>${t.seats} of ${t.total}</b></div>
+      <div><span>Price per seat</span><b>${money(t.price)}</b></div></div>
+    <div class="tags" style="margin:12px 0 16px">${t.acAvailable ? '<span class="tag">AC</span>' : ''}${t.womenOnly ? '<span class="tag">Women only</span>' : ''}</div>
+    <button class="btn block" data-join="${esc(t.id)}" ${mine ? 'disabled' : ''}>${mine ? 'This is your ride' : 'Book seat'}</button></div>`);
+}
+
+/* ============ AUTH (phone OTP) ============ */
+const AUTH_ERR = {'auth/invalid-phone-number':'Enter a valid 10-digit mobile number.','auth/too-many-requests':'Too many attempts. Please wait a few minutes.','auth/invalid-verification-code':'That OTP is not correct.','auth/code-expired':'That OTP has expired. Request a new one.','auth/captcha-check-failed':'Security check failed. Refresh and try again.','auth/unauthorized-domain':'This domain is not authorized in Firebase Authentication.','auth/operation-not-allowed':'Phone sign-in is not enabled for this Firebase project.','auth/network-request-failed':'Network error. Try again.'};
+function loginStep1(msg){
+  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Sign in</h2><p class="sub">Use the same mobile number as your Tripride app so your wallet and rides match.</p>
+    <div class="fld"><label for="ph">Mobile number</label><div class="phone"><span>+91</span><input id="ph" inputmode="numeric" maxlength="10" placeholder="98765 43210" autocomplete="tel-national"></div></div>
+    ${msg ? `<p class="err">${esc(msg)}</p>` : ''}<div id="rc"></div><button class="btn block" id="sendOtp" data-act="sendOtp">Send OTP</button></div>`);
+  setTimeout(() => $('#ph')?.focus(), 50);
+}
+function loginStep2(phone, msg){
+  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Enter the OTP</h2><p class="sub">We sent a 6-digit code to +91 ${esc(phone)}.</p>
+    <div class="fld"><label for="otp">OTP</label><input id="otp" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="one-time-code"></div>
+    ${msg ? `<p class="err">${esc(msg)}</p>` : ''}<button class="btn block" id="verifyOtp" data-act="verifyOtp">Verify & sign in</button>
+    <p class="note"><button type="button" class="chip" data-act="changePhone">Change number</button></p></div>`);
+  setTimeout(() => $('#otp')?.focus(), 50);
+}
+function openLogin(after){ S.afterLogin = after || null; S.confirm = null; loginStep1(); }
+async function sendOtp(){
+  const phone = ($('#ph').value || '').replace(/\D/g,'');
+  if (!/^[6-9]\d{9}$/.test(phone)) return loginStep1('Enter a valid 10-digit mobile number.');
+  const b = $('#sendOtp'); b.disabled = true; b.textContent = 'Sending…';
+  try {
+    if (S.rc) { try { S.rc.clear(); } catch(e){} S.rc = null; }
+    S.rc = new RecaptchaVerifier(auth, 'rc', {size:'invisible'});
+    S.confirm = await signInWithPhoneNumber(auth, '+91' + phone, S.rc); S.phone = phone; loginStep2(phone);
+  } catch(e){ console.error(e); if (S.rc) { try { S.rc.clear(); } catch(_){} S.rc = null; } loginStep1(AUTH_ERR[e.code] || `Could not send OTP (${e.code || 'error'}).`); }
+}
+async function verifyOtp(){
+  const code = ($('#otp').value || '').replace(/\D/g,''); if (code.length !== 6) return loginStep2(S.phone, 'Enter the 6-digit OTP.');
+  const b = $('#verifyOtp'); b.disabled = true; b.textContent = 'Verifying…';
+  try { await S.confirm.confirm(code); dlg.close(); toast('Signed in.'); const n = S.afterLogin; S.afterLogin = null; if (n) setTimeout(n, 250); }
+  catch(e){ console.error(e); loginStep2(S.phone, AUTH_ERR[e.code] || `Could not verify OTP (${e.code || 'error'}).`); }
+}
+function renderAuth(){
+  $('#authBtn').textContent = S.user ? 'Sign out' : 'Sign in';
+  const w = $('#walletChip'); w.hidden = !S.user; if (S.user) w.textContent = `Wallet ₹${(S.wallet || 0).toFixed(2)}`;
+  render();
+}
+onAuthStateChanged(auth, u => {
+  S.user = u; if (S.unW) { S.unW(); S.unW = null; } S.wallet = 0;
+  if (u) S.unW = onSnapshot(doc(db,'users',u.uid), s => { S.wallet = num(s.data() && s.data().wallet) || 0; renderAuth(); }, () => {}); // users/{uid}.wallet like the app
+  renderAuth();
+});
+
+/* ============ BACKEND CALLS ============ */
+async function api(path, token, body, ms){
+  if (location.protocol === 'https:' && BACKEND.startsWith('http:')) throw new Error('The payment server must use HTTPS to work from this website. Update BACKEND.');
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), ms || 20000);
+  try {
+    const r = await fetch(BACKEND + path, {method:'POST', signal:ctl.signal, headers:{'Content-Type':'application/json','Authorization':'Bearer ' + token}, body:JSON.stringify(body)});
+    let j; try { j = await r.json(); } catch(e){ throw new Error('Invalid response from payment server.'); }
+    return {status:r.status, j};
+  } catch(e){
+    if (e.name === 'AbortError') throw new Error('The payment server took too long. Please try again.');
+    if (e instanceof TypeError) throw new Error('Could not reach the payment server. Check that it allows this website (CORS) and uses HTTPS.');
+    throw e;
+  } finally { clearTimeout(timer); }
+}
+const apiMsg = (j, fb) => (j && (j.message || j.error)) ? String(j.message || j.error) : fb;
+const okRes = (r, needVerified) => (r.status === 200 || r.status === 201) && r.j && r.j.success === true && (!needVerified || r.j.verified === true);
+
+/* ============ BOOKING (booking/create-order + booking/verify-payment) ============ */
+function joinTrip(id){
+  const t = S.trips.find(x => x.id === id); if (!t) return;
+  if (isMine(t)) return toast('You cannot book your own ride.');
+  if (!S.user) return openLogin(() => joinTrip(id));
+  S.bk = {trip:t, seats:1, pax:[{name:'',age:''}], busy:false}; renderBooking();
+}
+function renderBooking(){
+  const t = S.bk.trip;
+  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Confirm your seat</h2><p class="sub">${esc(t.from)} → ${esc(t.to)} · ${money(t.price)} per seat</p>
+    <h4>Passenger details</h4><div id="pax"></div>
+    <div class="offer"><div class="top"><span>Booking fee offer</span><span>₹${FEE}</span></div><p>Pay only a ₹${FEE} booking fee now. The ride price is paid separately according to the ride arrangement.</p></div>
+    <div class="rows" id="prices"></div>
+    <div class="stepper"><b>Select seats</b><div class="c"><button type="button" data-act="seatMinus" id="sMinus" aria-label="Remove a seat">−</button><span id="sCount"></span><button type="button" data-act="seatPlus" id="sPlus" aria-label="Add a seat">+</button></div></div>
+    <button class="btn block" id="payBtn" data-act="pay"></button><p class="note">Seat is confirmed only after secure payment verification.</p></div>`);
+  renderPax(); updateBooking();
+}
+function renderPax(){
+  $('#pax').innerHTML = S.bk.pax.map((p,i) => `<div class="pax"><div class="h">Passenger ${i+1}</div><div class="two pa">
+    <div class="fld"><label for="pn${i}">Name</label><input id="pn${i}" data-pax="${i}" data-f="name" value="${esc(p.name)}" placeholder="Traveler name" autocomplete="off"></div>
+    <div class="fld"><label for="pa${i}">Age</label><input id="pa${i}" data-pax="${i}" data-f="age" value="${esc(p.age)}" inputmode="numeric" maxlength="3" placeholder="Age" autocomplete="off"></div></div></div>`).join('');
+}
+function updateBooking(){
+  const bk = S.bk; if (!bk) return; const t = bk.trip, total = t.price * bk.seats, rem = Math.max(0, total - FEE);
+  $('#prices').innerHTML = `<div><span>Ride price (per seat)</span><b>${money(t.price)}</b></div><div><span>Total (${bk.seats} × ${money(t.price)})</span><b>${money(total)}</b></div>
+    <div><span>Online booking fee</span><b>₹${FEE}</b></div><div class="tot"><span>Remaining after booking</span><b>${money(rem)}</b></div>`;
+  $('#sCount').textContent = bk.seats; $('#sMinus').disabled = bk.seats <= 1; $('#sPlus').disabled = bk.seats >= t.seats;
+  const b = $('#payBtn'); b.disabled = bk.busy; b.textContent = bk.busy ? 'Processing…' : `Pay ₹${FEE} securely`;
+}
+async function startBooking(){
+  const bk = S.bk; if (!bk || bk.busy) return; const t = bk.trip, passengers = [];
+  for (let i = 0; i < bk.seats; i++) {
+    const name = (bk.pax[i].name || '').trim(), age = (bk.pax[i].age || '').trim(), n = parseInt(age, 10);
+    if (!name) return toast(`Enter name for passenger ${i+1}.`);
+    if (!Number.isFinite(n) || n <= 0) return toast(`Enter a valid age for passenger ${i+1}.`);
+    passengers.push({name, age});
+  }
+  if (!S.user) return openLogin(() => joinTrip(t.id));
+  bk.busy = true; updateBooking();
+  try {
+    const token = await S.user.getIdToken(true);
+    const r = await api('/booking/create-order', token, {trip_id:t.id, seat_count:bk.seats, group_pricing_version:PRICING_V, pricing_version:PRICING_V, booking_fee:FEE, coupon_code:'', use_wallet:true, passengers});
+    if (!okRes(r)) throw new Error(apiMsg(r.j, 'Unable to prepare booking payment.'));
+    const j = r.j, fee = num(j.total_fee ?? j.booking_fee) ?? NORMAL_FEE;
+    if (Math.abs(fee - FEE) > .01 && Math.abs(fee - NORMAL_FEE) > .01) throw new Error('Invalid booking fee returned by server.');
+    const intentId = String(j.intent_id || ''); if (!intentId) throw new Error('Booking payment intent missing.');
+    const walletUsed = num(j.wallet_used) ?? 0, rzp = num(j.razorpay_amount) ?? 0, needsRzp = j.requires_razorpay === true;
+    const P = {trip:t, intentId, seats:bk.seats, passengers, fee, walletUsed, rzp, mode: j.payment_mode ? String(j.payment_mode) : (!needsRzp ? 'wallet' : walletUsed > 0 ? 'wallet_razorpay' : 'razorpay'), paid:false};
+    S.pending = P;
+    if (!needsRzp) { dlg.close(); return finishBooking(P, {}); }
+    if (typeof window.Razorpay !== 'function') throw new Error('Payment checkout is still loading. Please try again in a moment.');
+    dlg.close();
+    const rz = new window.Razorpay({key:j.key_id, amount:j.amount, currency:j.currency || 'INR', order_id:j.order_id, name:'TRIPMATE', description:'Ride Booking Fee',
+      prefill:{email:S.user.email || '', contact:S.user.phoneNumber || ''}, notes:{trip_id:t.id, intent_id:intentId, user_id:S.user.uid, seat_count:String(bk.seats)}, theme:{color:'#F26B2A'},
+      handler: resp => finishBooking(P, {razorpay_payment_id:resp.razorpay_payment_id, razorpay_order_id:resp.razorpay_order_id, razorpay_signature:resp.razorpay_signature}),
+      modal:{ondismiss: () => { if (S.pending === P && !P.paid) { S.pending = null; toast('Payment failed or was cancelled.'); } }}});
+    rz.on('payment.failed', e => { if (S.pending === P) { S.pending = null; toast(e?.error?.description || 'Payment failed or was cancelled.'); } });
+    rz.open();
+  } catch(e){ console.error('BOOKING CREATE ERROR', e); S.pending = null; if (S.bk) { S.bk.busy = false; if (dlg.open && $('#payBtn')) updateBooking(); } toast(e.message || 'Unable to start booking right now.'); }
+}
+async function finishBooking(P, extra){
+  P.paid = !!extra.razorpay_payment_id; $('#busyT').textContent = 'Confirming your booking'; busy.showModal();
+  try {
+    const token = await S.user.getIdToken(true);
+    const r = await api('/booking/verify-payment', token, {trip_id:P.trip.id, intent_id:P.intentId, payment_mode:P.mode, seat_count:P.seats, passengers:P.passengers, ...extra});
+    if (!okRes(r, true)) throw new Error(apiMsg(r.j, 'Booking confirmation failed.'));
+    busy.close(); await new Promise(x => setTimeout(x, 300)); celebrateBooking(P);
+  } catch(e){
+    console.error('BOOKING VERIFY ERROR', e); busy.close();
+    toast(P.paid ? 'Payment completed, but booking confirmation is still pending. Do not pay again. Please try again later or contact support.' : (e.message || 'Unable to confirm booking right now.'));
+  } finally { S.pending = null; S.bk = null; }
+}
+function celebrateBooking(P){
+  const label = P.mode === 'wallet' ? 'Paid from Tripride Wallet' : P.mode === 'wallet_razorpay' ? 'Paid using Wallet + Razorpay' : 'Paid securely via Razorpay';
+  show(`<div class="d win"><div class="big">✓</div><h2>Your booking is complete!</h2><p class="sub">Seat confirmed. You’re all set for the journey.</p>
+    <div class="box"><b>${esc(P.trip.from)} → ${esc(P.trip.to)}</b><div>${fmtDate(P.trip.date)}, ${fmtTime(P.trip.date)} · ${P.seats} seat${P.seats>1?'s':''}</div>
+    <span class="ok">₹${rs(P.fee)} Payment successful</span><div style="margin-top:8px;font-size:.82rem">${label}</div></div><button class="btn block" data-close>Done</button></div>`);
+}
+
+/* ============ CREATE RIDE (create_ride_screen.dart flow) ============ */
+const newC = () => ({fromN:'',fromLa:0,fromLo:0,toN:'',toLa:0,toLo:0,veh:'',vno:'',seats:'',price:'',meet:'',date:'',time:'',ac:false,wo:false,terms:false,busy:false,err:''});
+const CT_TERMS = ['Provide correct ride, vehicle, pickup, destination, date and time details.','Be on time and reach the agreed meeting point/pickup location.','Treat passengers respectfully and behave responsibly throughout the journey.','Do not harass, threaten, insult, discriminate against or disturb passengers.','Do not demand any unauthorized extra amount from passengers.','Keep the vehicle clean, safe and suitable for the booked passengers.','Do not change the agreed trip price or important trip details without informing passengers.','Follow applicable traffic, safety and legal requirements while driving.','Respect passengers’ privacy, personal space and belongings.','If the ride cannot be completed or a serious issue occurs, inform passengers and TripRide Support promptly.'];
+function openCreate(){ if (!S.user) return openLogin(openCreate); S.C = newC(); S.sugg.cfrom = []; S.sugg.cto = []; renderCreate(); }
+function renderCreate(){
+  const c = S.C, f = (id, label, key, ph, extra='') => `<div class="fld"><label for="${id}">${label}</label><input id="${id}" data-c="${key}" value="${esc(c[key])}" placeholder="${ph}" autocomplete="off" ${extra}></div>`;
+  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Share your ride</h2><p class="sub">Add your route, vehicle and trip details to find co-travellers.</p>
+    <div class="fld"><label for="cFrom">From</label><input id="cFrom" data-c="fromN" value="${esc(c.fromN)}" placeholder="Enter pickup location" autocomplete="off"><div class="sugg" id="sg-cfrom" hidden></div></div>
+    <div class="fld"><label for="cTo">To</label><input id="cTo" data-c="toN" value="${esc(c.toN)}" placeholder="Enter destination" autocomplete="off"><div class="sugg" id="sg-cto" hidden></div></div>
+    <div class="two">${f('cVeh','Vehicle name','veh','Example: Swift, Nexon')}${f('cVno','Vehicle number','vno','AP 03 AB 1234')}</div>
+    <div class="two">${f('cSeats','Available seats','seats','Enter number of seats','type="number" min="1" max="20"')}${f('cPrice','Price per seat (₹)','price','Enter amount','type="number" min="0" step="0.01"')}</div>
+    ${f('cMeet','Meeting point','meet','Where should passengers meet you?')}
+    <div class="two">${f('cDate','Ride date','date','','type="date" min="' + isoDay() + '"')}${f('cTime','Ride time','time','','type="time"')}</div>
+    <div class="toggles"><label class="ck"><input type="checkbox" data-cb="ac" ${c.ac?'checked':''}><span>AC available<small>Air conditioning is available</small></span></label>
+      <label class="ck"><input type="checkbox" data-cb="wo" ${c.wo?'checked':''}><span>Women only<small>Only women can book this ride</small></span></label></div>
+    <div class="terms"><h5>Ride Creator Terms & Conditions</h5><p>By creating this ride, you agree to:</p><ul>${CT_TERMS.map(x => `<li>${x}</li>`).join('')}</ul>
+      <label class="ck"><input type="checkbox" data-cb="terms" ${c.terms?'checked':''}><span>I have read and agree to the Ride Creator Terms & Conditions.</span></label></div>
+    <p class="err" id="cErr" ${c.err ? '' : 'hidden'}>${esc(c.err)}</p>
+    <button class="btn block" id="cGo" data-act="createGo" ${c.busy?'disabled':''}>${c.busy ? 'Processing…' : 'Create ride'}</button>
+    <p class="note">A small listing fee is charged by the server (wallet first, then Razorpay). Please verify the ride details before creating.</p></div>`);
+  drawSugg('cfrom'); drawSugg('cto');
+}
+const cErr = m => { S.C.err = m; const e = $('#cErr'); if (e) { e.textContent = m; e.hidden = !m; } };
+function pickPlace(k, i){
+  const p = S.sugg[k][i]; if (!p || p.none || p.err) return; S.sugg[k] = [];
+  if (k === 'from') { S.from = {name:p.name, lat:p.lat, lng:p.lng}; S.curMode = false; $('#qFrom').value = p.name; S.searched = false; drawSugg('from'); render(); }
+  else if (k === 'to') { S.to = {name:p.name, lat:p.lat, lng:p.lng}; $('#qTo').value = p.name; S.searched = false; drawSugg('to'); render(); }
+  else if (k === 'cfrom') { Object.assign(S.C, {fromN:p.address || p.name, fromLa:p.lat, fromLo:p.lng}); renderCreate(); }
+  else { Object.assign(S.C, {toN:p.address || p.name, toLa:p.lat, toLo:p.lng}); renderCreate(); }
+}
+async function routeInfo(a, b){
+  try {
+    const r = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {method:'POST', headers:{'Content-Type':'application/json','X-Goog-Api-Key':GOOGLE_KEY,'X-Goog-FieldMask':'routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline'},
+      body:JSON.stringify({origin:{location:{latLng:{latitude:a[0],longitude:a[1]}}}, destination:{location:{latLng:{latitude:b[0],longitude:b[1]}}}, travelMode:'DRIVE', routingPreference:'TRAFFIC_AWARE', computeAlternativeRoutes:false, units:'METRIC'})});
+    if (!r.ok) return null; const rt = (await r.json()).routes?.[0]; if (!rt) return null;
+    return {meters:Number(rt.distanceMeters) || 0, points:decodePoly(rt.polyline?.encodedPolyline || '')};
+  } catch(e){ return null; }
+}
+function decodePoly(s){
+  const pts = []; let i = 0, la = 0, lo = 0;
+  while (i < s.length) {
+    for (const axis of [0,1]) { let res = 0, sh = 0, b;
+      do { if (i >= s.length) return pts; b = s.charCodeAt(i++) - 63; res |= (b & 31) << sh; sh += 5; } while (b >= 32);
+      const dv = (res & 1) ? ~(res >> 1) : (res >> 1); if (axis === 0) la += dv; else lo += dv; }
+    pts.push({lat:la/1e5, lng:lo/1e5});
+  }
+  return pts;
+}
+async function createGo(){
+  const c = S.C; if (!c || c.busy) return; cErr('');
+  const seats = parseInt(c.seats, 10), price = parseFloat(c.price);
+  if (!c.fromN.trim() || !c.toN.trim() || !c.veh.trim() || !c.vno.trim() || !c.meet.trim() || !c.date || !c.time || !c.seats || !c.price) return cErr('Please fill all ride details');
+  if (!Number.isInteger(seats) || seats <= 0 || seats > 20) return cErr('Please enter valid available seats');
+  if (!Number.isFinite(price) || price < 0) return cErr('Please enter a valid price');
+  if (!c.terms) return cErr('Please read and accept the Ride Creator Terms & Conditions before payment.');
+  const when = new Date(`${c.date}T${c.time}:00`); if (!(when > new Date())) return cErr('Please select a future date and time');
+  if (!S.user) return openLogin(openCreate);
+  c.busy = true; $('#cGo').disabled = true; $('#cGo').textContent = 'Processing…';
+  try {
+    const token = await S.user.getIdToken(true), from = c.fromN.trim(), to = c.toN.trim();
+    const r = await api('/trip/create-order', token, {group_pricing_version:PRICING_V, trip_creation_fee:1, coupon_code:'', amount:1,
+      trip_data:{tripName:`${from} to ${to}`, tripStartLocation:from, tripEndLocation:to, from, to, meetingLocation:c.meet.trim(), meetingPoint:c.meet.trim(), tripDate:when.toISOString(),
+        vehicle:c.veh.trim(), vehicleNumber:c.vno.trim().toUpperCase(), seatsAvailable:seats, availableSeats:seats, totalSeats:seats, price, acAvailable:c.ac, womenOnly:c.wo}});
+    if (!okRes(r)) throw new Error(apiMsg(r.j, 'Unable to start payment right now. Please try again.'));
+    const j = r.j, fee = num(j.total_fee) ?? 50, intentId = String(j.intent_id || '');
+    if (!intentId) throw new Error('Payment intent is missing.');
+    const P = {intentId, fee, paid:false, snap:{...c}, when, seats, price};
+    S.pending = P;
+    if (j.requires_razorpay !== true) {
+      dlg.close(); $('#busyT').textContent = 'Creating your ride'; busy.showModal();
+      return verifyCreate(P, {payment_mode:'wallet', intent_id:intentId});
+    }
+    const orderId = String(j.order_id || ''), keyId = String(j.key_id || ''), rzpAmt = num(j.razorpay_amount) ?? 0;
+    if (!orderId || !keyId || rzpAmt <= 0) throw new Error('Payment service is temporarily unavailable. Please try again later.');
+    if (typeof window.Razorpay !== 'function') throw new Error('Payment checkout is still loading. Please try again.');
+    dlg.close();
+    const rz = new window.Razorpay({key:keyId, amount:Math.round(rzpAmt * 100), currency:j.currency || 'INR', order_id:orderId, name:'TripMate', description:'Ride Creation Fee',
+      prefill:{contact:S.user.phoneNumber || '', email:S.user.email || ''}, theme:{color:'#F26B2A'},
+      handler: resp => { P.paid = true; $('#busyT').textContent = 'Creating your ride'; busy.showModal(); verifyCreate(P, {razorpay_payment_id:resp.razorpay_payment_id, razorpay_order_id:resp.razorpay_order_id, razorpay_signature:resp.razorpay_signature, intent_id:intentId}); },
+      modal:{ondismiss: () => { if (S.pending === P && !P.paid) { S.pending = null; toast('Payment failed. Please try again.'); } }}});
+    rz.on('payment.failed', () => { if (S.pending === P) { S.pending = null; toast('Payment failed. Please try again.'); } });
+    rz.open();
+  } catch(e){ console.error('CREATE ORDER ERROR', e); S.pending = null; c.busy = false; if (dlg.open && $('#cGo')) { $('#cGo').disabled = false; $('#cGo').textContent = 'Create ride'; cErr(e.message || 'Unable to start payment. Please try again.'); } else toast(e.message || 'Unable to start payment.'); }
+}
+async function verifyCreate(P, body){
+  try {
+    const token = await S.user.getIdToken(true), r = await api('/trip/verify-payment', token, body);
+    if (!okRes(r, true)) throw new Error('We could not verify your payment yet. Please do not pay again. Try again shortly.');
+    await createRideDoc(P);
+  } catch(e){ console.error('CREATE VERIFY ERROR', e); busy.close(); toast(e.message || 'We could not verify your payment yet. Please do not pay again.'); }
+  finally { S.pending = null; }
+}
+async function createRideDoc(P){
+  const c = P.snap, u = S.user;
+  try {
+    let pLa = c.fromLa, pLo = c.fromLo, dLa = c.toLa, dLo = c.toLo;
+    if (!pLa || !pLo) { const g = await geocode(c.fromN); if (!g) throw new Error('Unable to find the selected locations'); pLa = g.lat; pLo = g.lng; }
+    if (!dLa || !dLo) { const g = await geocode(c.toN); if (!g) throw new Error('Unable to find the selected locations'); dLa = g.lat; dLo = g.lng; }
+    const ud = (await getDoc(doc(db,'users',u.uid))).data() || {};
+    if ((Number(ud.walletBalance) || 0) < 0) throw new Error('Your wallet balance is negative. Please clear your dues before creating a new ride.');
+    const pick = (...v) => { for (const x of v) { const t = x == null ? '' : String(x).trim(); if (t && t.toLowerCase() !== 'null') return t; } return ''; };
+    const dName = pick(ud.name, ud.fullName, ud.displayName, u.displayName), dPhoto = pick(ud.profilePhoto, ud.photoUrl, ud.photoURL, u.photoURL), dPhone = pick(ud.phone, ud.phoneNumber, u.phoneNumber);
+    const ri = await routeInfo([pLa,pLo],[dLa,dLo]), distanceKm = ri && ri.meters > 0 ? ri.meters/1000 : km(pLa,pLo,dLa,dLo);
+    const hr = P.when.getHours(), t12 = `${hr % 12 || 12}:${String(P.when.getMinutes()).padStart(2,'0')} ${hr >= 12 ? 'PM' : 'AM'}`;
+    await addDoc(collection(db,'trips'), {driverId:u.uid, driverName:dName, creatorName:dName, driverPhoto:dPhoto, creatorPhoto:dPhoto, driverPhone:dPhone, creatorPhone:dPhone,
+      from:c.fromN.trim(), to:c.toN.trim(), pickupLat:pLa, pickupLng:pLo, dropLat:dLa, dropLng:dLo, routePoints:ri ? ri.points : [], distanceKm,
+      vehicle:c.veh.trim(), vehicleNumber:c.vno.trim().toUpperCase(), seats:P.seats, availableSeats:P.seats, totalSeats:P.seats, price:P.price, meetingPoint:c.meet.trim(),
+      rideDate:Timestamp.fromDate(P.when), rideTime:t12, acAvailable:c.ac, womenOnly:c.wo, status:'active', createdAt:serverTimestamp()});
+    await setDoc(doc(db,'users',u.uid), {tripCount:increment(1), kmTravelled:increment(distanceKm)}, {merge:true});
+    busy.close(); S.C = null;
+    show(`<div class="d win"><div class="big">✓</div><h2>Your ride is live!</h2><p class="sub">Ride created successfully. Passengers can now discover and book your ride.</p>
+      <div class="box"><b>${esc(c.fromN)} → ${esc(c.toN)}</b><div>${esc(c.veh)} · ${fmtDate(P.when)}, ${fmtTime(P.when)}</div><div>${esc(c.meet)}</div><span class="ok">₹${rs(P.fee)} Payment successful</span></div>
+      <button class="btn block" data-close>Done</button></div>`);
+  } catch(e){ console.error('CREATE RIDE ERROR', e); busy.close(); toast(e.message || 'Unable to create ride. Please try again.'); }
+}
+
+/* ============ EVENTS ============ */
+document.addEventListener('click', async e => {
+  if (!e.target.closest('.f1,.fld')) document.querySelectorAll('.sugg').forEach(b => b.hidden = true);
+  const el = e.target.closest('[data-open],[data-filter],[data-close],[data-act],[data-join],[data-pick]'); if (!el) return;
+  const d = el.dataset;
+  if ('close' in d) return dlg.close();
+  if (d.pick) { const [k,i] = d.pick.split(':'); return pickPlace(k, +i); }
+  if (d.join) return joinTrip(d.join);
+  if (d.open) { const t = S.trips.find(x => x.id === d.open); return t && detail(t); }
+  if (d.filter) { S.filter = d.filter; return render(); }
+  switch (d.act) {
+    case 'locate': S.loc = 'asking'; render(); return locate();
+    case 'reload': return location.reload();
+    case 'clear': e.preventDefault(); return clearSearch();
+    case 'create': return openCreate();
+    case 'useLoc': {
+      if (!S.pos) { locate(); return toast('Getting your current location…'); }
+      S.from = {name:S.place || 'Current Location', lat:S.pos.lat, lng:S.pos.lng}; S.curMode = true; S.to = null; $('#qTo').value = '';
+      $('#qFrom').value = S.from.name; S.sugg.from = []; drawSugg('from'); return doSearch();
+    }
+    case 'sendOtp': return sendOtp();
+    case 'verifyOtp': return verifyOtp();
+    case 'changePhone': return loginStep1();
+    case 'seatPlus': if (S.bk && S.bk.seats < S.bk.trip.seats) { S.bk.seats++; S.bk.pax.push({name:'',age:''}); renderPax(); updateBooking(); } return;
+    case 'seatMinus': if (S.bk && S.bk.seats > 1) { S.bk.seats--; S.bk.pax.pop(); renderPax(); updateBooking(); } return;
+    case 'pay': return startBooking();
+    case 'createGo': return createGo();
+  }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.matches('[data-pax]') && S.bk) S.bk.pax[+t.dataset.pax][t.dataset.f] = t.value;
+  else if (t.dataset.c && S.C) {
+    const k = t.dataset.c; S.C[k] = t.value;
+    if (k === 'fromN') { S.C.fromLa = 0; S.C.fromLo = 0; suggest('cfrom', t.value); }
+    if (k === 'toN') { S.C.toLa = 0; S.C.toLo = 0; suggest('cto', t.value); }
+  }
+});
+document.addEventListener('change', e => { const t = e.target; if (t.dataset.cb && S.C) S.C[t.dataset.cb] = t.checked; });
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.t-top')) { e.preventDefault(); e.target.click(); }
+  if (e.key === 'Enter' && e.target.id === 'ph') { e.preventDefault(); sendOtp(); }
+  if (e.key === 'Enter' && e.target.id === 'otp') { e.preventDefault(); verifyOtp(); }
+});
+dlg.addEventListener('click', e => { if (e.target === dlg && !(S.C && S.C.busy)) dlg.close(); });
+busy.addEventListener('cancel', e => e.preventDefault());
+
+$('#qFrom').addEventListener('input', e => { S.from = null; S.curMode = false; S.searched = false; suggest('from', e.target.value); render(); });
+$('#qTo').addEventListener('input', e => { S.to = null; S.searched = false; suggest('to', e.target.value); render(); });
+$('#date').addEventListener('change', e => { S.date = e.target.value || isoDay(); S.searched = false; render(); });
+$('#searchForm').addEventListener('submit', e => { e.preventDefault(); doSearch(); });
+$('#searchForm').addEventListener('reset', () => setTimeout(() => { Object.assign(S,{from:null,to:null,curMode:false,searched:false,date:isoDay()}); $('#date').value = S.date; S.sugg.from = []; S.sugg.to = []; drawSugg('from'); drawSugg('to'); render(); }));
+$('#createBtn').addEventListener('click', openCreate);
+$('#authBtn').addEventListener('click', async () => { if (S.user) { try { await signOut(auth); toast('Signed out.'); } catch(e){ toast('Could not sign out.'); } } else openLogin(null); });
+$('#themeBtn').addEventListener('click', () => {
+  const root = document.documentElement, dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark'; try { localStorage.setItem('tr_theme', root.dataset.theme); } catch(e){}
+});
+
+/* ============ INIT ============ */
+$('#yr').textContent = new Date().getFullYear();
+S.date = isoDay(); $('#date').value = S.date; $('#date').min = S.date;
+render(); subscribe(); locate();
+setInterval(render, 60000);
+</script>
+</body>
+</html>

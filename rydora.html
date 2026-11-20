@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RYDORA | Daily commute rides | Tripride</title>
+<meta name="description" content="Share your daily commute. Find rides along your route or publish yours.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+<script>try{var t=localStorage.getItem('tr_theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#FBF7F2;--card:#fff;--ink:#1B2433;--muted:#6A7585;--line:#E6DCCD;--sun:#F26B2A;--sun-d:#D9561A;--sky:#1478B8;--ok:#178A4B;--ok-bg:#E6F6EC;--bad:#B42318;--chip:#F1E9DD;--sh:0 14px 34px rgba(60,40,10,.1);--sans:'DM Sans',system-ui,sans-serif;--serif:'Fraunces',Georgia,serif}
+:root[data-theme=dark]{--bg:#0C1422;--card:#14223A;--ink:#EEF2F8;--muted:#97A5BA;--line:#223250;--sun:#FF8A4C;--sun-d:#FF7430;--sky:#5BB4F0;--ok:#4ADE80;--ok-bg:#12301F;--bad:#FF9A8F;--chip:#1B2C49;--sh:0 14px 34px rgba(0,0,0,.45)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0C1422;--card:#14223A;--ink:#EEF2F8;--muted:#97A5BA;--line:#223250;--sun:#FF8A4C;--sun-d:#FF7430;--sky:#5BB4F0;--ok:#4ADE80;--ok-bg:#12301F;--bad:#FF9A8F;--chip:#1B2C49;--sh:0 14px 34px rgba(0,0,0,.45)}}
+*{box-sizing:border-box;margin:0}
+html{color-scheme:light dark}:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;padding-bottom:env(safe-area-inset-bottom)}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.wrap{width:min(1000px,100% - 28px);margin-inline:auto}[hidden]{display:none!important}
+.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:8px}
+.brand{font-family:var(--serif);font-weight:800;font-size:1.35rem;color:var(--ink);text-decoration:none}.brand b{color:var(--sun)}
+.nr{display:flex;gap:8px;align-items:center}
+.ib{width:40px;height:40px;border-radius:12px;border:1.5px solid var(--line);background:var(--card)}
+.wallet{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:8px 12px;font-weight:700;font-size:.88rem}
+.btn{border:0;border-radius:12px;padding:11px 18px;font-weight:700;background:var(--sun);color:#fff;text-decoration:none;display:inline-block;text-align:center}
+.btn:hover{background:var(--sun-d)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.ghost{background:transparent;border:1.5px solid var(--sun);color:var(--sun)}.btn.red{background:transparent;border:1.5px solid var(--bad);color:var(--bad)}
+.btn.sm{padding:8px 14px;font-size:.86rem}.btn.block{display:block;width:100%;padding:14px}
+.tabs{display:flex;gap:8px;margin:16px 0 8px;flex-wrap:wrap}
+.tab{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;font-weight:700;color:var(--muted);font-size:.9rem}
+.tab[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+h1{font-family:var(--serif);font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.1;margin:10px 0 4px}
+.muted{color:var(--muted);font-size:.9rem}.sm2{font-size:.78rem}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin:12px 0}.sec h3{font-size:1rem;margin-bottom:10px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fl{margin-bottom:10px;position:relative}.fl label{display:block;font-size:.74rem;font-weight:700;color:var(--muted);margin:0 0 4px 4px}
+.fl input,.fl select{width:100%;height:46px;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;background:var(--bg)}
+.fl input:focus,.fl select:focus{border-color:var(--sun);outline:none}
+.sugg{position:absolute;left:0;right:0;top:100%;z-index:8;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);max-height:220px;overflow:auto}
+.sugg button{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;padding:10px 13px;font-size:.85rem}.sugg button:hover{background:var(--chip)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.rc{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin:12px 0}
+.rc .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.route{position:relative;padding-left:24px;margin:10px 0;display:grid;gap:10px;font-size:.92rem;font-weight:500}
+.route::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;border-left:2px dashed var(--line)}
+.route div{position:relative}.route div::before{content:"";position:absolute;left:-24px;top:4px;width:13px;height:13px;border-radius:50%;background:var(--card);border:3px solid var(--ok)}
+.route div:last-child::before{border-color:var(--sun);background:var(--sun)}
+.pill{background:var(--chip);color:var(--muted);border-radius:8px;padding:3px 8px;font-size:.72rem;font-weight:700}
+.st{font-size:.68rem;font-weight:800;border-radius:8px;padding:3px 8px;text-transform:uppercase;background:var(--chip);color:var(--muted)}
+.st.ok{background:var(--ok-bg);color:var(--ok)}.st.warn{background:#FFEBDD;color:#B4460F}
+.price{font-size:1.4rem;font-weight:800;color:var(--ok);text-align:right;line-height:1}.price small{display:block;font-size:.7rem;color:var(--muted);font-weight:500}
+.cd{background:var(--chip);border-radius:14px;padding:10px 12px;margin:8px 0;font-weight:800}
+.otp{background:color-mix(in srgb,var(--sky) 10%,transparent);border-radius:14px;padding:10px 12px;margin:8px 0;font-size:.85rem}.otp b{font-size:1.2rem;letter-spacing:.15em}
+.pax{border-top:1px solid var(--line);padding-top:10px;margin-top:10px;font-size:.86rem}
+.state{text-align:center;padding:44px 20px;background:var(--card);border:1px dashed var(--line);border-radius:20px;margin:14px 0 40px}
+.state h3{font-family:var(--serif);font-size:1.4rem}.state p{color:var(--muted);max-width:44ch;margin:6px auto 14px}
+.sk{height:130px;border-radius:20px;margin:12px 0;background:linear-gradient(100deg,var(--card) 30%,var(--chip) 50%,var(--card) 70%);background-size:200% 100%;animation:sh 1.3s infinite}@keyframes sh{to{background-position:-200% 0}}
+.gate{position:relative;margin:14px 0 50px;min-height:460px;display:grid;place-items:center}
+.gbg{position:absolute;inset:0;overflow:hidden;display:grid;grid-auto-rows:min-content;gap:14px;filter:blur(7px);opacity:.5;pointer-events:none;user-select:none}
+.bar{height:12px;border-radius:6px;background:var(--line);margin:9px 0}
+.gc{position:relative;width:min(410px,100%);background:var(--card);border:1px solid var(--line);border-radius:26px;padding:28px 24px 22px;text-align:center;box-shadow:var(--sh);margin:36px 0}
+.gi{width:64px;height:64px;border-radius:20px;background:color-mix(in srgb,var(--sun) 14%,transparent);display:grid;place-items:center;font-size:1.9rem;margin:0 auto 14px}
+.gc h3{font-family:var(--serif);font-size:1.5rem;line-height:1.15}.gc p{color:var(--muted);font-size:.92rem;margin:8px 0 16px}
+.gl{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:7px;text-align:left;font-size:.85rem;font-weight:500}.gl li::before{content:"✓";color:var(--ok);font-weight:800;margin-right:8px}
+dialog{border:0;border-radius:24px;padding:0;width:min(580px,calc(100% - 24px));max-height:92vh;overflow:auto;background:var(--card);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.4);margin:auto}
+dialog::backdrop{background:rgba(8,14,26,.65);backdrop-filter:blur(3px)}
+.d{padding:22px 20px 20px;position:relative}.d h2{font-family:var(--serif);font-size:1.5rem;line-height:1.15;margin:0 40px 6px 0}.d h4{margin:14px 0 6px}.sub{color:var(--muted);margin-bottom:10px}
+.x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:0;background:var(--chip);font-size:1.2rem}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:.88rem}.kv b{text-align:right}.kv.t{border-top:1px solid var(--line);margin-top:4px;padding-top:10px}
+.cta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.err{color:var(--bad);font-size:.84rem;font-weight:700;margin:8px 0}
+.phone{display:flex;gap:8px}.phone span{display:grid;place-items:center;border:1.5px solid var(--line);border-radius:12px;padding:0 14px;background:var(--bg);font-weight:700}.phone input{flex:1}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-size:.9rem;opacity:0;pointer-events:none;transition:.25s;z-index:9999;max-width:calc(100% - 28px)}.toast.show{opacity:1;transform:translate(-50%,0)}
+#rc{height:0;overflow:hidden}
+@media(max-width:560px){.wallet{display:none}.g2{grid-template-columns:1fr}.g2.k{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <a href="index.html" class="brand">TRIP<b>RIDE</b> <small style="font-size:.6em;color:var(--sun)">RYDORA</small></a>
+  <div class="nr">
+    <span class="wallet" id="walletChip" hidden></span>
+    <a class="btn sm ghost" href="trips.html">Trips</a>
+    <button class="ib" id="themeBtn" aria-label="Switch theme">◐</button>
+    <button class="btn sm ghost" id="authBtn" type="button">Sign in</button>
+  </div>
+</div></header>
+<main class="wrap">
+  <div class="tabs" role="group" aria-label="Sections">
+    <button class="tab" data-tab="find" aria-pressed="true">Find ride</button>
+    <button class="tab" data-tab="publish" aria-pressed="false">Publish ride</button>
+    <button class="tab" data-tab="mine" aria-pressed="false">My rides</button>
+  </div>
+  <div id="view"></div>
+</main>
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+import {getFirestore,collection,query,where,onSnapshot,doc,getDoc,addDoc,updateDoc,getDocs,runTransaction,serverTimestamp,Timestamp,arrayUnion} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import {getAuth,onAuthStateChanged,RecaptchaVerifier,signInWithPhoneNumber,signOut} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+
+/* ===== CONFIG (same project as the app and trips page) ===== */
+const FB={apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw",authDomain:"tripmate-74df9.firebaseapp.com",projectId:"tripmate-74df9",storageBucket:"tripmate-74df9.firebasestorage.app",messagingSenderId:"931960941543",appId:"1:931960941543:web:ced98c012dc22fcb776b42"};
+const PLACES_KEY='AIzaSyBBHjG4-btvLZoZIba-jB8WvqL2TTkHx6w';   // restrict to your website domain
+const API='http://15.235.145.222:10000';                       // MUST be HTTPS for a live HTTPS website (and allow this site in CORS)
+const PUBLISH_FEE=20, BOOK_FEE=10;
+
+const app=initializeApp(FB),db=getFirestore(app),auth=getAuth(app);
+const C=n=>collection(db,n),RIDES=()=>C('rydora_rides'),REQS=()=>C('rydora_requests'),BOOKS=()=>C('rydora_bookings'),NOTES=()=>C('rydora_notifications');
+const S={tab:'find',user:null,authReady:false,pos:null,place:'',wallet:0,rides:new Map(),myB:new Map(),ownB:new Map(),reqIn:new Map(),reqOut:new Map(),subs:[],unW:null,ans:null,after:null,rc:null,confirm:null,phone:'',watch:{},busy:false};
+const F={from:null,to:null,veh:'any',seats:1}, M={side:'book',period:'Current'}, PB={from:null,to:null,stops:[],veh:'',rec:'once',days:new Set([1,2,3,4,5]),ret:false,busy:false}, B={};
+const $=s=>document.querySelector(s),dlg=$('#dlg');
+
+/* ===== helpers ===== */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+const P2=n=>String(n).padStart(2,'0'),dKey=d=>`${d.getFullYear()}-${P2(d.getMonth()+1)}-${P2(d.getDate())}`,mid=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate()),wd=d=>d.getDay()||7;
+const vd=d=>d&&!isNaN(d)?d:null,toD=x=>x&&x.toDate?x.toDate():typeof x==='string'&&x?vd(new Date(x)):typeof x==='number'?new Date(x):x instanceof Date?x:null;
+const str=(x,f='')=>typeof x==='string'&&x.trim()?x.trim():f,nm=(x,f=0)=>typeof x==='number'&&isFinite(x)?x:f;
+const fDay=d=>d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),fTime=d=>d.toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase();
+const km=(a,b,c,d)=>{const r=Math.PI/180,x=(c-a)*r,y=(d-b)*r,h=Math.sin(x/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)**2;return 12742*Math.asin(Math.sqrt(h))};
+const kmp=(a,b)=>km(a.lat,a.lng,b.lat,b.lng);
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),4200)}
+const X='<button class="x" data-act="close" aria-label="Close">×</button>';
+function show(h){dlg.innerHTML=h;if(!dlg.open)dlg.showModal()}
+const pp=v=>{const m=v&&typeof v==='object'?v:{},name=str(m.name,str(m.address,str(m.label))),lat=nm(m.lat,nm(m.latitude)),lng=nm(m.lng,nm(m.longitude));return{name,lat,lng,valid:!!name&&Math.abs(lat)<=90&&Math.abs(lng)<=180&&(lat!==0||lng!==0)}};
+const pm=p=>({name:p.name,lat:p.lat,lng:p.lng});
+const rFrom=r=>pp(r.from||r.pickup||r.startLocation),rTo=r=>pp(r.to||r.destination||r.endLocation),rDep=r=>vd(toD(r.startDate))||vd(toD(r.departureAt))||vd(toD(r.date));
+const owner=r=>str(r.ownerId,str(r.creatorId,str(r.userId))),tSeats=r=>nm(r.seats,nm(r.totalSeats,nm(r.availableSeats))),fare=r=>nm(r.contribution,nm(r.contributionPerSeat));
+const U=new Map();
+const getU=async id=>{if(!id)return{};if(!U.has(id)){try{U.set(id,(await getDoc(doc(db,'users',id))).data()||{})}catch(e){U.set(id,{})}}return U.get(id)};
+const uName=u=>str(u.name,str(u.fullName,str(u.displayName,'Commuter'))),uPhone=u=>str(u.phone,str(u.phoneNumber));
+function hydrate(){document.querySelectorAll('[data-u]').forEach(async el=>{const u=await getU(el.dataset.u);if(el.dataset.f==='phone'){const p=uPhone(u);el.textContent=p||'Phone not available';if(p)el.href='tel:'+p}else el.textContent=uName(u)})}
+
+/* ===== schedule + route matching (ported from the app) ===== */
+function runsOn(r,day){const s=rDep(r),e=vd(toD(r.endDate));if(!s||mid(day)<mid(s))return false;if(e&&mid(day)>mid(e))return false;if((r.skipDates||[]).includes(dKey(day)))return false;
+  switch(str(r.recurrence,'once')){case'daily':return true;case'weekly':return(r.weekdays||[]).includes(wd(day));case'monthly':return(r.monthDays||[]).includes(day.getDate());case'custom':return(r.customDates||[]).includes(dKey(day));default:return+mid(s)===+mid(day)}}
+function occ(r,h=90){const s=rDep(r);if(!s)return[];const now=new Date(),first=mid(s>now?s:now),e=vd(toD(r.endDate));let lim=new Date(first.getTime()+h*864e5);if(e&&mid(e)<lim)lim=mid(e);const out=[];
+  for(let d=new Date(first);d<=lim;d.setDate(d.getDate()+1)){const o=new Date(d.getFullYear(),d.getMonth(),d.getDate(),s.getHours(),s.getMinutes());if(o>now&&runsOn(r,o))out.push(o);if(str(r.recurrence,'once')==='once')break}return out}
+const nextOcc=r=>occ(r,366)[0]||null;
+const remain=(r,d)=>Math.max(0,tSeats(r)-nm((r.bookedSeatsByDate||{})[dKey(d)]));
+function segProj(p,a,b){const k=111,lat=(a.lat+b.lat+p.lat)/3*Math.PI/180,dx=(b.lng-a.lng)*Math.cos(lat)*k,dy=(b.lat-a.lat)*k,px=(p.lng-a.lng)*Math.cos(lat)*k,py=(p.lat-a.lat)*k,d=dx*dx+dy*dy;return d<=0?0:Math.min(1,Math.max(0,(px*dx+py*dy)/d))}
+function nearest(p,rt){let bd=Infinity,bp=0,tr=0,tot=0;const L=[];for(let i=0;i<rt.length-1;i++){const l=kmp(rt[i],rt[i+1]);L.push(l);tot+=l}
+  for(let i=0;i<rt.length-1;i++){const a=rt[i],b=rt[i+1],t=segProj(p,a,b),n={lat:a.lat+(b.lat-a.lat)*t,lng:a.lng+(b.lng-a.lng)*t},d=kmp(p,n);if(d<bd){bd=d;bp=tot<=0?0:(tr+L[i]*t)/tot}tr+=L[i]}return{d:bd,p:bp}}
+const rRoute=r=>[rFrom(r),...(r.routeStops||[]).map(pp).filter(p=>p.valid),rTo(r)];
+function fits(f,t,r){if(!f||!t||!f.valid||!t.valid)return false;const rt=rRoute(r);if(rt.length<2)return false;const a=nearest(f,rt),b=nearest(t,rt);return a.d<=3&&b.d<=2&&b.p>a.p+.001}
+const terminal=s=>['completed','cancelled','rejected','expired'].includes(String(s).toLowerCase());
+const isCur=r=>['started','in_progress'].includes(str(r.status).toLowerCase());
+const isUp=r=>!isCur(r)&&!terminal(r.status)&&!!nextOcc(r),isPast=r=>terminal(r.status)||(!isCur(r)&&!nextOcc(r));
+const bookable=r=>str(r.status,'active').toLowerCase()==='active'&&!!owner(r)&&r.isPublic!==false&&str(r.visibility,'public')!=='private'&&nm(r.availableSeats,tSeats(r))>0&&rFrom(r).valid&&rTo(r).valid&&!!nextOcc(r);
+
+/* ===== location + places ===== */
+function locate(){return new Promise(res=>{if(S.pos)return res(true);if(!navigator.geolocation)return res(false);
+  navigator.geolocation.getCurrentPosition(async p=>{S.pos={lat:p.coords.latitude,lng:p.coords.longitude};try{const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=16&lat=${S.pos.lat}&lon=${S.pos.lng}`);S.place=(await r.json()).display_name||''}catch(e){}res(true)},()=>res(false),{enableHighAccuracy:true,timeout:12000,maximumAge:60000})})}
+const here=()=>S.pos?{name:S.place||'Current location',lat:S.pos.lat,lng:S.pos.lng,valid:true}:null;
+async function placeSearch(text){const r=await fetch('https://places.googleapis.com/v1/places:searchText',{method:'POST',headers:{'Content-Type':'application/json','X-Goog-Api-Key':PLACES_KEY,'X-Goog-FieldMask':'places.displayName,places.formattedAddress,places.location'},body:JSON.stringify({textQuery:text,languageCode:'en',regionCode:'IN',pageSize:6})});
+  if(!r.ok)throw new Error('Places '+r.status);const j=await r.json();return(j.places||[]).map(p=>({name:(p.displayName&&p.displayName.text)||'',address:p.formattedAddress||'',lat:nm(p.location&&p.location.latitude,null),lng:nm(p.location&&p.location.longitude,null)})).filter(p=>p.lat!==null&&p.lng!==null)}
+const pin=(id,label,val='')=>`<div class="fl"><label for="${id}">${label}</label><input id="${id}" value="${esc(val)}" autocomplete="off" placeholder="Search area or landmark"><div class="sugg" id="${id}s" hidden></div></div>`;
+function bindPlace(id,cb){const i=$('#'+id),sg=$('#'+id+'s');if(!i)return;let t,rq=0;
+  i.addEventListener('input',()=>{cb(null);clearTimeout(t);const v=i.value.trim(),q=++rq;if(v.length<3){sg.hidden=true;return}
+    t=setTimeout(async()=>{try{const r=await placeSearch(v);if(q!==rq)return;sg._r=r;sg.innerHTML=r.map((p,k)=>`<button type="button" data-pk="${k}"><b>${esc(p.name)}</b><br><small>${esc(p.address)}</small></button>`).join('');sg.hidden=!r.length}catch(e){sg.hidden=true}},350)});
+  sg.addEventListener('click',e=>{const b=e.target.closest('[data-pk]');if(!b)return;e.stopPropagation();const p=sg._r[+b.dataset.pk],n=p.address||p.name;i.value=n;sg.hidden=true;cb({name:n,lat:p.lat,lng:p.lng,valid:true})})}
+
+/* ===== auth + wallet ===== */
+const AERR={'auth/invalid-phone-number':'Enter a valid 10-digit mobile number.','auth/too-many-requests':'Too many attempts. Wait a few minutes and try again.','auth/invalid-verification-code':'That OTP is not correct.','auth/code-expired':'That OTP has expired. Request a new one.','auth/captcha-check-failed':'Security check failed. Refresh and try again.','auth/unauthorized-domain':'This domain is not authorized in Firebase Authentication.','auth/network-request-failed':'Network error. Check your connection.'};
+function login1(msg){show(`<div class="d">${X}<h2>Sign in</h2><p class="sub">Use the same mobile number as your Tripride app.</p><div class="fl"><label for="ph">Mobile number</label><div class="phone"><span>+91</span><input id="ph" inputmode="numeric" maxlength="10" placeholder="98765 43210" autocomplete="tel-national"></div></div>${msg?`<p class="err">${esc(msg)}</p>`:''}<div id="rc"></div><button class="btn block" id="otpBtn" data-act="sendOtp">Send OTP</button></div>`);setTimeout(()=>$('#ph')&&$('#ph').focus(),50)}
+function login2(phone,msg){show(`<div class="d">${X}<h2>Enter the OTP</h2><p class="sub">We sent a 6-digit code to +91 ${esc(phone)}.</p><div class="fl"><label for="otp">OTP</label><input id="otp" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="one-time-code"></div>${msg?`<p class="err">${esc(msg)}</p>`:''}<button class="btn block" id="vBtn" data-act="verifyOtp">Verify &amp; sign in</button><p style="text-align:center;margin-top:10px"><button type="button" class="tab" data-act="chPhone">Change number</button></p></div>`);setTimeout(()=>$('#otp')&&$('#otp').focus(),50)}
+const openLogin=a=>{S.after=a||null;login1()};
+async function sendOtp(){const phone=($('#ph').value||'').replace(/\D/g,'');if(!/^[6-9]\d{9}$/.test(phone))return login1('Enter a valid 10-digit mobile number.');const b=$('#otpBtn');b.disabled=true;b.textContent='Sending…';
+  try{if(S.rc){try{S.rc.clear()}catch(e){}}S.rc=new RecaptchaVerifier(auth,'rc',{size:'invisible'});S.confirm=await signInWithPhoneNumber(auth,'+91'+phone,S.rc);S.phone=phone;login2(phone)}
+  catch(e){console.error(e);if(S.rc){try{S.rc.clear()}catch(_){}S.rc=null}login1(AERR[e.code]||`Could not send OTP (${e.code||'error'}).`)}}
+async function verifyOtp(){const code=($('#otp').value||'').replace(/\D/g,'');if(code.length!==6)return login2(S.phone,'Enter the 6-digit OTP.');const b=$('#vBtn');b.disabled=true;b.textContent='Verifying…';
+  try{await S.confirm.confirm(code);dlg.close();toast('Signed in.');const n=S.after;S.after=null;if(n)setTimeout(n,250)}catch(e){login2(S.phone,AERR[e.code]||`Could not verify OTP (${e.code||'error'}).`)}}
+const sub=(q,map,key)=>onSnapshot(q,s=>{map.clear();s.docs.forEach(d=>map.set(d.id,d.data()));dataChanged()},e=>console.error(key,e));
+function unsubAll(){S.subs.forEach(u=>u());S.subs=[];if(S.unW){S.unW();S.unW=null}[S.rides,S.myB,S.ownB,S.reqIn,S.reqOut].forEach(m=>m.clear())}
+onAuthStateChanged(auth,u=>{
+  S.user=u;S.authReady=true;$('#authBtn').textContent=u?'Sign out':'Sign in';unsubAll();
+  if(u){S.subs=[sub(RIDES(),S.rides,'rides'),sub(query(BOOKS(),where('passengerId','==',u.uid)),S.myB,'myB'),sub(query(BOOKS(),where('ownerId','==',u.uid)),S.ownB,'ownB'),sub(query(REQS(),where('ownerId','==',u.uid)),S.reqIn,'reqIn'),sub(query(REQS(),where('requesterId','==',u.uid)),S.reqOut,'reqOut')];
+    S.unW=onSnapshot(doc(db,'wallets',u.uid),s=>{S.wallet=Number(s.data()&&s.data().balance)||0;const w=$('#walletChip');w.hidden=false;w.textContent=`Wallet ₹${S.wallet.toFixed(2)}`},()=>{})}
+  else $('#walletChip').hidden=true;
+  go(S.tab)});
+
+/* ===== navigation ===== */
+function go(tab){S.tab=tab;document.querySelectorAll('.tab[data-tab]').forEach(t=>t.setAttribute('aria-pressed',String(t.dataset.tab===tab)));({find:findView,publish:publishView,mine:mineView})[tab]()}
+function dataChanged(){if(S.tab==='find')paintFind();else if(S.tab==='mine')paintMine()}
+function gate(t,p,list){const bar='<div class="rc"><div class="bar" style="width:70%"></div><div class="bar" style="width:45%"></div><div class="bar" style="width:30%"></div></div>';
+  return`<div class="gate"><div class="gbg" aria-hidden="true">${bar.repeat(4)}</div><div class="gc"><div class="gi" aria-hidden="true">🔐</div><h3>${t}</h3><p>${p}</p><button class="btn block" data-act="login">Sign in with mobile number</button><ul class="gl">${list.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`}
+const needLogin=t=>{if(!S.authReady){$('#view').innerHTML='<div class="sk"></div><div class="sk"></div>';return true}if(!S.user){$('#view').innerHTML=gate(t,'Ride details include contact information, so please sign in first. It takes a few seconds with your mobile number.',['Same account and wallet as your Tripride app','Find or publish daily commute rides','Pay only a small platform fee']);return true}return false};
+const state=(i,t,p,b='')=>`<div class="state"><div style="font-size:2rem">${i}</div><h3>${t}</h3><p>${p}</p>${b}</div>`;
+
+/* ===== backend (wallet / razorpay) ===== */
+async function post(path,body){
+  if(location.protocol==='https:'&&API.startsWith('http:'))throw new Error('The payment server must use HTTPS to work from this website. Update API.');
+  const t=await auth.currentUser.getIdToken(true),ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),30000);
+  try{const r=await fetch(API+path,{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json',Accept:'application/json',Authorization:'Bearer '+t},body:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}return{status:r.status,j}}
+  catch(e){throw new Error(e.name==='AbortError'?'Server timed out. Try again.':'Could not reach the server. Check HTTPS and CORS settings.')}finally{clearTimeout(tm)}}
+async function bpost(path,body){const{status,j}=await post(path,body);if(status<200||status>=300||j.success!==true)throw new Error(str(j.message,status===401?'Your session expired. Please sign in again.':`Server could not complete this request (HTTP ${status}).`));return j}
+async function rzpPay(payload,desc){
+  const{status,j}=await post('/rydora/payment/create-order',payload);if(status!==200||j.success!==true)throw new Error(str(j.message,'Unable to create payment order.'));
+  const orderId=str(j.order_id),intent=str(j.intent_id),key=str(j.key_id),amt=nm(j.amount);if(!orderId||!intent||!key||amt<=0)throw new Error('Payment server returned an invalid order.');
+  if(typeof window.Razorpay!=='function')throw new Error('Payment checkout is still loading. Try again in a moment.');
+  const pay=await new Promise((res,rej)=>{let done=false;const rz=new window.Razorpay({key,amount:amt,currency:str(j.currency,'INR'),order_id:orderId,name:'RYDORA',description:desc,prefill:{email:S.user.email||'',contact:S.user.phoneNumber||''},theme:{color:'#F26B2A'},
+    handler:r=>{done=true;res(r)},modal:{ondismiss:()=>{if(!done)rej(new Error('Payment was cancelled.'))}}});rz.on('payment.failed',r=>{done=true;rej(new Error((r.error&&r.error.description)||'Payment failed.'))});rz.open()});
+  const v=await post('/rydora/payment/verify',{intent_id:intent,razorpay_order_id:pay.razorpay_order_id||orderId,razorpay_payment_id:pay.razorpay_payment_id,razorpay_signature:pay.razorpay_signature});
+  if(v.status!==200||v.j.verified!==true)throw new Error(str(v.j.message,'Payment verification failed.'));
+  return{...v.j,intent_id:intent,payment_id:str(v.j.payment_id,pay.razorpay_payment_id||'')}}
+function ask(title,body,btns){return new Promise(res=>{S.ans=res;show(`<div class="d">${X}<h2>${title}</h2><div class="sub">${body}</div><div class="cta">${btns.map(([l,v,g])=>`<button class="btn ${g?'ghost':''}" data-ans="${v}">${l}</button>`).join('')}</div></div>`)})}
+const payAsk=(title,body,wl)=>ask(title,body,[[wl,'wallet'],['Pay with Razorpay','razorpay',1]]);
+
+/* ===== FIND ===== */
+function findView(){
+  if(needLogin('Sign in to find rides'))return;
+  $('#view').innerHTML=`<h1>Find a ride</h1><p class="muted">Commuters travelling along your daily route.</p>
+  <div class="sec">${pin('ff','From',F.from?F.from.name:'')}${pin('ft','To',F.to?F.to.name:'')}
+  <div class="row"><span class="muted sm2">Vehicle</span>${['any','bike','car'].map(v=>`<button type="button" class="tab" data-act="fveh" data-v="${v}" aria-pressed="${F.veh===v}">${v[0].toUpperCase()+v.slice(1)}</button>`).join('')}
+  <span class="muted sm2" style="margin-left:8px">Seats</span><button type="button" class="tab" data-act="fseat" data-d="-1">−</button><b id="fs">${F.seats}</b><button type="button" class="tab" data-act="fseat" data-d="1">+</button></div></div>
+  <div id="res"></div>`;
+  bindPlace('ff',p=>{F.from=p;paintFind()});bindPlace('ft',p=>{F.to=p;paintFind()});
+  if(!F.from)locate().then(()=>{if(!F.from&&S.pos&&S.tab==='find'){F.from=here();const i=$('#ff');if(i)i.value=F.from.name;paintFind()}});
+  paintFind();
+}
+function rideCard(id,r,opt={}){
+  const o=nextOcc(r),own=owner(r)===S.user.uid;
+  return`<div class="rc"><div class="top"><div><b data-u="${esc(owner(r))}">…</b><div class="muted sm2">${esc(str(r.vehicleType,'ride')).toUpperCase()} · ${esc(str(r.recurrence,'once')==='daily'?'hybrid':str(r.recurrence,'once')).toUpperCase()}</div></div>
+  <div class="price">${money(fare(r))}<small>per seat</small></div></div>
+  <div class="route"><div>${esc(rFrom(r).name)}</div><div>${esc(rTo(r).name)}</div></div>
+  <div class="row"><span class="pill">${o?fDay(o)+' · '+fTime(o):'No upcoming date'}</span><span class="pill">${o?remain(r,o):0} seats left next date</span></div>
+  <div class="row" style="margin-top:10px;justify-content:flex-end">${own?'<span class="st">Your ride</span>':`<button class="btn sm" data-act="book" data-id="${id}">Select dates</button>`}</div></div>`}
+function paintFind(){
+  const box=$('#res');if(!box||S.tab!=='find')return;
+  if(!S.rides.size&&!S.subs.length){box.innerHTML='<div class="sk"></div>';return}
+  const sr=F.from&&F.to&&F.from.valid&&F.to.valid;
+  let list=[...S.rides].filter(([id,r])=>{if(!bookable(r)||owner(r)===S.user.uid)return false;if(F.veh!=='any'&&str(r.vehicleType).toLowerCase()!==F.veh)return false;if(nm(r.availableSeats,tSeats(r))<F.seats)return false;
+    if(sr)return fits(F.from,F.to,r);if(S.pos){return kmp({lat:S.pos.lat,lng:S.pos.lng},rFrom(r))<=100}return true})
+    .sort((a,b)=>nextOcc(a[1])-nextOcc(b[1]));
+  box.innerHTML=`<div class="muted" style="margin:10px 0">${sr?'Rides matching your route (pickup within 3 km, drop within 2 km, same direction)':'Upcoming rides near you (within 100 km). Enter From and To to match a route.'}</div>`+
+    (list.length?list.map(([id,r])=>rideCard(id,r)).join(''):state('🛣️','No rides found','No upcoming rides match this route and filter yet. Publish your commute so others can join.','<button class="btn" data-tab-go="publish">Publish a ride</button>'));
+  hydrate();
+}
+
+/* ===== BOOK ===== */
+function openBook(id){
+  const r=S.rides.get(id);if(!r)return;if(!S.user)return openLogin(()=>openBook(id));
+  if(owner(r)===S.user.uid)return toast('You cannot book your own ride.');
+  const rec=str(r.recurrence,'once'),opts=occ(r,90).filter(d=>remain(r,d)>0);
+  B={id,r,mode:rec==='weekly'?'weekly':rec==='daily'||rec==='custom'?'hybrid':'once',sel:new Set(),seats:1,ret:false,pf:F.from||here(),pt:F.to,names:[''],phones:[''],err:'',busy:false};
+  if(opts.length)B.sel.add(dKey(opts[0]));renderBook();
+}
+const bOpts=()=>{const o=occ(B.r,90);if(B.mode==='weekly'){const w=(B.r.weekdays||[]);return o.filter(d=>w.includes(wd(d)))}return o};
+function bTotals(){const ps=fare(B.r),m=B.ret&&B.r.returnTripEnabled?2:1,n=B.sel.size;return{ps,m,n,fee:BOOK_FEE*B.seats*m,fareAll:ps*B.seats*n*m}}
+function renderBook(){
+  const r=B.r,opts=bOpts(),t=bTotals(),dep=rDep(r),rd=toD(r.returnDepartureTime);
+  show(`<div class="d">${X}<h2>Review your ride</h2>
+  <div class="route"><div>${esc(rFrom(r).name)}</div><div>${esc(rTo(r).name)}</div></div>
+  <div class="row"><span class="pill">${esc(str(r.vehicleType,'car')).toUpperCase()}</span><span class="pill">Morning ${dep?fTime(dep):'—'}</span>${r.returnTripEnabled&&rd?`<span class="pill">Return ${fTime(rd)}</span>`:''}</div>
+  <h4>Booking dates · ${t.n} selected</h4><div class="row">${['once','weekly','hybrid'].map(m=>`<button type="button" class="tab" data-act="bmode" data-v="${m}" aria-pressed="${B.mode===m}">${m[0].toUpperCase()+m.slice(1)}</button>`).join('')}</div>
+  <div class="row" style="margin-top:8px">${opts.length?opts.map(d=>{const k=dKey(d),rem=remain(r,d),sel=B.sel.has(k);return`<button type="button" class="tab" data-act="bdate" data-k="${k}" aria-pressed="${sel}" ${rem<B.seats&&!sel?'disabled':''}>${fDay(d)} · ${rem} left</button>`}).join(''):'<span class="muted">No dates available.</span>'}</div>
+  ${r.returnTripEnabled?`<label class="row" style="margin-top:12px;font-weight:700"><input type="checkbox" id="bret" ${B.ret?'checked':''}> Include evening return to origin (fare and fee doubled)</label>`:''}
+  <h4>Pickup &amp; drop</h4><p class="muted sm2">Pickup within 3 km and drop within 2 km of the published route, in the same direction.</p>
+  ${pin('bpf','Pickup location',B.pf?B.pf.name:'')}${pin('bpt','Drop location',B.pt?B.pt.name:'')}
+  <h4>Passengers · ${B.seats}</h4><div class="row"><button type="button" class="tab" data-act="bseat" data-d="-1">−</button><b>${B.seats}</b><button type="button" class="tab" data-act="bseat" data-d="1">+</button><span class="muted sm2">max ${tSeats(r)}</span></div>
+  ${B.names.map((n,i)=>`<div class="g2" style="margin-top:8px"><div class="fl" style="margin:0"><label>Passenger ${i+1} name</label><input data-bn="${i}" value="${esc(n)}"></div><div class="fl" style="margin:0"><label>Phone (10 digits)</label><input data-bp="${i}" value="${esc(B.phones[i])}" inputmode="numeric" maxlength="10"></div></div>`).join('')}
+  <h4>Fare</h4><div class="kv"><span>Ride fare (${money(t.ps)} × ${B.seats} × ${t.n} date(s)${t.m>1?' × 2':''})</span><b>${money(t.fareAll)}</b></div><div class="kv"><span>Booking fee (₹${BOOK_FEE} × ${B.seats}${t.m>1?' × 2':''})</span><b>${money(t.fee)}</b></div><div class="kv t"><span><b>Pay now: booking fee only</b></span><b>${money(t.fee)}</b></div>
+  <p class="muted sm2">The ride fare of ${money(t.fareAll)} is paid directly to the ride creator after they accept your request.</p>
+  ${B.err?`<p class="err">${esc(B.err)}</p>`:''}<button class="btn block" data-act="bsubmit" ${B.busy?'disabled':''}>${B.busy?'Sending request…':`Pay ${money(t.fee)} &amp; send request`}</button></div>`);
+  bindPlace('bpf',p=>B.pf=p);bindPlace('bpt',p=>B.pt=p);
+}
+async function submitBook(){
+  if(B.busy)return;const r=B.r,t=bTotals(),keys=[...B.sel].sort(),names=B.names.map(s=>s.trim()),phones=B.phones.map(s=>s.trim());
+  const e=m=>{B.err=m;renderBook()};
+  if(!keys.length)return e('Select at least one travel date.');
+  if(names.some(n=>!n))return e('Enter the full name for every passenger.');
+  if(phones.some(p=>!/^\d{10}$/.test(p)))return e('Enter a valid 10-digit phone number for every passenger.');
+  if(!B.pf||!B.pt||!B.pf.valid||!B.pt.valid)return e('Select your pickup and drop from the suggestions.');
+  if(!fits(B.pf,B.pt,r))return e('Pickup and drop must be within 3 km of the published route and in the same direction.');
+  if(t.ps<=0)return e('This ride has an invalid seat fare.');
+  const method=await payAsk('Booking payment',`<div class="kv"><span>Ride contribution</span><b>${money(t.fareAll)}</b></div><div class="kv"><span>Pay directly to publisher</span><b>${money(t.fareAll)}</b></div><div class="kv t"><span><b>TripRide platform fee</b></span><b>${money(t.fee)}</b></div><p class="muted sm2">TripRide wallet balance: ${money(S.wallet)}</p>`,`Pay ${money(t.fee)} from wallet`);
+  if(!method){return renderBook()}
+  B.busy=true;B.err='';renderBook();
+  try{
+    const payload={purpose:'booking',ride_id:B.id,seats:B.seats,selected_dates:keys,booking_fee:t.fee,return_trip:B.ret};
+    const pay=method==='wallet'?await bpost('/rydora/payment/wallet-debit',payload):await rzpPay(payload,'RYDORA platform booking fee');
+    const rideRef=doc(RIDES(),B.id),reqRef=doc(REQS(),`${B.id}_${S.user.uid}_${keys.join('_')}`),uid=S.user.uid;
+    await runTransaction(db,async tx=>{
+      const rs=await tx.get(rideRef),q=await tx.get(reqRef);
+      if(!rs.exists()||str(rs.data().status)!=='active')throw new Error('Ride is unavailable.');
+      const rd=rs.data();if(rd.ownerId===uid)throw new Error('Cannot request your own ride.');
+      if(B.seats>tSeats(rd))throw new Error('Passenger count exceeds ride capacity.');
+      if(q.exists())throw new Error('You have already requested this ride for these dates.');
+      const allowed=new Set(occ(rd,366).map(dKey));for(const k of keys)if(!allowed.has(k))throw new Error(`Selected date ${k} is not in the publisher schedule.`);
+      const dep=rDep(rd),f0=new Date(keys[0]+'T00:00'),depAt=dep?new Date(f0.getFullYear(),f0.getMonth(),f0.getDate(),dep.getHours(),dep.getMinutes()):null;
+      tx.set(reqRef,{rideId:B.id,ownerId:rd.ownerId,requesterId:uid,status:'pending',seatsRequested:B.seats,passengerNames:names,passengerPhones:phones,returnRideSelected:B.ret,returnFrom:B.ret?rd.returnFrom||null:null,returnTo:B.ret?rd.returnTo||null:null,
+        bookingMode:B.mode,passengerFrom:pm(B.pf),passengerTo:pm(B.pt),selectedDates:keys,selectedBookingMode:B.mode,rideFrom:pm(rFrom(rd)),rideTo:pm(rTo(rd)),departureAt:depAt?Timestamp.fromDate(depAt):null,vehicleType:str(rd.vehicleType),contribution:fare(rd),
+        paidAmount:t.fee,bookingFee:t.fee,rideFareAmount:t.fareAll,rideFarePaymentStatus:'pay_directly_to_publisher',paymentMode:method,paymentIntentId:pay.intent_id||pay.transaction_id||'',razorpayPaymentId:pay.payment_id||'',paymentStatus:'paid',createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+      tx.set(doc(NOTES()),{userId:rd.ownerId,type:'ride_request',title:'New ride request',body:`A commuter requested ${B.seats} seat(s) for ${keys.length} date(s)${B.ret?' including return':''}.`,rideId:B.id,requestId:reqRef.id,read:false,createdAt:serverTimestamp()});
+    });
+    show(`<div class="d" style="text-align:center"><h2 style="margin:0 0 8px">Request sent</h2><p class="sub">Your booking request and platform-fee payment are complete. The publisher must accept your request to confirm the ride.</p><button class="btn block" data-act="toMine">View my rides</button></div>`);
+  }catch(er){console.error(er);B.busy=false;B.err=(er.message||'Booking failed.')+(er.message&&/transaction|unavailable|already|schedule|capacity/i.test(er.message)?' If you were charged, your platform fee will be refunded to your wallet or contact Tripride Support.':'');renderBook()}
+}
+
+/* ===== PUBLISH ===== */
+function publishView(){
+  if(needLogin('Sign in to publish a ride'))return;
+  PB.from=PB.from||here();const today=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+  $('#view').innerHTML=`<h1>Publish a ride</h1><p class="muted">Share your commute and travel together. Platform fee ${money(PUBLISH_FEE)} (non-refundable).</p>
+  <form id="pf"><div class="sec"><h3>Route</h3>${pin('pfrom','Pickup location',PB.from?PB.from.name:'')}${pin('pto','Destination')}
+  <div class="muted sm2">Intermediate stops (in travel order, optional). Passenger pickup and drop must be within 3 km of this route.</div><div id="stops"></div>${pin('pstop','Add next stop')}</div>
+  <div class="sec"><h3>Vehicle &amp; schedule</h3><div class="row">${['bike','car'].map(v=>`<button type="button" class="tab" data-act="pveh" data-v="${v}" aria-pressed="${PB.veh===v}">${v==='bike'?'🏍️ Bike':'🚗 Car'}</button>`).join('')}</div>
+  <div class="row" style="margin:10px 0">${[['once','Once'],['weekly','Weekly'],['daily','Hybrid (daily range)']].map(([v,l])=>`<button type="button" class="tab" data-act="prec" data-v="${v}" aria-pressed="${PB.rec===v}">${l}</button>`).join('')}</div>
+  <div class="g2"><div class="fl"><label>Departure date *</label><input type="date" id="pdate" min="${today}" required></div><div class="fl"><label>Departure time *</label><input type="time" id="ptime" required></div></div>
+  <div class="fl" id="pendw" hidden><label>Repeat until *</label><input type="date" id="pend" min="${today}"></div>
+  <div id="pdays" class="row" hidden>${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((n,i)=>`<button type="button" class="tab" data-act="pday" data-d="${i+1}" aria-pressed="${PB.days.has(i+1)}">${n}</button>`).join('')}</div></div>
+  <div class="sec"><h3>Seats &amp; contribution</h3><div class="g2"><div class="fl"><label>Available seats *</label><input type="number" id="pseats" min="1" max="7" value="1" required></div><div class="fl"><label>Fuel contribution per seat (₹) *</label><input type="number" id="pprice" min="0" step="0.01" value="0" required></div></div>
+  <div class="fl"><label>Vehicle registration (optional)</label><input id="preg" style="text-transform:uppercase" placeholder="TS09AB1234"></div>
+  <label class="row" style="font-weight:700"><input type="checkbox" id="pret"> Add return trip (destination → pickup)</label><div class="fl" id="pretw" hidden style="margin-top:8px"><label>Return departure time</label><input type="time" id="pretime" value="18:00"></div></div>
+  <p class="err" id="perr" hidden></p><button class="btn block" id="pbtn" type="submit">Publish ride · ${money(PUBLISH_FEE)}</button></form><div style="height:40px"></div>`;
+  bindPlace('pfrom',p=>PB.from=p);bindPlace('pto',p=>PB.to=p);
+  bindPlace('pstop',p=>{if(p&&!PB.stops.some(s=>kmp(s,p)<.1)&&(!PB.from||kmp(PB.from,p)>.1)&&(!PB.to||kmp(PB.to,p)>.1)){PB.stops.push(p);$('#pstop').value='';paintStops()}});
+  $('#pret').addEventListener('change',e=>{PB.ret=e.target.checked;$('#pretw').hidden=!PB.ret});$('#pf').addEventListener('submit',e=>{e.preventDefault();submitPublish()});
+  if(!PB.from)locate().then(()=>{if(!PB.from&&S.pos&&S.tab==='publish'){PB.from=here();const i=$('#pfrom');if(i)i.value=PB.from.name}});
+  paintStops();pubUI();
+}
+function paintStops(){const b=$('#stops');if(b)b.innerHTML=PB.stops.map((s,i)=>`<div class="row" style="justify-content:space-between"><span class="sm2">${i+1}. ${esc(s.name)}</span><button type="button" class="btn sm red" data-act="rmstop" data-i="${i}">Remove</button></div>`).join('')}
+function pubUI(){$('#pendw').hidden=PB.rec==='once';$('#pdays').hidden=PB.rec!=='weekly';document.querySelectorAll('[data-act=pveh]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===PB.veh)));document.querySelectorAll('[data-act=prec]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===PB.rec)));document.querySelectorAll('[data-act=pday]').forEach(b=>b.setAttribute('aria-pressed',String(PB.days.has(+b.dataset.d))))}
+function pErr(m){const e=$('#perr');e.textContent=m;e.hidden=!m}
+async function submitPublish(){
+  if(PB.busy)return;pErr('');
+  const seats=parseInt($('#pseats').value,10),price=parseFloat($('#pprice').value),date=$('#pdate').value,time=$('#ptime').value;
+  if(!PB.from||!PB.to||!PB.from.valid||!PB.to.valid||kmp(PB.from,PB.to)<.2)return pErr('Select different valid pickup and destination locations from the suggestions.');
+  if(!['bike','car'].includes(PB.veh))return pErr('Vehicle type is mandatory.');
+  if(!(seats>=1&&seats<=(PB.veh==='bike'?1:7)))return pErr(`Enter valid available seats (${PB.veh==='bike'?'bike: 1':'car: 1 to 7'}).`);
+  if(!(price>=0))return pErr('Enter a valid contribution amount.');
+  if(!date||!time)return pErr('Select departure date and time.');
+  const start=new Date(`${date}T${time}`),end=PB.rec==='once'?start:($('#pend').value?new Date(`${$('#pend').value}T${time}`):new Date(start.getTime()+30*864e5));
+  if(PB.rec==='once'&&start<=new Date())return pErr('Select a future departure.');
+  if(PB.rec==='weekly'&&!PB.days.size)return pErr('Select at least one weekday.');
+  if(PB.rec!=='once'&&mid(end)<mid(start))return pErr('End date must follow start date.');
+  const retT=PB.ret?new Date(`${date}T${$('#pretime').value||'18:00'}`):null;
+  PB.busy=true;const b=$('#pbtn');b.disabled=true;b.textContent='Payment / publishing…';
+  try{
+    const mine=[...S.rides].filter(([,r])=>owner(r)===S.user.uid&&['started','in_progress'].includes(str(r.status).toLowerCase()));
+    if(mine.length)throw new Error('Your current ride is still running. Complete it before creating another ride.');
+    const method=await payAsk('Publish ride payment',`<div class="kv"><span>Ride publishing platform fee</span><b>${money(PUBLISH_FEE)}</b></div><p class="muted sm2">Non-refundable, even if you cancel the ride. Wallet balance: ${money(S.wallet)}</p>`,`Pay ${money(PUBLISH_FEE)} from wallet`);
+    if(!method)throw new Error('Payment cancelled.');
+    const pay=method==='wallet'?await bpost('/rydora/payment/wallet-debit',{purpose:'publish',publish_fee:PUBLISH_FEE,publish_id:`${S.user.uid}_${Date.now()}000`}):await rzpPay({purpose:'publish',publish_fee:PUBLISH_FEE},'TripRide ride publishing platform fee');
+    await addDoc(RIDES(),{from:pm(PB.from),to:pm(PB.to),returnTripEnabled:PB.ret,returnFrom:PB.ret?pm(PB.to):null,returnTo:PB.ret?pm(PB.from):null,returnDepartureTime:retT?Timestamp.fromDate(retT):null,routeStops:PB.stops.map(pm),
+      vehicleType:PB.veh,recurrence:PB.rec,startDate:Timestamp.fromDate(start),endDate:Timestamp.fromDate(end),weekdays:[...PB.days],monthDays:[1],customDates:[],seats,availableSeats:seats,totalSeats:seats,contribution:price,contributionPerSeat:price,isPublic:true,visibility:'public',registration:$('#preg').value.trim(),skipDates:[],
+      ownerId:S.user.uid,publishFee:PUBLISH_FEE,publishFeeStatus:'paid',publishFeePaymentMethod:method,publishFeePaymentId:str(pay.payment_id,str(pay.intent_id)),publishFeeRefundable:false,status:'active',createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+    PB={from:null,to:null,stops:[],veh:'',rec:'once',days:new Set([1,2,3,4,5]),ret:false,busy:false};
+    show(`<div class="d" style="text-align:center"><h2 style="margin:0 0 8px">Ride published</h2><p class="sub">Your ${money(PUBLISH_FEE)} publishing payment is complete and your ride is now visible to commuters.</p><button class="btn block" data-act="toMine">View my rides</button></div>`);
+  }catch(e){console.error(e);PB.busy=false;const bb=$('#pbtn');if(bb){bb.disabled=false;bb.textContent=`Publish ride · ${money(PUBLISH_FEE)}`}pErr(e.message||'Could not publish the ride.')}
+}
+
+/* ===== MY RIDES ===== */
+function mineView(){
+  if(needLogin('Sign in to see your rides'))return;
+  $('#view').innerHTML=`<h1>My rides</h1><div class="row"><button class="tab" data-act="mside" data-v="book" aria-pressed="${M.side==='book'}">Booking by me</button><button class="tab" data-act="mside" data-v="pub" aria-pressed="${M.side==='pub'}">Published by me</button></div>
+  <div class="row" id="mper" style="margin:10px 0"></div><div id="mn"></div>`;paintMine();
+}
+function paintMine(){
+  const box=$('#mn');if(!box||S.tab!=='mine')return;
+  const pers=M.side==='book'?['Current','Upcoming','Past']:['Current','Upcoming','Past','Requests'];if(!pers.includes(M.period))M.period='Current';
+  $('#mper').innerHTML=pers.map(p=>`<button class="tab" data-act="mper" data-v="${p}" aria-pressed="${M.period===p}">${p}</button>`).join('');
+  document.querySelectorAll('[data-act=mside]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===M.side)));
+  const fl=r=>M.period==='Current'?isCur(r):M.period==='Upcoming'?isUp(r):isPast(r);let html='';
+  if(M.side==='pub'&&M.period==='Requests'){
+    const l=[...S.reqIn].filter(([,q])=>str(q.status).toLowerCase()==='pending').sort((a,b)=>(toD(b[1].createdAt)||0)-(toD(a[1].createdAt)||0));
+    html=l.length?l.map(([id,q])=>reqCard(id,q)).join(''):state('📭','No incoming requests','New requests for your published rides appear here automatically.');
+  }else if(M.side==='pub'){
+    const l=[...S.rides].filter(([,r])=>owner(r)===S.user.uid&&fl(r)).sort((a,b)=>(nextOcc(a[1])||0)-(nextOcc(b[1])||0));
+    html=l.length?l.map(([id,r])=>pubCard(id,r)).join(''):state('🛣️',`No ${M.period.toLowerCase()} published rides`,'Publish a daily or weekly commute to get started.','<button class="btn" data-tab-go="publish">Publish a ride</button>');
+  }else{
+    const l=[...S.myB].filter(([,b])=>{const r=S.rides.get(str(b.rideId)),s=str(b.status).toLowerCase();if(M.period==='Past')return terminal(s)||(r&&isPast(r));return r&&s==='confirmed'&&fl(r)}).sort((a,b)=>(nextOcc(S.rides.get(str(a[1].rideId))||{})||9e15)-(nextOcc(S.rides.get(str(b[1].rideId))||{})||9e15));
+    html=l.length?l.map(([id,b])=>bookCard(id,b)).join(''):state('🎫',`No ${M.period.toLowerCase()} bookings`,'Rides you book will appear here.','<button class="btn" data-tab-go="find">Find a ride</button>');
+  }
+  box.innerHTML=html;hydrate();tickCd();
+}
+const tickCd=()=>document.querySelectorAll('[data-cd]').forEach(el=>{const d=new Date(el.dataset.cd)-Date.now();if(d<=0){el.textContent='Departure time reached';return}const dd=Math.floor(d/864e5),h=Math.floor(d/36e5)%24,m=Math.floor(d/6e4)%60,s=Math.floor(d/1e3)%60;el.textContent=dd>0?`${dd}d ${h}h ${m}m`:`${P2(h)}:${P2(m)}:${P2(s)}`});
+setInterval(tickCd,1000);
+function bookCard(id,b){
+  const r=S.rides.get(str(b.rideId))||{},from=rFrom(r),to=rTo(r),st=str(r.status,'active').toLowerCase(),bs=str(b.status).toLowerCase(),started=['started','in_progress'].includes(st),term=terminal(st)||terminal(bs);
+  const today=dKey(new Date()),dates=(b.selectedDates||[]).slice().sort(),ver=b.otpVerifiedAtByDate||{},rver=b.returnOtpVerifiedAtByDate||{},cdt=nextOcc(r),live=pp(r.liveLocation);
+  const otpBox=bs==='confirmed'&&!term&&dates.includes(today)?`<div class="otp">${ver[today]?'Today’s pickup OTP verified.':`Today’s pickup OTP: <b>${esc(str((b.pickupOtpByDate||{})[today],'—'))}</b>`}${ver[today]&&b.returnRideSelected?`<br>${rver[today]?'Evening return OTP verified.':`Evening return OTP: <b>${esc(str((b.returnPickupOtpByDate||{})[today],'—'))}</b>`}`:''}<div class="muted sm2">Share only the OTP for the current leg with the publisher at pickup.</div></div>`:'';
+  return`<div class="rc"><div class="top"><b>Your ride booking</b><span class="st ${started&&!term?'ok':''}">${esc(term?(st==='cancelled'||bs==='cancelled'?'Ride cancelled':bs):started?'Live now':'Confirmed')}</span></div>
+  <div class="route"><div>${esc(from.name||'Pickup')}</div><div>${esc(to.name||'Destination')}</div></div>
+  <div class="muted sm2">Your pickup: ${esc(pp(b.passengerFrom).name)}<br>Your drop: ${esc(pp(b.passengerTo).name)}</div>
+  ${otpBox}${!started&&!term&&cdt?`<div class="cd">Starts in <span data-cd="${cdt.toISOString()}"></span></div>`:''}
+  ${started&&!term?(live.valid?`<div class="cd">Ride is live · <a href="https://www.google.com/maps?q=${live.lat},${live.lng}" target="_blank" rel="noopener">Open live location in Google Maps</a></div>`:'<div class="cd">Waiting for publisher live location…</div>'):''}
+  <div class="pax"><div class="kv"><span>Ride creator</span><b data-u="${esc(str(b.ownerId))}">…</b></div><div class="kv"><span>Phone</span><b><a data-u="${esc(str(b.ownerId))}" data-f="phone">…</a></b></div>
+  <div class="kv"><span>Dates</span><b>${esc(dates.join(', '))}</b></div><div class="kv"><span>Seats per date</span><b>${nm(b.seats,1)}</b></div>${b.returnRideSelected?`<div class="kv"><span>Evening return</span><b>${ver[today]?'Included':'Available after morning OTP'}</b></div>`:''}
+  <div class="kv"><span>Ride fare (pay publisher)</span><b>${money(nm(b.rideFareAmount))}</b></div><div class="kv"><span>Booking fee paid</span><b>${money(nm(b.bookingFee,nm(b.paidAmount)))}</b></div>
+  ${str(b.refundStatus)?`<div class="kv"><span>Refund</span><b>${esc(str(b.refundStatus).replace(/_/g,' ').toUpperCase())} · ${money(nm(b.refundAmount))}</b></div>`:''}</div>
+  ${bs==='confirmed'&&!started&&!term&&st==='active'?`<div class="row" style="margin-top:10px"><button class="btn sm red" data-act="cancelBook" data-id="${id}">Cancel booking</button></div>`:''}</div>`}
+function reqCard(id,q){
+  const r=S.rides.get(str(q.rideId))||{};
+  return`<div class="rc"><div class="top"><div><b data-u="${esc(str(q.requesterId))}">…</b><div class="muted sm2">Wants to join your ride</div></div><span class="st warn">Pending</span></div>
+  <div class="route"><div>${esc(rFrom(r).name)}</div><div>${esc(rTo(r).name)}</div></div>
+  <div class="sm2">Dates: ${esc((q.selectedDates||[]).join(', '))}<br>Seats: ${nm(q.seatsRequested,1)} on each date${q.returnRideSelected?' · includes evening return':''}<br>Pickup: ${esc(pp(q.passengerFrom).name)}<br>Drop: ${esc(pp(q.passengerTo).name)}</div>
+  ${(q.passengerNames||[]).map((n,i)=>`<div class="sm2">${i+1}. ${esc(n)} · ${esc((q.passengerPhones||[])[i]||'')}</div>`).join('')}
+  <div class="cta"><button class="btn red" data-act="decide" data-id="${id}" data-v="0">Reject</button><button class="btn" data-act="decide" data-id="${id}" data-v="1">Accept request</button></div></div>`}
+function pubCard(id,r){
+  const st=str(r.status,'active').toLowerCase(),dep=nextOcc(r),today=dKey(new Date());
+  const pax=[...S.ownB].filter(([,b])=>b.rideId===id&&['confirmed','completed'].includes(str(b.status).toLowerCase()));
+  return`<div class="rc"><div class="top"><div><b>${esc(str(r.vehicleType,'ride')).toUpperCase()} · ${esc(str(r.recurrence,'once')==='daily'?'hybrid':str(r.recurrence,'once')).toUpperCase()}</b></div><div class="row"><span class="st ${st==='active'||st==='started'?'ok':''}">${esc(st)}</span><div class="price">${money(fare(r))}<small>per seat</small></div></div></div>
+  <div class="route"><div>${esc(rFrom(r).name)}</div><div>${esc(rTo(r).name)}</div></div>
+  ${dep&&st==='active'?`<div class="cd">Ride starts in <span data-cd="${dep.toISOString()}"></span><div class="muted sm2">${fDay(dep)} · ${fTime(dep)}</div></div>`:''}
+  <b class="sm2">Passenger bookings (${pax.length})</b>${pax.length?pax.map(([bid,b])=>paxRow(bid,b,r,today,st)).join(''):'<div class="muted sm2">No confirmed passengers yet.</div>'}
+  <div class="row" style="margin-top:12px">${st==='active'?`<button class="btn sm" data-act="startRide" data-id="${id}">Start ride</button><button class="btn sm red" data-act="cancelRide" data-id="${id}">Cancel my ride</button>`:''}${['started','in_progress'].includes(st)?`<button class="btn sm" data-act="completeRide" data-id="${id}">Complete ride</button>`:''}</div></div>`}
+function paxRow(bid,b,r,today,st){
+  const ds=(b.selectedDates||[]).slice().sort(),ver=b.otpVerifiedAtByDate||{},rver=b.returnOtpVerifiedAtByDate||{},done=new Set(b.completedDates||[]),canOtp=['active','started','in_progress'].includes(st);
+  const leg=(d,l,label,v)=>v?`<span class="st ok">${label} verified</span>`:(d===today&&canOtp?`<button class="btn sm ghost" data-act="otp" data-id="${bid}" data-k="${d}" data-l="${l}">Enter ${label} OTP</button>`:'');
+  return`<div class="pax"><b data-u="${esc(str(b.passengerId))}">…</b> · <a data-u="${esc(str(b.passengerId))}" data-f="phone">…</a> · ${nm(b.seats,1)} seat(s)
+  ${(b.passengerNames||[]).map((n,i)=>`<div class="sm2">${i+1}. ${esc(n)} · ${esc((b.passengerPhones||[])[i]||'')}</div>`).join('')}
+  <div class="sm2">Morning pickup: ${esc(pp(b.passengerFrom).name)}<br>Drop: ${esc(pp(b.passengerTo).name)}</div>
+  ${ds.map(d=>`<div class="row" style="margin-top:4px"><span class="sm2" style="min-width:92px">${esc(d)}</span>${done.has(d)?'<span class="st ok">Completed</span>':leg(d,'outbound','Morning',ver[d])}${b.returnRideSelected&&(ver[d])?leg(d,'return','Evening',rver[d]):''}</div>`).join('')}</div>`}
+
+/* ===== ride / booking actions ===== */
+const note=(userId,type,title,body,extra={})=>addDoc(NOTES(),{userId,type,title,body,read:false,createdAt:serverTimestamp(),...extra}).catch(()=>{});
+const refund=(kind,id)=>bpost('/rydora/wallet/refund',{kind,source_id:id}).catch(e=>console.warn('REFUND PENDING',id,e.message));
+async function decide(id,accept){
+  const uid=S.user.uid,reqRef=doc(REQS(),id);
+  await runTransaction(db,async tx=>{
+    const rq=await tx.get(reqRef);if(!rq.exists()||rq.data().ownerId!==uid||rq.data().status!=='pending')throw new Error('Request no longer pending.');
+    const q=rq.data(),rideRef=doc(RIDES(),str(q.rideId)),rs=await tx.get(rideRef);if(!rs.exists()||rs.data().ownerId!==uid)throw new Error('Ride unavailable.');
+    const bookRef=doc(BOOKS(),id),eb=await tx.get(bookRef),rd=rs.data(),total=tSeats(rd),seats=nm(q.seatsRequested,1);
+    const dates=Array.isArray(q.selectedDates)&&q.selectedDates.length?q.selectedDates.map(String):(toD(q.departureAt)||rDep(rd)?[dKey(toD(q.departureAt)||rDep(rd))]:[]);
+    const booked={...(rd.bookedSeatsByDate||{})};
+    if(accept){if(str(rd.status)!=='active')throw new Error('Ride is not active.');if(!dates.length)throw new Error('Request has no selected dates.');
+      for(const d of dates){const a=nm(booked[d]);if(a+seats>total)throw new Error(`Only ${Math.max(0,total-a)} seat(s) remain on ${d}.`)}
+      if(eb.exists()&&eb.data().status==='confirmed')throw new Error('Already booked.')}
+    tx.update(reqRef,{status:accept?'accepted':'rejected',...(!accept?{refundStatus:'wallet_pending'}:{}),updatedAt:serverTimestamp()});
+    if(accept){
+      for(const d of dates)booked[d]=nm(booked[d])+seats;tx.update(rideRef,{bookedSeatsByDate:booked,updatedAt:serverTimestamp()});
+      const otp=()=>String(100000+Math.floor(crypto.getRandomValues(new Uint32Array(1))[0]/4294967296*900000)),po={},ro={};dates.forEach(d=>{po[d]=otp();if(q.returnRideSelected)ro[d]=otp()});
+      tx.set(bookRef,{rideId:rideRef.id,ownerId:uid,passengerId:q.requesterId,requestId:id,status:'confirmed',pickupOtp:Object.values(po)[0],pickupOtpByDate:po,returnPickupOtpByDate:ro,pickupOtpVerified:false,otpVerifiedAtByDate:{},returnOtpVerifiedAtByDate:{},completedDates:[],returnCompletedDates:[],tripStage:'waiting_for_pickup',
+        seats,passengerNames:q.passengerNames||[],passengerPhones:q.passengerPhones||[],returnRideSelected:q.returnRideSelected===true,returnFrom:q.returnFrom||null,returnTo:q.returnTo||null,bookingMode:q.bookingMode||'once',passengerFrom:q.passengerFrom||null,passengerTo:q.passengerTo||null,selectedDates:dates,
+        contribution:fare(rd),paymentIntentId:q.paymentIntentId||null,razorpayPaymentId:q.razorpayPaymentId||null,paidAmount:q.paidAmount||null,bookingFee:q.bookingFee||0,rideFareAmount:q.rideFareAmount||0,rideFarePaymentStatus:q.rideFarePaymentStatus||'pay_directly_to_publisher',paymentMode:q.paymentMode||'',paymentStatus:q.paymentStatus||'paid',confirmedAt:serverTimestamp(),createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+      tx.set(doc(C('rydora_messages'),id),{participantIds:[uid,q.requesterId],rideId:rideRef.id,title:`${rFrom(rd).name} → ${rTo(rd).name}`,lastMessage:'Booking confirmed. Say hello 👋',updatedAt:serverTimestamp()},{merge:true})}
+    tx.set(doc(NOTES()),{userId:q.requesterId,type:accept?'request_accepted':'request_rejected',title:accept?'Ride request accepted':'Ride request rejected',body:accept?'Your ride booking is confirmed.':'The ride owner declined your request.',rideId:rideRef.id,requestId:id,read:false,createdAt:serverTimestamp()});
+  });
+  if(!accept)refund('rejected_request',id);
+}
+async function cancelBooking(id){
+  const bRef=doc(BOOKS(),id),uid=S.user.uid;
+  await runTransaction(db,async tx=>{
+    const bs=await tx.get(bRef);if(!bs.exists()||bs.data().passengerId!==uid||bs.data().status!=='confirmed')throw new Error('Booking cannot be cancelled.');
+    const rideRef=doc(RIDES(),str(bs.data().rideId)),rs=await tx.get(rideRef);if(!rs.exists()||str(rs.data().status).toLowerCase()!=='active')throw new Error('Cancellation is unavailable after the ride starts.');
+    const reqRef=doc(REQS(),id),rq=await tx.get(reqRef),booked={...(rs.data().bookedSeatsByDate||{})},seats=nm(bs.data().seats,1);
+    tx.update(bRef,{status:'cancelled',cancelledBy:'passenger',refundStatus:'not_eligible',refundAmount:0,refundLabel:'Passenger cancelled this booking. No refund is applicable.',refundRequested:false,updatedAt:serverTimestamp()});
+    (bs.data().selectedDates||[]).forEach(d=>{booked[d]=Math.max(0,nm(booked[d])-seats)});tx.update(rideRef,{bookedSeatsByDate:booked,updatedAt:serverTimestamp()});
+    if(rq.exists())tx.update(reqRef,{status:'cancelled',updatedAt:serverTimestamp()});
+    tx.set(doc(NOTES()),{userId:bs.data().ownerId,type:'booking_cancelled',title:'Booking cancelled',body:'A commuter cancelled a confirmed booking.',rideId:bs.data().rideId,bookingId:id,read:false,createdAt:serverTimestamp()});
+  })}
+async function startRide(id){
+  if(!navigator.geolocation)throw new Error('This browser cannot share location.');
+  const p=await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,()=>rej(new Error('Allow location access to start the ride.')),{enableHighAccuracy:true,timeout:15000}));
+  const loc=()=>({lat:p.coords.latitude,lng:p.coords.longitude,name:'Publisher live location',updatedAt:serverTimestamp()}),rideRef=doc(RIDES(),id);
+  await runTransaction(db,async tx=>{const r=await tx.get(rideRef);if(!r.exists()||r.data().ownerId!==S.user.uid)throw new Error('Only the ride owner can start this ride.');if(str(r.data().status).toLowerCase()!=='active')throw new Error('This ride cannot be started now.');
+    tx.update(rideRef,{status:'started',startedAt:serverTimestamp(),startLocation:loc(),liveLocation:loc(),updatedAt:serverTimestamp()})});
+  if(S.watch[id]!=null)navigator.geolocation.clearWatch(S.watch[id]);
+  S.watch[id]=navigator.geolocation.watchPosition(q=>updateDoc(rideRef,{liveLocation:{lat:q.coords.latitude,lng:q.coords.longitude,name:'Publisher live location',updatedAt:serverTimestamp()},updatedAt:serverTimestamp()}).catch(()=>{}),()=>{},{enableHighAccuracy:true,maximumAge:5000});
+  [...S.ownB].filter(([,b])=>b.rideId===id&&b.status==='confirmed').forEach(([bid,b])=>note(b.passengerId,'ride_started','Your ride has started','The publisher has started the ride. Live location is now available.',{rideId:id,bookingId:bid}));
+}
+function stopWatch(id){if(S.watch[id]!=null){navigator.geolocation.clearWatch(S.watch[id]);delete S.watch[id]}}
+async function completeRide(id){
+  const rideRef=doc(RIDES(),id);await runTransaction(db,async tx=>{const r=await tx.get(rideRef);if(!r.exists()||r.data().ownerId!==S.user.uid)throw new Error('Not your ride.');tx.update(rideRef,{status:'completed',completedAt:serverTimestamp(),updatedAt:serverTimestamp()})});stopWatch(id);
+  await Promise.all([...S.ownB].filter(([,b])=>b.rideId===id&&b.status==='confirmed').map(([bid])=>updateDoc(doc(BOOKS(),bid),{status:'completed',completedAt:serverTimestamp(),updatedAt:serverTimestamp()})))}
+async function cancelRide(id){
+  const ref=doc(RIDES(),id);await runTransaction(db,async tx=>{const r=await tx.get(ref);if(!r.exists()||r.data().ownerId!==S.user.uid)throw new Error('Not your ride.');if(str(r.data().status).toLowerCase()!=='active')throw new Error('A ride cannot be cancelled after it has started.');
+    tx.update(ref,{status:'cancelled',publishFeeRefundable:false,publishFeeRefundStatus:'not_applicable',cancelledAt:serverTimestamp(),updatedAt:serverTimestamp()})});stopWatch(id);
+  const bs=await getDocs(query(BOOKS(),where('rideId','==',id)));
+  for(const d of bs.docs){const b=d.data();if(b.status!=='confirmed')continue;const amt=nm(b.bookingFee,nm(b.paidAmount)),pid=str(b.paymentIntentId,str(b.razorpayPaymentId));
+    await updateDoc(d.ref,{status:'cancelled',cancelledBy:'publisher',refundAmount:amt,refundStatus:pid?'wallet_pending':'payment_reference_missing',refundLabel:'Publisher cancelled this ride. The platform booking fee will be credited to your TripRide Wallet.',refundRequested:!!pid,cancelledAt:serverTimestamp(),updatedAt:serverTimestamp()});
+    note(b.passengerId,'ride_cancelled','Ride has been cancelled','Ride has been cancelled by the publisher. Your platform booking fee will be credited to your TripRide Wallet.',{rideId:id,bookingId:d.id,refundAmount:amt});refund('cancelled_booking',d.id)}
+  const rq=await getDocs(query(REQS(),where('rideId','==',id)));
+  for(const d of rq.docs){const q=d.data();if(str(q.status).toLowerCase()!=='pending')continue;await updateDoc(d.ref,{status:'rejected',rejectionReason:'publisher_cancelled_ride',updatedAt:serverTimestamp()});
+    note(q.requesterId,'ride_cancelled','Ride has been cancelled','The publisher cancelled this ride before accepting your request. Your platform booking fee will be credited to your TripRide Wallet.',{rideId:id,requestId:d.id});refund('rejected_request',d.id)}}
+function otpDialog(bid,k,l){show(`<div class="d">${X}<h2>Verify ${l==='return'?'evening return':'morning'} pickup</h2><p class="sub">Ask the passenger for their 6-digit OTP for ${esc(k)}.</p><div class="fl"><label for="po">OTP</label><input id="po" inputmode="numeric" maxlength="6" placeholder="123456"></div><p class="err" id="poe" hidden></p><button class="btn block" data-act="otpGo" data-id="${bid}" data-k="${k}" data-l="${l}">Verify OTP</button></div>`);setTimeout(()=>$('#po')&&$('#po').focus(),50)}
+async function otpGo(bid,k,l){const c=($('#po').value||'').replace(/\D/g,''),e=$('#poe');if(c.length!==6){e.textContent='Enter a valid 6-digit OTP.';e.hidden=false;return}
+  try{await bpost('/rydora/booking/verify-pickup',{booking_id:bid,otp:c,date_key:k,leg:l});dlg.close();toast(`OTP verified. This ${l==='return'?'return':'morning'} leg will complete automatically after 30 minutes.`)}catch(er){e.textContent=(er.message||'Verification failed.').replace('Bad state: ','');e.hidden=false}}
+async function run(btn,fn,okMsg){if(btn)btn.disabled=true;try{await fn();if(okMsg)toast(okMsg)}catch(e){console.error(e);toast(e.message||'Something went wrong.')}finally{if(btn)btn.disabled=false}}
+
+/* ===== events ===== */
+document.addEventListener('click',async e=>{
+  if(!e.target.closest('.fl')){document.querySelectorAll('.sugg').forEach(s=>s.hidden=true)}
+  const el=e.target.closest('[data-act],[data-tab],[data-ans],[data-tab-go]');if(!el)return;const d=el.dataset;
+  if(d.ans!==undefined){const r=S.ans;S.ans=null;dlg.close();if(r)r(d.ans);return}
+  if(d.tab)return go(d.tab);if(d.tabGo)return go(d.tabGo);
+  switch(d.act){
+    case'close':return dlg.close();case'login':return openLogin(null);case'sendOtp':return sendOtp();case'verifyOtp':return verifyOtp();case'chPhone':return login1();
+    case'fveh':F.veh=d.v;document.querySelectorAll('[data-act=fveh]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===F.veh)));return paintFind();
+    case'fseat':F.seats=Math.min(6,Math.max(1,F.seats+ +d.d));$('#fs').textContent=F.seats;return paintFind();
+    case'book':return openBook(d.id);
+    case'bmode':B.mode=d.v;B.sel.clear();{const o=bOpts().filter(x=>remain(B.r,x)>=B.seats);if(o.length)B.sel.add(dKey(o[0]))}return renderBook();
+    case'bdate':{const k=d.k;if(B.mode==='once'){B.sel.clear();B.sel.add(k)}else B.sel.has(k)?B.sel.delete(k):B.sel.add(k);return renderBook()}
+    case'bseat':{const n=B.seats+ +d.d;if(n<1||n>tSeats(B.r))return;B.seats=n;while(B.names.length<n){B.names.push('');B.phones.push('')}B.names.length=n;B.phones.length=n;return renderBook()}
+    case'bsubmit':return submitBook();
+    case'toMine':dlg.close();M.side='book';M.period='Upcoming';return go('mine');
+    case'pveh':PB.veh=d.v;{const s=$('#pseats');if(d.v==='bike')s.value=1;s.max=d.v==='bike'?1:7}return pubUI();
+    case'prec':PB.rec=d.v;return pubUI();
+    case'pday':{const n=+d.d;PB.days.has(n)?PB.days.delete(n):PB.days.add(n);return pubUI()}
+    case'rmstop':PB.stops.splice(+d.i,1);return paintStops();
+    case'mside':M.side=d.v;M.period='Current';return paintMine();case'mper':M.period=d.v;return paintMine();
+    case'decide':{const acc=d.v==='1';return run(el,()=>decide(d.id,acc),acc?'Request accepted.':'Request rejected.')}
+    case'cancelBook':if(confirm('Cancel this booking? Passenger cancellations are not refunded.'))return run(el,()=>cancelBooking(d.id),'Booking cancelled.');return;
+    case'startRide':if(confirm('Start this ride now? Passengers will see your live location while this page stays open.'))return run(el,()=>startRide(d.id),'Ride started. Live location sharing is on.');return;
+    case'completeRide':if(confirm('Mark this ride as completed?'))return run(el,()=>completeRide(d.id),'Ride completed.');return;
+    case'cancelRide':if(confirm('Cancel this published ride? Your ₹20 publishing fee is non-refundable. Passengers’ booking fees go back to their wallets.'))return run(el,()=>cancelRide(d.id),'Ride cancelled. Passenger refunds are being processed.');return;
+    case'otp':return otpDialog(d.id,d.k,d.l);case'otpGo':return otpGo(d.id,d.k,d.l);
+  }});
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.bn!==undefined)B.names[+t.dataset.bn]=t.value;else if(t.dataset&&t.dataset.bp!==undefined)B.phones[+t.dataset.bp]=t.value.replace(/\D/g,'')});
+document.addEventListener('change',e=>{if(e.target.id==='bret'){B.ret=e.target.checked;renderBook()}});
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});dlg.addEventListener('close',()=>{if(S.ans){const r=S.ans;S.ans=null;r(null)}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='ph'){e.preventDefault();sendOtp()}if(e.key==='Enter'&&e.target.id==='otp'){e.preventDefault();verifyOtp()}});
+$('#authBtn').addEventListener('click',async()=>{if(S.user){try{await signOut(auth);toast('Signed out.')}catch(e){toast('Could not sign out.')}}else openLogin(null)});
+$('#themeBtn').addEventListener('click',()=>{const r=document.documentElement,dk=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dk?'light':'dark';try{localStorage.setItem('tr_theme',r.dataset.theme)}catch(e){}});
+go('find');
+</script>
+</body>
+</html>
