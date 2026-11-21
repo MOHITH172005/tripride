@@ -167,7 +167,7 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-s
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import { getFirestore, collection, query, where, onSnapshot, getDocs, getDoc, setDoc, doc, Timestamp, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
-import { getAuth, onAuthStateChanged, RecaptchaVerifier, signInWithPhoneNumber, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+import { getAuth, onAuthStateChanged, signInWithCustomToken, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
 /* ============ CONFIG (same as the Flutter app) ============ */
 const FIREBASE_CONFIG = {apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw",authDomain:"tripmate-74df9.firebaseapp.com",databaseURL:"https://tripmate-74df9-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"tripmate-74df9",storageBucket:"tripmate-74df9.firebasestorage.app",messagingSenderId:"931960941543",appId:"1:931960941543:web:ced98c012dc22fcb776b42"};
@@ -433,41 +433,107 @@ async function finishBooking(P, resp){
   finally { S.pending = null; S.B = null; }
 }
 
-/* ============ AUTH ============ */
-const AUTH_ERR = {'auth/invalid-phone-number':'Enter a valid 10-digit mobile number.','auth/too-many-requests':'Too many attempts. Please wait a few minutes.','auth/invalid-verification-code':'That OTP is not correct.','auth/code-expired':'That OTP has expired. Request a new one.','auth/captcha-check-failed':'Security check failed. Refresh and try again.','auth/unauthorized-domain':'This domain is not authorized in Firebase Authentication.','auth/operation-not-allowed':'Phone sign-in is not enabled for this Firebase project.','auth/network-request-failed':'Network error. Try again.'};
-function loginStep1(msg){
-  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Sign in</h2><p class="sub">Use the same mobile number as your Tripride app.</p>
-    <div class="fld"><label for="ph">Mobile number</label><div class="phone"><span>+91</span><input id="ph" inputmode="numeric" maxlength="10" placeholder="98765 43210" autocomplete="tel-national"></div></div>
-    ${msg ? `<p class="err">${esc(msg)}</p>` : ''}<div id="rc"></div><button class="btn block" id="sendOtp" data-act="sendOtp">Send OTP</button></div>`);
-  setTimeout(() => $('#ph')?.focus(), 50);
+/* ============ AUTH (same mobile + password flow as Trips page) ============ */
+const LOGIN_API_BASE_URL = 'https://er3fg.aiccloud.online/';
+const REGISTER_URL = 'register.html';
+const PHONE_CHECK_URL = 'auth/check-user';
+const LOGIN_URL = 'auth/login-password';
+const SEND_OTP_URL = 'auth/forgot-password/send-otp';
+const VERIFY_OTP_URL = 'auth/forgot-password/verify-otp';
+let loginUserExists = false, forgotMode = false, otpSent = false;
+let otpSessionId = '', forgotNewPassword = '', forgotConfirmPassword = '', loginRedirecting = false;
+
+function loginStep1(msg=''){
+  forgotMode=false; otpSent=false; loginUserExists=false;
+  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Sign in to Tripride</h2><p class="sub">Enter your registered mobile number to continue.</p>
+    <div class="fld"><label for="loginPhone">Mobile number</label><div class="phone"><span>+91</span><input id="loginPhone" inputmode="numeric" maxlength="10" placeholder="Enter 10 digit mobile number" autocomplete="tel-national"></div></div>
+    ${msg?`<p class="err">${esc(msg)}</p>`:''}<button class="btn block" data-act="checkLoginMobile">Continue</button></div>`);
+  setTimeout(()=>$('#loginPhone')?.focus(),50);
 }
-function loginStep2(phone, msg){
-  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Enter the OTP</h2><p class="sub">We sent a 6-digit code to +91 ${esc(phone)}.</p>
-    <div class="fld"><label for="otp">OTP</label><input id="otp" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="one-time-code"></div>
-    ${msg ? `<p class="err">${esc(msg)}</p>` : ''}<button class="btn block" id="verifyOtp" data-act="verifyOtp">Verify & sign in</button><p class="note"><button type="button" class="chip" data-act="changePhone">Change number</button></p></div>`);
-  setTimeout(() => $('#otp')?.focus(), 50);
+function loginStepPassword(msg=''){
+  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Welcome Back!</h2><p class="sub">Your mobile number is registered. Enter your password.</p>
+    <div class="fld"><label>Mobile number</label><input value="+91 ${esc(S.phone)}" readonly></div>
+    <div class="fld"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter your password"></div>
+    ${msg?`<p class="err">${esc(msg)}</p>`:''}<p style="text-align:right;margin:0 0 14px"><button class="chip" data-act="forgotPassword">Forgot Password?</button></p>
+    <button class="btn block" data-act="passwordLogin">Login</button><p class="note"><button type="button" class="chip" data-act="changeLoginPhone">Change mobile number</button></p></div>`);
+  setTimeout(()=>$('#loginPassword')?.focus(),50);
 }
-function openLogin(after){ S.afterLogin = after || null; S.confirm = null; loginStep1(); }
-async function sendOtp(){
-  const phone = ($('#ph').value || '').replace(/\D/g,''); if (!/^[6-9]\d{9}$/.test(phone)) return loginStep1('Enter a valid 10-digit mobile number.');
-  const b = $('#sendOtp'); b.disabled = true; b.textContent = 'Sending…';
-  try { if (S.rc) { try { S.rc.clear(); } catch(e){} S.rc = null; } S.rc = new RecaptchaVerifier(auth, 'rc', {size:'invisible'}); S.confirm = await signInWithPhoneNumber(auth, '+91' + phone, S.rc); S.phone = phone; loginStep2(phone); }
-  catch(e){ console.error(e); if (S.rc) { try { S.rc.clear(); } catch(_){} S.rc = null; } loginStep1(AUTH_ERR[e.code] || `Could not send OTP (${e.code || 'error'}).`); }
+function openLogin(after){ S.afterLogin=after||null; S.confirm=null; loginStep1(); }
+async function loginApi(endpoint,data){
+  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),30000);
+  try{
+    const response=await fetch(LOGIN_API_BASE_URL+endpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data),signal:ctrl.signal});
+    let body={};try{body=await response.json();}catch(_){}
+    if(!response.ok||body.success!==true){const error=new Error(body.message||body.error||'Something went wrong. Please try again.');error.status=response.status;error.body=body;throw error;}
+    return body;
+  }catch(e){if(e.name==='AbortError')throw new Error('Request timed out. Please try again.');if(e instanceof TypeError)throw new Error('Cannot reach the login server. Please try again.');throw e;}
+  finally{clearTimeout(timer);}
 }
-async function verifyOtp(){
-  const code = ($('#otp').value || '').replace(/\D/g,''); if (code.length !== 6) return loginStep2(S.phone, 'Enter the 6-digit OTP.');
-  const b = $('#verifyOtp'); b.disabled = true; b.textContent = 'Verifying…';
-  try { await S.confirm.confirm(code); dlg.close(); toast('Signed in.'); const n = S.afterLogin; S.afterLogin = null; if (n) setTimeout(n, 250); }
-  catch(e){ console.error(e); loginStep2(S.phone, AUTH_ERR[e.code] || `Could not verify OTP (${e.code || 'error'}).`); }
-}
-onAuthStateChanged(auth, u => {
-  S.user = u; if (S.unMine) S.unMine(); if (S.unBk) S.unBk(); S.unMine = S.unBk = null; S.mine = []; S.bookings = []; S.occ = {};
-  $('#authBtn').textContent = u ? 'Sign out' : 'Sign in';
-  if (u) {
-    S.unMine = onSnapshot(query(collection(db,'tourPackages'), where('ownerId','==',u.uid)), s => { S.mine = s.docs.map(mapPkg); render(); }, e => console.warn('MINE ERROR', e));
-    S.unBk = onSnapshot(query(collection(db,'tourBookings'), where('customerId','==',u.uid)), s => { S.bookings = s.docs.map(d => ({id:d.id, ...d.data()})); render(); }, e => console.warn('BOOKINGS ERROR', e));
-    loadOcc();
+async function checkLoginMobile(){
+  const number=($('#loginPhone')?.value||'').replace(/\D/g,'');
+  if(!/^[6-9]\d{9}$/.test(number))return loginStep1('Enter a valid 10-digit mobile number.');
+  const b=$('[data-act="checkLoginMobile"]');if(b){b.disabled=true;b.textContent='Checking…';}
+  try{
+    const result=await loginApi(PHONE_CHECK_URL,{phone:number});
+    const exists=result.exists===true||result.user_exists===true||result.registered===true;
+    if(exists){S.phone=number;loginUserExists=true;loginStepPassword();}
+    else location.href=REGISTER_URL+'?phone='+encodeURIComponent(number);
+  }catch(e){
+    const body=e.body||{},msg=String(e.message||'');
+    const notFound=e.status===404||body.exists===false||body.user_exists===false||body.registered===false||/not\s*(found|registered|exist)|no\s+(account|user)|does\s*n[o']t\s+exist|unregistered|new user/i.test(msg);
+    if(notFound)location.href=REGISTER_URL+'?phone='+encodeURIComponent(number);else loginStep1(msg);
   }
+}
+async function passwordLogin(){
+  const pass=$('#loginPassword')?.value||'';if(!pass.trim())return loginStepPassword('Please enter your password.');
+  const b=$('[data-act="passwordLogin"]');if(b){b.disabled=true;b.textContent='Signing in…';}
+  try{
+    const result=await loginApi(LOGIN_URL,{phone:S.phone,password:pass});
+    const token=String(result.custom_token||result.customToken||result.token||result.firebase_token||'').trim();
+    if(!token)throw new Error('Firebase authentication token was not returned by server.');
+    loginRedirecting=true;
+    const credential=await signInWithCustomToken(auth,token);
+    if(!credential.user)throw new Error('Firebase user session was not created.');
+    try{localStorage.setItem('userId',credential.user.uid);localStorage.setItem('userPhone',S.phone);}catch(_){}
+    dlg.close();toast('Login successful! Welcome to Tripride.');
+    const next=S.afterLogin;S.afterLogin=null;if(next)setTimeout(next,250);
+  }catch(e){loginRedirecting=false;console.error('LOGIN ERROR:',e);loginStepPassword(e.message||'Unable to login.');}
+}
+function forgotPasswordView(msg=''){
+  forgotMode=true;otpSent=false;otpSessionId='';forgotNewPassword='';forgotConfirmPassword='';
+  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Reset your password</h2><p class="sub">Create a new password for your Tripride account.</p>
+    <div class="fld"><label>Mobile number</label><input value="+91 ${esc(S.phone)}" readonly></div>
+    <div class="fld"><label for="newLoginPassword">New password</label><input id="newLoginPassword" type="password" autocomplete="new-password" placeholder="At least 6 characters"></div>
+    <div class="fld"><label for="confirmLoginPassword">Confirm password</label><input id="confirmLoginPassword" type="password" autocomplete="new-password" placeholder="Confirm new password"></div>
+    ${msg?`<p class="err">${esc(msg)}</p>`:''}<button class="btn block" data-act="sendForgotOtp">Send OTP</button><p class="note"><button class="chip" data-act="backToLogin">Back to Login</button></p></div>`);
+}
+async function sendForgotOtp(){
+  const np=$('#newLoginPassword')?.value||forgotNewPassword,cp=$('#confirmLoginPassword')?.value||forgotConfirmPassword;
+  if(np.length<6)return forgotPasswordView('Password must be at least 6 characters.');if(np!==cp)return forgotPasswordView('Passwords do not match.');
+  try{forgotNewPassword=np;forgotConfirmPassword=cp;const result=await loginApi(SEND_OTP_URL,{phone:S.phone});otpSessionId=String(result.session_id||result.sessionId||'').trim();if(!otpSessionId)throw new Error('OTP session was not returned by server.');otpSent=true;forgotOtpVerifyView('OTP sent to your registered mobile number.');}
+  catch(e){forgotPasswordView(e.message);}
+}
+function forgotOtpVerifyView(msg=''){
+  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button><h2>Verify OTP</h2><p class="sub">Enter the OTP sent to +91 ${esc(S.phone)}.</p>
+    <div class="fld"><label for="forgotLoginOtp">Verification OTP</label><input id="forgotLoginOtp" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="Enter OTP"></div>
+    ${msg?`<p class="err">${esc(msg)}</p>`:''}<button class="btn block" data-act="verifyForgotOtp">Verify OTP & Update Password</button><p class="note"><button class="chip" data-act="resendForgotOtp">Resend OTP</button> <button class="chip" data-act="backToLogin">Back to Login</button></p></div>`);
+}
+async function verifyForgotOtp(){
+  const otp=$('#forgotLoginOtp')?.value.trim()||'',np=forgotNewPassword,cp=forgotConfirmPassword;
+  if(!otp||otp.length<4)return forgotOtpVerifyView('Enter the OTP sent to your mobile number.');
+  if(np.length<6||np!==cp)return forgotOtpVerifyView('Please enter matching valid passwords.');
+  try{await loginApi(VERIFY_OTP_URL,{phone:S.phone,otp,session_id:otpSessionId,sessionId:otpSessionId,new_password:np,password:np,confirm_password:cp,phone_verified_by:'backend'});otpSessionId='';forgotMode=false;otpSent=false;loginStepPassword('Password updated successfully. Please login with your new password.');}
+  catch(e){forgotOtpVerifyView(e.message);}
+}
+onAuthStateChanged(auth,u=>{
+  S.user=u;if(S.unMine)S.unMine();if(S.unBk)S.unBk();S.unMine=S.unBk=null;S.mine=[];S.bookings=[];S.occ={};
+  $('#authBtn').hidden=false;$('#authBtn').textContent=u?'Sign out':'Sign in';
+  if(u){
+    try{localStorage.setItem('userId',u.uid);}catch(_){}
+    S.unMine=onSnapshot(query(collection(db,'tourPackages'),where('ownerId','==',u.uid)),s=>{S.mine=s.docs.map(mapPkg);render();},e=>console.warn('MINE ERROR',e));
+    S.unBk=onSnapshot(query(collection(db,'tourBookings'),where('customerId','==',u.uid)),s=>{S.bookings=s.docs.map(d=>({id:d.id,...d.data()}));render();},e=>console.warn('BOOKINGS ERROR',e));
+    loadOcc();
+  }else{try{localStorage.removeItem('userId');localStorage.removeItem('userPhone');}catch(_){}}
   render();
 });
 
@@ -592,9 +658,14 @@ document.addEventListener('click', e => {
     case 'login': return openLogin(null);
     case 'create': return openCreate();
     case 'publish': return publishTour();
-    case 'sendOtp': return sendOtp();
-    case 'verifyOtp': return verifyOtp();
-    case 'changePhone': return loginStep1();
+    case 'checkLoginMobile': return checkLoginMobile();
+    case 'passwordLogin': return passwordLogin();
+    case 'changeLoginPhone': return loginStep1();
+    case 'forgotPassword': return forgotPasswordView();
+    case 'sendForgotOtp': return sendForgotOtp();
+    case 'verifyForgotOtp': return verifyForgotOtp();
+    case 'resendForgotOtp': return sendForgotOtp();
+    case 'backToLogin': return loginStepPassword();
     case 'paxPlus': if (S.B && S.B.n < S.B.p.seats) { S.B.n++; S.B.pax.push({name:'',dob:''}); renderDetail(); if (isMine(S.B.p)) ownerPanel(S.B.p); } return;
     case 'paxMinus': if (S.B && S.B.n > 1) { S.B.n--; S.B.pax.pop(); renderDetail(); } return;
     case 'pay': return startBooking();
@@ -618,8 +689,9 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => {
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.pk')) { e.preventDefault(); e.target.click(); }
-  if (e.key === 'Enter' && e.target.id === 'ph') { e.preventDefault(); sendOtp(); }
-  if (e.key === 'Enter' && e.target.id === 'otp') { e.preventDefault(); verifyOtp(); }
+  if (e.key === 'Enter' && e.target.id === 'loginPhone') { e.preventDefault(); checkLoginMobile(); }
+  if (e.key === 'Enter' && e.target.id === 'loginPassword') { e.preventDefault(); passwordLogin(); }
+  if (e.key === 'Enter' && e.target.id === 'forgotLoginOtp') { e.preventDefault(); verifyForgotOtp(); }
 });
 dlg.addEventListener('click', e => { if (e.target === dlg && !(S.C && S.C.busy)) dlg.close(); });
 dlg.addEventListener('close', () => { if (!S.pending) S.B = S.B && S.B.busy ? S.B : null; });
