@@ -252,7 +252,7 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-s
       <button class="icon-btn" id="themeBtn" aria-label="Switch theme" title="Switch theme">◐</button>
       <button class="btn sm ghost" id="createTripBtn" type="button">＋ Create trip</button>
       <button class="btn sm ghost" id="authBtn" type="button">Sign in</button>
-      <a class="btn sm" href="index.html#download">Get the app</a>
+      <a class="btn sm" id="getAppBtn" href="https://play.google.com/store/apps/details?id=com.tripride.app" target="_blank" rel="noopener">Get the app</a>
     </div>
   </div>
 </header>
@@ -304,7 +304,7 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-s
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import { getFirestore, collection, query, where, orderBy, onSnapshot, Timestamp, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
-import { getAuth, onAuthStateChanged, RecaptchaVerifier, signInWithPhoneNumber, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+import { getAuth, onAuthStateChanged, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
 /* ============ CONFIG ============ */
 const FIREBASE_CONFIG = {
@@ -577,11 +577,20 @@ function detail(t){
     <button class="btn block" data-join="${esc(t.id)}" ${mine?'disabled':''}>${mine?'This is your trip':'Join trip'}</button></div>`);
 }
 
-/* ============ AUTH (phone OTP, same accounts as the app) ============ */
+/* ============ AUTH (same mobile + password flow as login.html) ============ */
+const LOGIN_API_BASE_URL = "https://er3fg.aiccloud.online/";
+const REGISTER_URL = "register.html";
+const PHONE_CHECK_URL = "auth/check-user";
+const LOGIN_URL = "auth/login-password";
+const SEND_OTP_URL = "auth/forgot-password/send-otp";
+const VERIFY_OTP_URL = "auth/forgot-password/verify-otp";
+let loginUserExists = false, loginLoading = false, forgotMode = false, otpSent = false;
+let otpSessionId = "", otpTimer = null, otpSeconds = 0, loginRedirecting = false, forgotNewPassword = '', forgotConfirmPassword = '';
+
 function renderAuth(){
   const u = S.user;
-  $('#authBtn').textContent = u ? 'Sign out' : 'Sign in';
-  $('#createTripBtn').textContent = u ? '＋ Create trip' : '＋ Create trip';
+  $('#authBtn').hidden = !!u; // Never show Sign out on the trips page.
+  $('#authBtn').textContent = 'Sign in';
   const w = $('#walletChip');
   w.hidden = !u; if (u) w.textContent = `Wallet ₹${(S.wallet || 0).toFixed(2)}`;
   render();
@@ -591,60 +600,128 @@ function watchWallet(uid){
   if (!uid) { S.wallet = 0; return; }
   S.unWallet = onSnapshot(doc(db,'wallets',uid), s => { S.wallet = num(s.data() && s.data().balance) || 0; renderAuth(); }, () => {});
 }
-const AUTH_ERR = {
-  'auth/invalid-phone-number':'Enter a valid 10-digit mobile number.',
-  'auth/too-many-requests':'Too many attempts. Please wait a few minutes and try again.',
-  'auth/invalid-verification-code':'That OTP is not correct. Check it and try again.',
-  'auth/code-expired':'That OTP has expired. Request a new one.',
-  'auth/captcha-check-failed':'Security check failed. Refresh the page and try again.',
-  'auth/unauthorized-domain':'This website’s domain is not authorized in Firebase Authentication.',
-  'auth/operation-not-allowed':'Phone sign-in is not enabled for this Firebase project.',
-  'auth/network-request-failed':'Network error. Check your connection and try again.'
-};
-function loginStep1(msg){
-  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button>
-    <h2>Sign in to book</h2><p class="sub">Use the same mobile number as your Tripride app so your wallet and bookings match.</p>
-    <div class="fld"><label for="ph">Mobile number</label><div class="phone"><span>+91</span><input id="ph" inputmode="numeric" maxlength="10" placeholder="98765 43210" autocomplete="tel-national"></div></div>
-    ${msg?`<p class="err">${esc(msg)}</p>`:''}
-    <div id="rc"></div>
-    <button class="btn block" id="sendOtp" data-act="sendOtp">Send OTP</button></div>`);
-  setTimeout(() => { const i = $('#ph'); if (i) i.focus(); }, 50);
+function authModal(html){
+  show(`<div class="d">${html}</div>`);
 }
-function loginStep2(phone, msg){
-  show(`<div class="d"><button class="x" data-close aria-label="Close">×</button>
-    <h2>Enter the OTP</h2><p class="sub">We sent a 6-digit code to +91 ${esc(phone)}.</p>
-    <div class="fld"><label for="otp">OTP</label><input id="otp" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="one-time-code"></div>
+function loginStep1(msg=''){
+  forgotMode=false; otpSent=false; loginUserExists=false;
+  authModal(`<button class="x" data-close aria-label="Close">×</button>
+    <h2>Sign in to Tripride</h2><p class="sub">Enter your registered mobile number to continue.</p>
+    <div class="fld"><label for="loginPhone">Mobile number</label><div class="phone"><span>+91</span><input id="loginPhone" inputmode="numeric" maxlength="10" placeholder="Enter 10 digit mobile number" autocomplete="tel-national"></div></div>
     ${msg?`<p class="err">${esc(msg)}</p>`:''}
-    <button class="btn block" id="verifyOtp" data-act="verifyOtp">Verify & sign in</button>
-    <p class="note"><button type="button" class="chip" data-act="changePhone">Change number</button></p></div>`);
-  setTimeout(() => { const i = $('#otp'); if (i) i.focus(); }, 50);
+    <button class="btn block" data-act="checkLoginMobile">Continue</button>`);
+  setTimeout(()=>$('#loginPhone')?.focus(),50);
+}
+function loginStepPassword(msg=''){
+  authModal(`<button class="x" data-close aria-label="Close">×</button>
+    <h2>Welcome Back!</h2><p class="sub">Your mobile number is registered. Enter your password.</p>
+    <div class="fld"><label>Mobile number</label><input value="+91 ${esc(S.phone)}" readonly></div>
+    <div class="fld"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter your password"></div>
+    ${msg?`<p class="err">${esc(msg)}</p>`:''}
+    <p style="text-align:right;margin:0 0 14px"><button class="chip" data-act="forgotPassword">Forgot Password?</button></p>
+    <button class="btn block" data-act="passwordLogin">Login</button>
+    <p class="note"><button type="button" class="chip" data-act="changeLoginPhone">Change mobile number</button></p>`);
+  setTimeout(()=>$('#loginPassword')?.focus(),50);
 }
 function openLogin(after){ S.afterLogin = after || null; S.confirm = null; loginStep1(); }
-async function sendOtp(){
-  const phone = ($('#ph').value || '').replace(/\D/g,'');
-  if (!/^[6-9]\d{9}$/.test(phone)) return loginStep1('Enter a valid 10-digit mobile number.');
-  const b = $('#sendOtp'); b.disabled = true; b.textContent = 'Sending…';
-  try {
-    if (S.rc) { try { S.rc.clear(); } catch(e){} S.rc = null; }
-    S.rc = new RecaptchaVerifier(auth, 'rc', {size:'invisible'});
-    S.confirm = await signInWithPhoneNumber(auth, '+91' + phone, S.rc);
-    S.phone = phone; loginStep2(phone);
-  } catch(e){
-    console.error(e);
-    if (S.rc) { try { S.rc.clear(); } catch(_){} S.rc = null; }
-    loginStep1(AUTH_ERR[e.code] || `Could not send OTP (${e.code || 'error'}).`);
+async function loginApi(endpoint,data){
+  const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),30000);
+  try{
+    const response=await fetch(LOGIN_API_BASE_URL+endpoint,{method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(data),signal:ctrl.signal});
+    let body={};try{body=await response.json();}catch(_){}
+    if(!response.ok||body.success!==true){
+      const error=new Error(body.message||body.error||'Something went wrong. Please try again.');
+      error.status=response.status;error.body=body;throw error;
+    }
+    return body;
+  }catch(e){
+    if(e.name==='AbortError')throw new Error('Request timed out. Please try again.');
+    if(e instanceof TypeError)throw new Error('Cannot reach the login server. Please try again.');
+    throw e;
+  }finally{clearTimeout(timer);}
+}
+async function checkLoginMobile(){
+  const number=($('#loginPhone')?.value||'').replace(/\D/g,'');
+  if(!/^[6-9]\d{9}$/.test(number))return loginStep1('Enter a valid 10-digit mobile number.');
+  const b=$('[data-act="checkLoginMobile"]');if(b){b.disabled=true;b.textContent='Checking…';}
+  try{
+    const result=await loginApi(PHONE_CHECK_URL,{phone:number});
+    const exists=result.exists===true||result.user_exists===true||result.registered===true;
+    if(exists){S.phone=number;loginUserExists=true;loginStepPassword();}
+    else location.href=REGISTER_URL+'?phone='+encodeURIComponent(number);
+  }catch(e){
+    const body=e.body||{},msg=String(e.message||'');
+    const notFound=e.status===404||body.exists===false||body.user_exists===false||body.registered===false||
+      /not\s*(found|registered|exist)|no\s+(account|user)|does\s*n[o']t\s+exist|unregistered|new user/i.test(msg);
+    if(notFound)location.href=REGISTER_URL+'?phone='+encodeURIComponent(number);
+    else loginStep1(msg);
   }
 }
-async function verifyOtp(){
-  const code = ($('#otp').value || '').replace(/\D/g,'');
-  if (code.length !== 6) return loginStep2(S.phone, 'Enter the 6-digit OTP.');
-  const b = $('#verifyOtp'); b.disabled = true; b.textContent = 'Verifying…';
-  try {
-    await S.confirm.confirm(code);
-    dlg.close(); toast('Signed in.');
-    const next = S.afterLogin; S.afterLogin = null;
-    if (next) setTimeout(next, 250);
-  } catch(e){ console.error(e); loginStep2(S.phone, AUTH_ERR[e.code] || `Could not verify OTP (${e.code || 'error'}).`); }
+async function passwordLogin(){
+  const pass=$('#loginPassword')?.value||'';
+  if(!pass.trim())return loginStepPassword('Please enter your password.');
+  const b=$('[data-act="passwordLogin"]');if(b){b.disabled=true;b.textContent='Signing in…';}
+  try{
+    const result=await loginApi(LOGIN_URL,{phone:S.phone,password:pass});
+    const token=String(result.custom_token||result.customToken||result.token||result.firebase_token||'').trim();
+    if(!token)throw new Error('Firebase authentication token was not returned by server.');
+    loginRedirecting=true;
+    const credential=await signInWithCustomToken(auth,token);
+    if(!credential.user)throw new Error('Firebase user session was not created.');
+    try{localStorage.setItem('userId',credential.user.uid);localStorage.setItem('userPhone',S.phone);}catch(_){}
+    dlg.close();toast('Login successful! Welcome to Tripride.');
+    const next=S.afterLogin;S.afterLogin=null;
+    if(next)setTimeout(next,250);
+  }catch(e){
+    loginRedirecting=false;console.error('LOGIN ERROR:',e);
+    loginStepPassword(e.message||'Unable to login.');
+  }
+}
+function forgotPasswordView(msg=''){
+  forgotMode=true;otpSent=false;otpSessionId='';forgotNewPassword='';forgotConfirmPassword='';
+  authModal(`<button class="x" data-close aria-label="Close">×</button>
+    <h2>Reset your password</h2><p class="sub">Create a new password for your Tripride account.</p>
+    <div class="fld"><label>Mobile number</label><input value="+91 ${esc(S.phone)}" readonly></div>
+    <div class="fld"><label for="newLoginPassword">New password</label><input id="newLoginPassword" type="password" autocomplete="new-password" placeholder="At least 6 characters"></div>
+    <div class="fld"><label for="confirmLoginPassword">Confirm password</label><input id="confirmLoginPassword" type="password" autocomplete="new-password" placeholder="Confirm new password"></div>
+    ${msg?`<p class="err">${esc(msg)}</p>`:''}
+    <button class="btn block" data-act="sendForgotOtp">Send OTP</button>
+    <p class="note"><button class="chip" data-act="backToLogin">Back to Login</button></p>`);
+}
+async function sendForgotOtp(){
+  const np=$('#newLoginPassword')?.value||forgotNewPassword;
+  const cp=$('#confirmLoginPassword')?.value||forgotConfirmPassword;
+  if(np.length<6)return forgotPasswordView('Password must be at least 6 characters.');
+  if(np!==cp)return forgotPasswordView('Passwords do not match.');
+  try{
+    forgotNewPassword=np;forgotConfirmPassword=cp;
+    const result=await loginApi(SEND_OTP_URL,{phone:S.phone});
+    otpSessionId=String(result.session_id||result.sessionId||'').trim();
+    if(!otpSessionId)throw new Error('OTP session was not returned by server.');
+    otpSent=true;forgotOtpVerifyView('OTP sent to your registered mobile number.');
+  }catch(e){forgotPasswordView(e.message);}
+}
+function forgotOtpVerifyView(msg=''){
+  authModal(`<button class="x" data-close aria-label="Close">×</button>
+    <h2>Verify OTP</h2><p class="sub">Enter the OTP sent to +91 ${esc(S.phone)}.</p>
+    <div class="fld"><label for="forgotLoginOtp">Verification OTP</label><input id="forgotLoginOtp" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="Enter OTP"></div>
+    ${msg?`<p class="err">${esc(msg)}</p>`:''}
+    <button class="btn block" data-act="verifyForgotOtp">Verify OTP & Update Password</button>
+    <p class="note"><button class="chip" data-act="resendForgotOtp">Resend OTP</button> <button class="chip" data-act="backToLogin">Back to Login</button></p>`);
+}
+async function verifyForgotOtp(){
+  const otp=$('#forgotLoginOtp')?.value.trim()||'';
+  const np=forgotNewPassword,cp=forgotConfirmPassword;
+  if(!otp||otp.length<4)return forgotOtpVerifyView('Enter the OTP sent to your mobile number.');
+  if(np.length<6||np!==cp)return forgotOtpVerifyView('Please enter matching valid passwords.');
+  try{
+    await loginApi(VERIFY_OTP_URL,{phone:S.phone,otp,session_id:otpSessionId,sessionId:otpSessionId,
+      new_password:np,password:np,confirm_password:cp,phone_verified_by:'backend'});
+    otpSessionId='';forgotMode=false;otpSent=false;
+    loginStepPassword('Password updated successfully. Please login with your new password.');
+  }catch(e){forgotOtpVerifyView(e.message);}
 }
 async function watchCreatorProfile(uid){
   if (S.unProfile) { S.unProfile(); S.unProfile = null; }
@@ -658,7 +735,9 @@ async function watchCreatorProfile(uid){
     }, err => console.warn('Profile listener:', err));
   } catch(e) { console.warn('Profile load:', e); }
 }
-if (auth) onAuthStateChanged(auth, u => { S.user = u; watchWallet(u ? u.uid : null); watchCreatorProfile(u ? u.uid : null); renderAuth(); });
+if (auth) onAuthStateChanged(auth, u => {
+  S.user=u;watchWallet(u?u.uid:null);watchCreatorProfile(u?u.uid:null);renderAuth();
+});
 
 /* ============ BOOKING (same inputs and backend calls as the app) ============ */
 const autoPromoActive = () => new Date() < AUTO_PROMO_END;
@@ -1055,9 +1134,14 @@ document.addEventListener('click', async e => {
     case 'all': S.all = true; return render();
     case 'reload': return location.reload();
     case 'clear': $('#searchForm').reset(); Object.assign(S,{q:'',date:'',maxp:'',cat:'',quick:'Upcoming',dest:null,sugg:[],suggErr:false}); renderSugg(); return render();
-    case 'sendOtp': return sendOtp();
-    case 'verifyOtp': return verifyOtp();
-    case 'changePhone': return loginStep1();
+    case 'checkLoginMobile': return checkLoginMobile();
+    case 'passwordLogin': return passwordLogin();
+    case 'changeLoginPhone': return loginStep1();
+    case 'forgotPassword': return forgotPasswordView();
+    case 'sendForgotOtp': return sendForgotOtp();
+    case 'verifyForgotOtp': return verifyForgotOtp();
+    case 'resendForgotOtp': return sendForgotOtp();
+    case 'backToLogin': return loginStepPassword();
     case 'seatPlus': if (S.bk && S.bk.seats < S.bk.trip.seatsAvailable) { S.bk.seats++; S.bk.pax.push({name:'',age:''}); renderPax(); updateBooking(); } return;
     case 'seatMinus': if (S.bk && S.bk.seats > 1) { S.bk.seats--; S.bk.pax.pop(); renderPax(); updateBooking(); } return;
     case 'applyCoupon': {
@@ -1122,10 +1206,7 @@ $('#maxp').addEventListener('change', e => { S.maxp = e.target.value; render(); 
 $('#searchForm').addEventListener('reset', () => setTimeout(() => { ++S.sReq; Object.assign(S,{q:'',date:'',maxp:'',dest:null,sugg:[],searching:false,suggErr:false}); renderSugg(); render(); }));
 $('#searchForm').addEventListener('submit', e => e.preventDefault());
 $('#createTripBtn').addEventListener('click', openCreateTrip);
-$('#authBtn').addEventListener('click', async () => {
-  if (S.user) { try { await signOut(auth); toast('Signed out.'); } catch(e){ toast('Could not sign out.'); } }
-  else openLogin(null);
-});
+$('#authBtn').addEventListener('click', () => { if (!S.user) openLogin(null); });
 $('#themeBtn').addEventListener('click', () => {
   const root = document.documentElement;
   const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
