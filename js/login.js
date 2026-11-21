@@ -16,7 +16,7 @@ const firebaseAuth = getAuth(initializeApp(firebaseConfig));
 // ================= CONFIG =================
 // In production this MUST be an HTTPS URL (browsers block HTTP calls from HTTPS pages)
 // and the backend must allow your website domain in CORS.
-const API_BASE_URL = "http://15.235.145.222:10000/";
+const API_BASE_URL = "https://er3fg.aiccloud.online/";
 const HOME_URL = "home.html";          // dummy home screen (replace with index.html when ready)
 const REGISTER_URL = "register.html";
 const PHONE_CHECK_URL = "auth/check-user";
