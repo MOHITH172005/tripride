@@ -2,366 +2,816 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0A2540">
-<title>Travel Beyond Ordinary | Tripride</title>
-<meta name="description" content="Tripride: trips, intercity ride sharing, tour packages, rentals, taxi, daily route sharing and a vehicle marketplace.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="assets/logo.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Home | TripRide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
 <style>
-:root{--navy:#0A2540;--blue:#0F8BD0;--sky:#9FD6F5;--cream:#F3F8FC;--ink:#34425a;--mut:#57677f;--line:#d6e4f0;--grad:linear-gradient(135deg,#0F8BD0,#18C1E8);--head:'Bricolage Grotesque',system-ui,sans-serif;--body:'DM Sans',system-ui,sans-serif;--nav-h:74px;--sec:clamp(64px,9vw,104px)}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 10px);-webkit-text-size-adjust:100%}
-body{font-family:var(--body);color:var(--ink);background:var(--cream);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-img{max-width:100%;display:block}a{color:inherit;text-decoration:none}ul{list-style:none}
-h1,h2,h3,h4{font-family:var(--head);color:var(--navy);line-height:1.1;letter-spacing:-.02em}
-.container{width:min(1200px,100% - 40px);margin-inline:auto}
-.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;min-height:48px;border-radius:999px;font-weight:700;font-size:.95rem;border:2px solid transparent;cursor:pointer;font-family:var(--body);transition:.25s;background:var(--grad);color:#fff;box-shadow:0 10px 24px rgba(15,139,208,.32)}
-.btn:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgba(15,139,208,.4)}
-.btn.out{background:#fff;color:var(--navy);border-color:var(--line);box-shadow:none}.btn.out:hover{border-color:var(--navy)}
-:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+:root{--ink:#0F1B3D;--pri:#6D4AE8;--pri2:#8B6CF6;--acc:#FFB703;--bg:#F5F7FB;--mut:#5F6B8A;--line:#E3E8F2;--tint:#EEEAFF}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:Figtree,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+h1,h2,h3,.logo b,.prof h2,.greet b{font-family:'Bricolage Grotesque',Figtree,system-ui,sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:24px;line-height:1;display:inline-block;font-variation-settings:'FILL' 1,'wght' 500;user-select:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.hide{display:none!important}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+#boot{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:300}
+.spin{width:38px;height:38px;border:4px solid #e0e7ff;border-top-color:var(--pri);border-radius:50%;animation:s 1s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition:none!important}}
 
-/* NAV */
-.nav{position:sticky;top:0;z-index:500;background:rgba(243,248,252,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:box-shadow .3s,background .3s}
-.nav.scrolled{box-shadow:0 8px 30px rgba(10,37,64,.1);background:rgba(243,248,252,.96)}
-.nav-in{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);gap:16px}
-.brand{display:flex;align-items:center;gap:10px;flex:none}.logo-img{height:42px;width:auto}
-.wordmark{font-family:var(--head);font-weight:800;font-size:1.45rem;letter-spacing:.06em;color:var(--navy)}.wordmark b{color:var(--blue)}
-.menu{display:flex;align-items:center;gap:2px}.menu>li{position:relative}
-.menu>li>a,.dd-btn{display:flex;align-items:center;gap:5px;padding:10px 12px;font-weight:500;font-size:.93rem;color:var(--navy);border-radius:999px;background:none;border:0;cursor:pointer;font-family:var(--body);transition:.2s;white-space:nowrap}
-.menu>li>a:hover,.dd-btn:hover,.menu a.active{color:var(--blue);background:#fff}
-.menu .login-btn{border:1.5px solid var(--line);background:#fff}
-.menu .app-btn{background:var(--navy);color:#fff!important;padding:11px 22px;margin-left:4px}.menu .app-btn:hover{background:var(--blue)}
-.caret{width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:.2s}
-.dropdown{position:absolute;top:100%;left:-80px;min-width:310px;background:#fff;border-radius:20px;box-shadow:0 24px 50px rgba(10,37,64,.18);padding:10px;opacity:0;visibility:hidden;transform:translateY(10px);transition:.22s;border:1px solid var(--line)}
-.has-dd:hover .dropdown,.has-dd.open .dropdown,.has-dd:focus-within .dropdown{opacity:1;visibility:visible;transform:none}
-.dropdown a{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;transition:.2s}.dropdown a:hover{background:var(--cream)}
-.dropdown small{display:block;color:var(--mut);font-size:.78rem;line-height:1.3}.dropdown strong{color:var(--navy);font-size:.92rem}
-.ico{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--c,var(--blue)) 14%,#fff);color:var(--c,var(--blue));flex:none}
-.burger{display:none;width:44px;height:44px;border:0;background:none;cursor:pointer;flex-direction:column;gap:6px;align-items:center;justify-content:center;z-index:502}
-.burger span{display:block;width:25px;height:3px;background:var(--navy);transition:.3s;border-radius:3px}
-.burger.open span:nth-child(1){transform:translateY(9px) rotate(45deg)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+/* top bar */
+.bar{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.bar-in{display:flex;align-items:center;gap:14px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+.lg{width:38px;height:38px;border-radius:12px;background:var(--pri);color:#fff;display:grid;place-items:center;transform:rotate(-6deg)}
+.logo b{font-size:21px;font-weight:800;letter-spacing:-.02em}
+.nav{display:flex;gap:6px}
+.nav button{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:700;color:var(--mut)}
+.nav button.on{background:var(--tint);color:var(--pri)}
+.acts{display:flex;align-items:center;gap:10px}
+.tbtn,.hbtn{width:42px;height:42px;border-radius:14px;background:var(--bg);display:grid;place-items:center;position:relative;color:var(--ink);text-decoration:none;flex:none}
+.sos{background:#E5383B;color:#fff;font-weight:800;font-size:13px;width:auto;padding:0 18px;border-radius:999px;box-shadow:0 6px 16px #e5383b4d}
+.badge{position:absolute;right:-4px;top:-4px;min-width:20px;height:20px;padding:0 4px;border-radius:20px;background:var(--acc);color:var(--ink);border:2px solid #fff;font-size:10px;font-weight:800;display:grid;place-items:center}
+.avwrap{padding:2px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--acc));cursor:pointer;flex:none}
+.av{width:40px;height:40px;border-radius:50%;background:#fff center/cover;color:var(--pri);display:grid;place-items:center;font-weight:800;border:2px solid #fff}
 
-/* HERO */
-.hero{position:relative;overflow:hidden;padding:clamp(40px,7vw,80px) 0 clamp(56px,8vw,96px);background:radial-gradient(700px 420px at 90% 0,#cfeaff,transparent 70%),radial-gradient(520px 360px at 0 100%,#e1f4ff,transparent 70%)}
-.hero-in{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,64px);align-items:center}
-.pillk{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:#fff;border:1px solid var(--line);border-radius:999px;font-size:.8rem;font-weight:700;color:var(--blue);letter-spacing:.06em;text-transform:uppercase}
-.pillk::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px #0f8bd033}
-.hero h1{font-size:clamp(2.5rem,6.2vw,5rem);font-weight:800;margin:22px 0 20px}
-.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p.lead{font-size:clamp(1rem,1.6vw,1.15rem);color:var(--mut);max-width:520px}
-.cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
-.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px}
-.stats span{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 18px;font-size:.85rem;color:var(--mut)}.stats b{display:block;color:var(--navy);font-family:var(--head);font-size:1.1rem}
-.visual{position:relative;height:clamp(380px,46vw,560px)}
-.vimg{position:absolute;border-radius:30px;background:linear-gradient(135deg,#1c3a63,#0F8BD0);overflow:hidden;box-shadow:0 30px 60px rgba(10,37,64,.22);border:6px solid #fff}
-.vimg img{width:100%;height:100%;object-fit:cover}
-.v1{inset:0 0 90px 90px;border-radius:200px 200px 30px 30px}.v2{left:0;bottom:0;width:48%;height:38%;min-height:150px;transform:rotate(-4deg)}.v3{right:0;bottom:30px;width:34%;height:26%;min-height:100px;transform:rotate(5deg)}
-.float{position:absolute;z-index:3;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:0 18px 40px rgba(10,37,64,.16);display:flex;gap:12px;align-items:center;animation:fl 5s ease-in-out infinite}
-.float b{display:block;color:var(--navy);font-size:.92rem;line-height:1.2}.float small{color:var(--mut);font-size:.76rem}
-.f1{top:48px;left:0}.f2{top:230px;right:0;animation-delay:-2.5s}
-@keyframes fl{50%{transform:translateY(-10px)}}
+/* hero */
+.hero{background:radial-gradient(700px 360px at 92% 0,#E2D9FF,transparent 70%),radial-gradient(560px 320px at 0 100%,#FFEFC2,transparent 70%)}
+.hero-in{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding-top:52px;padding-bottom:64px}
+.hello{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 16px;max-width:100%}
+.hello>div{min-width:0}
+.greet{display:block}
+.greet b{display:block;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hello small{display:block;font-size:12px;color:var(--mut);margin-top:2px}
+.tag{margin-top:26px;font-size:15px;font-weight:700;color:var(--pri)}
+.hl h1{margin-top:10px;font-size:clamp(38px,5.4vw,68px);line-height:1.02;font-weight:800;letter-spacing:-.035em;max-width:11em}
+.srow{display:flex;gap:10px;margin-top:30px;max-width:560px}
+.search{flex:1;height:58px;display:flex;align-items:center;gap:10px;padding:0 20px;background:#fff;border:2px solid var(--ink);border-radius:999px;box-shadow:4px 4px 0 var(--ink)}
+.search input{flex:1;border:0;outline:0;font:inherit;font-size:15px;font-weight:500;background:none;min-width:0;color:var(--ink)}
+.sq{width:58px;height:58px;border-radius:50%;background:var(--pri);color:#fff;display:grid;place-items:center;flex:none}
+.ticket{display:flex;align-items:center;margin-top:22px;max-width:560px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:12px 12px 12px 8px}
+.tk-ic{width:54px;display:grid;place-items:center;color:var(--pri);flex:none}
+.perf{align-self:stretch;border-left:2px dashed #CBD3E6;margin:2px 14px 2px 4px}
+.tk-tx{flex:1;min-width:0}
+.tk-tx small{display:block;font-size:12px;font-weight:600;color:var(--mut)}
+.tk-tx .t{display:block;font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ticket button{width:42px;height:42px;border-radius:13px;background:var(--tint);color:var(--pri);display:grid;place-items:center;flex:none}
+.guide{margin-top:18px;max-width:560px;padding:14px 16px;background:#FFF6DB;border:1px solid #FFE08A;border-radius:18px;display:flex;gap:12px;align-items:center;color:#7A5600}
+.guide b{display:block;color:#4D3600;font-size:14px;font-weight:800}.guide p{font-size:12px;color:#7A5F1E;margin-top:3px;line-height:1.4}
+.guide button{font-size:12px;font-weight:800;white-space:nowrap}
 
-/* marquee */
-.mq{background:var(--navy);color:#fff;overflow:hidden;padding:18px 0}
-.mq div{display:flex;gap:46px;width:max-content;animation:mq 28s linear infinite;font-family:var(--head);font-weight:600;font-size:1.15rem;white-space:nowrap}
-.mq span::before{content:"✦";color:var(--sky);margin-right:46px}
-@keyframes mq{to{transform:translateX(-50%)}}
+/* status card */
+.stcard{position:relative;background:#fff;border:1px solid var(--line);border-radius:30px;padding:24px;box-shadow:0 24px 50px #0f1b3d1a}
+.stcard::before{content:"";position:absolute;inset:0;border-radius:30px;background:var(--pri);transform:rotate(3.5deg);z-index:-1}
+.stcard::after{content:"";position:absolute;right:-14px;top:-14px;width:44px;height:44px;border-radius:50%;background:var(--acc)}
+.hero-in{isolation:isolate}
+.sh{display:flex;align-items:center}.sh h3{flex:1;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.sh button{display:flex;align-items:center;gap:4px;color:var(--pri);font-size:13px;font-weight:700;padding:7px 12px;background:var(--tint);border-radius:999px}
+.strip{display:flex;overflow-x:auto;gap:16px;padding:20px 0 6px;scrollbar-width:none;align-items:flex-start;min-height:128px}
+.strip::-webkit-scrollbar{display:none}
+.bub{width:76px;text-align:center;flex:none;cursor:pointer}
+.ring{width:68px;height:68px;margin:0 auto;border-radius:50%;padding:3px;background:#D5DBEA}
+.ring.on{background:linear-gradient(135deg,var(--pri),var(--acc))}
+.ring div{width:100%;height:100%;border-radius:50%;background:var(--bg) center/cover;border:3px solid #fff;display:grid;place-items:center;color:var(--pri)}
+.bub span{display:block;font-size:12px;font-weight:700;margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hint{font-size:13px;color:var(--mut);line-height:1.45;align-self:center}
+.stnote{margin-top:14px;padding-top:14px;border-top:1px dashed #CBD3E6;font-size:12px;color:var(--mut)}
 
-/* sections */
-.section{padding:var(--sec) 0}.section.dark{background:var(--navy);color:#cfd9ea}
-.sec-head{max-width:660px;margin:0 auto clamp(32px,5vw,52px);text-align:center}
-.kicker{display:inline-block;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--blue)}
-.sec-head h2{font-size:clamp(1.85rem,4.2vw,3rem);margin:10px 0 14px}.lead{color:var(--mut);font-size:clamp(1rem,1.5vw,1.08rem)}
-.dark h2,.dark h3,.dark h4{color:#fff}.dark .lead{color:#b8c4d9}.dark .kicker{color:var(--sky)}
+/* services */
+.sec{padding-top:56px;padding-bottom:20px}
+.q h2{font-size:clamp(28px,3.6vw,42px);font-weight:800;letter-spacing:-.03em}
+.q p{margin-top:8px;font-size:16px;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px}
+.tile{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;min-height:190px;padding:22px;background:#fff;border:1px solid var(--line);border-radius:26px;text-decoration:none;color:inherit;transition:transform .18s,box-shadow .18s,border-color .18s}
+.tile:hover{transform:translateY(-4px);border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
+.tile:active{transform:scale(.98)}
+.tile .ib{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;margin-bottom:auto}
+.tile .ib .ms{font-size:28px}
+.tile b{font-family:'Bricolage Grotesque',Figtree,sans-serif;font-size:20px;font-weight:700;margin-top:22px;letter-spacing:-.01em}
+.tile small{font-size:13px;color:var(--mut);margin-top:4px}
+.tile::after{content:"north_east";font-family:'Material Symbols Rounded';font-size:20px;position:absolute;right:18px;top:18px;width:38px;height:38px;border-radius:50%;background:var(--bg);display:grid;place-items:center;color:var(--ink)}
+.tile:first-child{grid-column:span 2;background:var(--ink);color:#fff;border-color:var(--ink)}
+.tile:first-child .ib{background:#ffffff1f!important}
+.tile:first-child .ms{color:var(--acc)!important}
+.tile:first-child b{font-size:30px}
+.tile:first-child small{color:#ffffffb3;font-size:15px}
+.tile:first-child::after{background:var(--acc);color:var(--ink)}
+.tile:first-child:hover{box-shadow:5px 5px 0 var(--acc)}
+.trust{margin:36px 0 0;display:flex;align-items:center;gap:18px;padding:26px 28px;background:var(--tint);border-radius:28px}
+.trust .ib{width:56px;height:56px;border-radius:18px;background:#fff;color:#0E9F6E;display:grid;place-items:center;flex:none}
+.trust b{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700}
+.trust p{font-size:14px;color:var(--mut);margin-top:4px}
+.foot{margin-top:56px;border-top:1px solid var(--line);padding:26px 0 120px;font-size:13px;color:var(--mut)}
+.foot .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
-/* bento */
-.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:270px;gap:18px}
-.tile{position:relative;border-radius:28px;overflow:hidden;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;isolation:isolate;background:linear-gradient(135deg,#1c3a63,var(--c));transition:transform .35s,box-shadow .35s}
-.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .6s}
-.tile::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(10,37,64,.92) 8%,rgba(10,37,64,.2) 72%)}
-.tile .ico{position:absolute;top:20px;left:20px;background:#ffffff2e;color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.tile .go{position:absolute;top:20px;right:20px;width:42px;height:42px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;transition:.3s}
-.tag{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky)}
-.tile h3{color:#fff;font-size:1.5rem;margin:4px 0 6px}.tile p{font-size:.9rem;color:#e3ecf7;line-height:1.5}
-.tile.big{grid-column:span 2;grid-row:span 2}.tile.big h3{font-size:clamp(1.8rem,3vw,2.3rem)}.tile.big p{font-size:1rem;max-width:380px}.tile.wide{grid-column:span 2}
-@media (hover:hover){
- .tile:hover{transform:translateY(-6px);box-shadow:0 26px 50px rgba(10,37,64,.25)}
- .tile:hover img{transform:scale(1.07)}
- .tile:hover .go{background:var(--blue);color:#fff;transform:rotate(-45deg)}
- .feat:hover{background:#ffffff17;transform:translateY(-6px);border-color:var(--sky)}
- .dest:hover{transform:translateY(-8px)}
+/* mobile */
+@media (max-width:859px){
+.hero-in{grid-template-columns:1fr;gap:34px;padding-top:30px;padding-bottom:44px}
+.grid{grid-template-columns:1fr 1fr;gap:12px}
+.tile{min-height:150px;padding:16px;border-radius:22px}
+.tile b{font-size:17px;margin-top:16px}
+.tile:first-child b{font-size:24px}
+.tile::after{right:12px;top:12px;width:34px;height:34px}
+.trust{padding:20px}
+.nav{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:12px;right:12px;background:#fff;padding:6px;border-radius:24px;box-shadow:0 12px 32px #0f1b3d33;z-index:70;gap:6px}
+.nav button{flex:1;justify-content:center;border-radius:18px}
+.sos{padding:0 14px}
+.bar-in{gap:8px}
 }
-.tile:active{transform:scale(.985)}
+@media (max-width:420px){.logo b{display:none}}
 
-/* features */
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.feat{background:#ffffff0d;border:1px solid #ffffff1f;border-radius:26px;padding:28px;transition:.3s}
-.feat .ico{width:56px;height:56px;border-radius:18px;margin-bottom:20px;background:#ffffff14;color:var(--sky)}.feat h4{font-size:1.2rem;margin-bottom:8px}.feat p{font-size:.93rem;color:#b8c4d9}
+/* profile */
+.prof{padding:calc(34px + env(safe-area-inset-top)) 18px 26px;text-align:center}
+.prof .big{width:112px;height:112px;margin:0 auto;border-radius:50%;background:#fff center/cover;border:4px solid #fff;box-shadow:0 0 0 3px var(--pri),0 12px 26px #6d4ae840;display:grid;place-items:center;font-family:Sora,sans-serif;font-size:40px;font-weight:800;color:var(--pri);cursor:pointer}
+.prof h2{margin-top:16px;font-size:23px;font-weight:700}
+.pc{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:6px 18px;text-align:left}
+.pc div{display:flex;justify-content:space-between;gap:10px;padding:14px 0;border-bottom:1px solid #F0F1F8;font-size:13px}.pc div:last-child{border:0}
+.pc span{color:var(--mut)}.pc b{font-weight:700;text-align:right}
+.btn{display:block;width:100%;margin-top:14px;padding:15px;border-radius:16px;background:var(--pri);color:#fff;font-weight:800;font-size:14px}
+.btn.out{background:#fff;color:#C62828;border:1px solid #F5C6C6}
 
-/* steps */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;counter-reset:s;position:relative}
-.steps::before{content:"";position:absolute;top:30px;left:8%;right:8%;border-top:2px dashed #b9d4e8}
-.step{position:relative;text-align:center;padding:0 8px}
-.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:60px;height:60px;margin:0 auto 20px;border-radius:50%;background:var(--grad);color:#fff;font-family:var(--head);font-weight:800;font-size:1.4rem;box-shadow:0 0 0 8px var(--cream),0 12px 24px rgba(15,139,208,.35);position:relative;z-index:1}
-.step h4{font-size:1.2rem;margin-bottom:6px}.step p{font-size:.93rem;color:var(--mut)}
+/* overlays */
+.ov{position:fixed;inset:0;background:#17143a99;z-index:100;display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sheet{width:100%;max-width:520px;max-height:78vh;background:#fff;border-radius:28px 28px 0 0;overflow:auto;padding:12px 0 calc(20px + env(safe-area-inset-bottom))}
+.sheet .grab{width:42px;height:4px;border-radius:20px;background:#D9DBEA;margin:0 auto 14px}
+.sheet h3{padding:0 20px 12px;font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px}
+.lang{display:flex;align-items:center;width:100%;padding:14px 20px;border-top:1px solid #F0F1F8;text-align:left}
+.lang div{flex:1}.lang b{font-weight:600;font-size:15px;display:block}.lang.on b{font-weight:800;color:var(--pri)}.lang small{font-size:11px;color:#9A9FBF}
+.lang.on .ms{color:var(--pri)}
+.act{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px}
+.act button{padding:18px 10px;background:var(--bg);border:1px solid var(--line);border-radius:20px;color:var(--pri);display:flex;flex-direction:column;align-items:center;gap:6px}
+.act b{color:var(--ink);font-weight:800;font-size:14px}.act small{font-size:11px;color:var(--mut)}
+.dlg{background:#fff;border-radius:24px;padding:22px;max-width:380px;width:calc(100% - 32px);align-self:center;margin:auto}
+.dlg h3{display:flex;gap:10px;align-items:center;font-weight:700;font-size:19px}
+.dlg p{margin:14px 0 18px;font-size:14px;line-height:1.55;color:#3D4162}
+.dlg .r{display:flex;justify-content:flex-end;gap:8px}.dlg .r button{padding:11px 16px;border-radius:13px;font-weight:800;font-size:13px}
+.dlg .red{background:#E5383B;color:#fff}.dlg .gh{color:var(--pri)}
 
-/* destinations */
-.dest-row{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
-.dest{height:400px;border-radius:26px;position:relative;overflow:hidden;color:#fff;display:flex;align-items:flex-end;padding:22px;background:linear-gradient(135deg,#1c3a63,#0F8BD0);isolation:isolate;transition:.4s}
-.dest img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
-.dest::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(10,37,64,.88),transparent 60%)}
-.dest h4{color:#fff;font-size:1.5rem}.dest span{font-size:.85rem;color:#e3ecf7}
+/* status viewer */
+#viewer{position:fixed;inset:0;background:#000;z-index:200;display:none}#viewer.show{display:block}
+#vmedia{position:absolute;inset:0;display:grid;place-items:center}
+#vmedia img,#vmedia video{max-width:100%;max-height:100%;object-fit:contain}
+.bars{position:absolute;top:calc(10px + env(safe-area-inset-top));left:10px;right:10px;display:flex;gap:4px;z-index:3}
+.bars i{flex:1;height:3px;border-radius:8px;background:#ffffff4d;overflow:hidden}.bars i b{display:block;height:100%;background:#fff;width:0}
+.vtop{position:absolute;top:calc(22px + env(safe-area-inset-top));left:12px;right:12px;display:flex;align-items:center;gap:10px;color:#fff;z-index:3}
+.vtop .av{width:40px;height:40px;background-color:#ffffff40;color:#fff;border-color:#ffffff66}.vtop strong{flex:1;font-weight:800;text-shadow:0 0 8px #0009}
+.vtop button{color:#fff;display:flex;align-items:center;gap:4px;font-weight:800;padding:6px}
+.zone{position:absolute;top:80px;bottom:0;width:50%;z-index:2}
 
-/* CTA */
-.cta-band{position:relative;border-radius:36px;overflow:hidden;color:#fff;padding:clamp(40px,7vw,76px) clamp(24px,5vw,60px);isolation:isolate;background:var(--navy)}
-.cta-band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
-.cta-band::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(95deg,rgba(10,37,64,.96),rgba(10,37,64,.55))}
-.cta-band h2{color:#fff;font-size:clamp(1.9rem,4vw,3rem);max-width:560px;margin:10px 0 14px}.cta-band p{max-width:520px;color:#d4deec}.cta-band .kicker{color:var(--sky)}
-.store{display:inline-flex;align-items:center;background:#000;color:#fff;padding:11px 24px;min-height:52px;border-radius:16px;border:1px solid #333;cursor:pointer;font-family:var(--body);text-align:left;transition:.25s}.store:hover{transform:translateY(-3px);border-color:var(--sky)}
-.store small{display:block;font-size:.68rem;opacity:.75;line-height:1}.store b{font-size:1.05rem;line-height:1.25}
+/* sos */
+#sos{position:fixed;inset:0;background:var(--bg);z-index:150;overflow:auto;display:none}#sos.show{display:block}
+.sbar{position:sticky;top:0;background:#B3242A;color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 14px;display:flex;align-items:center;z-index:2}.sbar b{flex:1;font-family:Sora,sans-serif;font-size:18px;font-weight:700}.sbar button{font-weight:800;padding:6px 12px;background:#ffffff26;border-radius:999px;font-size:12px}
+.sbody{max-width:520px;margin:0 auto;padding:16px;display:grid;gap:12px}
+.box{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px}
+.alert{background:#FFF1F1;border-color:#F8C9C9;padding:16px}.alert b{color:#B3242A;font-size:18px;font-weight:800;font-family:Sora,sans-serif}.alert p{color:#7F1D1D;font-size:12px;margin-top:6px;line-height:1.45;font-weight:500}
+.call{display:flex;align-items:center;justify-content:center;gap:8px;height:58px;border-radius:18px;background:#E5383B;color:#fff;font-weight:800;text-decoration:none;box-shadow:0 10px 22px #e5383b47}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chips button{padding:8px 13px;border-radius:999px;border:1px solid #CFD2E6;font-size:12px;font-weight:700}.chips button.on{background:var(--tint);border-color:var(--pri2);color:#3B24A6}
+video#cam{width:100%;height:240px;background:#000;border-radius:20px;object-fit:cover}
+.pl{display:flex;gap:8px;padding:9px 0;font-size:13px;align-items:flex-start}.pl div{flex:1}.pl b{font-weight:800;display:block}.pl small{color:var(--mut);font-size:11px}
+.pl a{color:var(--pri)}
+#toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);max-width:90%;background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;z-index:400;display:none}
 
-/* footer */
-.footer{background:#071b30;color:#b0bdd3;padding:76px 0 28px}
-.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:44px}
-.footer h5{color:#fff;font-family:var(--head);font-size:1.05rem;margin-bottom:16px}.footer li{margin:9px 0;font-size:.92rem}.footer a:hover{color:var(--sky)}
-.footer .wordmark{color:#fff}
-.foot-bottom{border-top:1px solid #ffffff1f;margin-top:48px;padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.85rem}
 
-/* mobile sticky bar */
-.mbar{display:none}
-.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:var(--navy);color:#fff;padding:14px 24px;border-radius:16px;box-shadow:0 18px 40px rgba(10,37,64,.3);opacity:0;pointer-events:none;transition:.35s;z-index:600;width:max-content;max-width:90vw;font-size:.92rem;border-left:4px solid var(--sky)}.toast.show{opacity:1;transform:translate(-50%,0)}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}.reveal.in{opacity:1;transform:none}
-.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
-
-/* ===== RESPONSIVE ===== */
-/* Laptop narrow: tighten nav */
-@media (min-width:1181px) and (max-width:1320px){.menu>li>a,.dd-btn{padding:10px 9px;font-size:.88rem}.menu .app-btn{padding:10px 16px}}
-
-/* Tablet + mobile nav (collapses earlier so nothing gets cramped) */
-@media (max-width:1180px){
- .burger{display:flex}
- .menu{display:flex;position:fixed;top:var(--nav-h);left:0;right:0;width:100%;height:calc(100dvh - var(--nav-h));padding:14px 20px calc(36px + env(safe-area-inset-bottom));background:var(--cream);flex-direction:column;align-items:stretch;gap:0;overflow-y:auto;transform:translateX(100%);visibility:hidden;opacity:0;pointer-events:none;transition:transform .3s,opacity .25s,visibility .3s;z-index:501}
- .menu.open{transform:none;visibility:visible;opacity:1;pointer-events:auto}
- .menu>li>a,.dd-btn{width:100%;min-height:54px;padding:14px 8px;justify-content:space-between;border-bottom:1px solid var(--line);border-radius:0;font-size:1.02rem;background:none!important}
- .menu .login-btn{border:0;border-bottom:1px solid var(--line)}
- .menu .app-btn{margin:18px 0 0;justify-content:center;border:0;border-radius:999px;background:var(--navy)!important}
- .dropdown{position:static;min-width:0;width:100%;max-height:0;overflow:hidden;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;padding:0 0 0 10px;background:transparent;transition:max-height .3s}
- .has-dd.open .dropdown{max-height:720px}.has-dd.open .caret{transform:rotate(225deg)}
- body.menu-open{overflow:hidden}
-}
-
-/* Tablet layout */
-@media (max-width:1020px){
- .hero-in{grid-template-columns:1fr}.visual{max-width:560px;width:100%;margin-inline:auto}
- .bento{grid-template-columns:repeat(2,1fr)}.tile.big{grid-row:span 2}
- .g4{grid-template-columns:repeat(2,1fr)}
- .steps{grid-template-columns:repeat(2,1fr);row-gap:36px}.steps::before{display:none}
- .foot-grid{grid-template-columns:1fr 1fr}
- .dest-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 20px 24px;margin-inline:-20px;scrollbar-width:none}
- .dest-row::-webkit-scrollbar{display:none}
- .dest{flex:0 0 min(240px,62vw);height:340px;scroll-snap-align:start}
-}
-
-/* Mobile */
-@media (max-width:680px){
- :root{--nav-h:64px}
- body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
- .logo-img{height:34px}.wordmark{font-size:1.2rem}
- .hero h1{margin:18px 0 16px}
- .cta{margin-top:26px}.cta .btn{flex:1 1 100%}
- .stats{margin-top:30px;gap:10px}.stats span{flex:1 1 calc(50% - 10px);padding:10px 14px}.stats span:last-child{flex-basis:100%}
- .visual{height:380px}.v1{inset:0 0 70px 50px}.v2{width:50%}.v3{width:36%}
- .float{padding:9px 12px;border-radius:14px;gap:9px}.float b{font-size:.82rem}.float small{font-size:.7rem}.float .ico{width:34px;height:34px;border-radius:11px}
- .f1{top:24px}.f2{top:auto;bottom:100px;right:0}
- .mq{padding:14px 0}.mq div{font-size:1rem;gap:32px}.mq span::before{margin-right:32px}
- .bento{grid-template-columns:1fr;grid-auto-rows:240px;gap:14px}.tile{padding:20px;border-radius:24px}
- .tile.big{grid-row:auto;grid-column:auto;min-height:300px}.tile.wide{grid-column:auto}.tile.big{grid-auto-rows:auto}
- .bento .tile.big{height:310px}
- .g4,.steps,.foot-grid{grid-template-columns:1fr}.g4{gap:14px}.feat{padding:22px;display:grid;grid-template-columns:56px 1fr;column-gap:16px}.feat .ico{grid-row:span 2;margin:0}
- .steps{row-gap:0;text-align:left}
- .step{display:grid;grid-template-columns:60px 1fr;column-gap:18px;text-align:left;padding:0 0 28px}
- .step::before{margin:0;grid-row:span 2}
- .step:not(:last-child)::after{content:"";position:absolute;left:29px;top:62px;bottom:2px;border-left:2px dashed #b9d4e8}
- .step h4{align-self:end}
- .cta-band{border-radius:28px}.cta-band .cta .store{flex:1 1 100%;justify-content:center}
- .footer{padding:56px 0 24px}.foot-grid{gap:32px}.foot-bottom{flex-direction:column}
- .toast{bottom:calc(92px + env(safe-area-inset-bottom))}
- .mbar{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:490;gap:10px;padding:8px;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px;box-shadow:0 14px 40px rgba(10,37,64,.22);transition:transform .35s,opacity .35s}
- .mbar a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-height:46px;border-radius:999px;font-weight:700;font-size:.92rem}
- .mbar .m1{background:var(--cream);color:var(--navy)}.mbar .m2{background:var(--grad);color:#fff}
- body.menu-open .mbar{transform:translateY(140%);opacity:0;pointer-events:none}
-}
-@media (max-width:380px){.hero h1{font-size:2.25rem}.f2{display:none}}
+/* profile */
+.pf{display:grid;grid-template-columns:340px 1fr;gap:28px;max-width:1180px;margin:0 auto;padding:36px 20px 40px;align-items:start}
+.pcard{position:sticky;top:92px;background:#fff;border:1px solid var(--line);border-radius:30px;padding:28px 22px;text-align:center}
+.avbox{position:relative;width:116px;margin:0 auto}
+.pcard .big{width:116px;height:116px;border-radius:50%;background:var(--tint) center/cover;border:4px solid #fff;box-shadow:0 0 0 3px var(--pri);display:grid;place-items:center;font-family:'Bricolage Grotesque',sans-serif;font-size:42px;font-weight:800;color:var(--pri);cursor:pointer}
+.cam-b{position:absolute;right:0;bottom:2px;width:34px;height:34px;border-radius:50%;background:var(--acc);color:var(--ink);display:grid;place-items:center;border:3px solid #fff;pointer-events:none}
+.pcard h2{margin-top:16px;font-size:25px;font-weight:800;letter-spacing:-.02em}
+.cityrow{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:6px;font-size:13px;font-weight:600;color:var(--mut)}
+.blurb{display:flex;gap:10px;align-items:center;text-align:left;margin-top:18px;padding:12px 14px;background:var(--tint);border-radius:18px}
+.blurb b{display:block;font-size:13px;font-weight:800}.blurb small{display:block;font-size:11.5px;color:var(--mut);margin-top:2px}
+.pcard .pc{margin-top:16px}
+.pcol{display:grid;gap:16px}
+.top2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.wal,.ref{display:flex;align-items:center;gap:14px;padding:18px;border-radius:26px;text-decoration:none;color:inherit}
+.wal{background:var(--ink);color:#fff}.wal small{color:#ffffffb3}.wal .ib2{background:#ffffff1f;color:var(--acc)}.wal .chev{color:#ffffff80}
+.ref{background:#FFF6DB;border:1px solid #FFE08A}.ref .ib2{background:#fff;color:#B7791F}
+.wal b,.ref b{font-size:16px;font-weight:800}
+.wal small,.ref small{display:block;font-size:12.5px;margin-top:4px;line-height:1.35}.ref small{color:#7A5F1E}
+.ib2{position:relative;width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:var(--tint);color:var(--pri);flex:none;font-style:normal}
+.wal>div,.ref>div,.mi>div{flex:1;min-width:0}
+.sect{font-size:14px;font-weight:800;color:var(--mut);margin:12px 4px -6px}
+.mg{background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden}
+.mi{display:flex;align-items:center;gap:14px;width:100%;padding:15px 18px;text-align:left;text-decoration:none;color:inherit;border-bottom:1px solid #F0F1F8;transition:background .15s}
+.mi:last-child{border-bottom:0}.mi:hover{background:var(--bg)}
+.mi b{display:block;font-size:15px;font-weight:700}.mi small{display:block;font-size:12.5px;color:var(--mut);margin-top:3px}
+.chev{color:#A3A9C4;font-size:22px}
+.mi.warn .ib2{background:#FFF1E8;color:#EA580C}.mi.dang .ib2{background:#FEF0F0;color:#DC2626}.mi.dang b{color:#DC2626}
+.nbd{position:absolute;right:-6px;top:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:20px;background:#DC2626;color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center;font-style:normal}
+.ver{text-align:center;font-size:12px;color:var(--mut);margin-top:8px}
+.dlg .pri{background:var(--pri);color:#fff}
+@media (max-width:859px){.pf{grid-template-columns:1fr;padding:22px 16px 30px}.pcard{position:static}.top2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-<symbol id="i-trips" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.5 0 4.5 2 4.5 4.5"/></symbol>
-<symbol id="i-p2p" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/></symbol>
-<symbol id="i-tour" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></symbol>
-<symbol id="i-rent" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></symbol>
-<symbol id="i-taxi" viewBox="0 0 24 24"><path d="M5 17V12l2-5h10l2 5v5M3 17h18v2.5H3z"/><circle cx="7.5" cy="14.5" r=".8"/><circle cx="16.5" cy="14.5" r=".8"/><path d="M10 4h4"/></symbol>
-<symbol id="i-ryd" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></symbol>
-<symbol id="i-buy" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2"/></symbol>
-<symbol id="i-arr" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
-</defs></svg>
+<div id="boot"><div class="spin"></div></div>
+<div id="app">
 
-<header class="nav">
-  <div class="container nav-in">
-    <a href="index.html" class="brand" aria-label="Tripride home"><img src="assets/logo.png" alt="Tripride logo" class="logo-img"><span class="wordmark">TRIP<b>RIDE</b></span></a>
-    <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="main-menu"><span></span><span></span><span></span></button>
-    <ul class="menu" id="main-menu">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="features.html">Features</a></li>
-      <li class="has-dd">
-        <button class="dd-btn" type="button" aria-expanded="false" aria-haspopup="true">Services <i class="caret"></i></button>
-        <div class="dropdown">
-          <a href="tripsreal.html"><span class="ico" style="--c:#0F8BD0"><svg class="i"><use href="#i-trips"/></svg></span><span><strong>Trips</strong><small>Travel Together</small></span></a>
-          <a href="place-to-place.html"><span class="ico" style="--c:#1D5FD1"><svg class="i"><use href="#i-p2p"/></svg></span><span><strong>Place to Place</strong><small>Intercity Ride Sharing</small></span></a>
-          <a href="tour-packages.html"><span class="ico" style="--c:#17A2B8"><svg class="i"><use href="#i-tour"/></svg></span><span><strong>Tour Packages</strong><small>Multi-Destination Journeys</small></span></a>
-          <a href="rentals.html"><span class="ico" style="--c:#2AA38B"><svg class="i"><use href="#i-rent"/></svg></span><span><strong>Rentals</strong><small>Bike &amp; Car Rentals</small></span></a>
-          <a href="taxi.html"><span class="ico" style="--c:#7C5CFF"><svg class="i"><use href="#i-taxi"/></svg></span><span><strong>Taxi</strong><small>Local Ride Booking</small></span></a>
-          <a href="rydora.html"><span class="ico" style="--c:#5BB5E8"><svg class="i"><use href="#i-ryd"/></svg></span><span><strong>Rydora</strong><small>Daily Route Sharing</small></span></a>
-          <a href="buy-sell.html"><span class="ico" style="--c:#3E7CB1"><svg class="i"><use href="#i-buy"/></svg></span><span><strong>Buy / Sell</strong><small>Vehicle Marketplace</small></span></a>
-        </div>
-      </li>
-      <li><a href="how-it-works.html">How It Works</a></li>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="support.html">Support</a></li>
-      <li><a href="ads.html">Ads</a></li>
-      <li><a href="tripride-rentals.html">Rides &amp; Rentals</a></li>
-      <li><a href="login.html" class="login-btn">Login</a></li>
-      <li><a href="index.html#download" class="app-btn">Download App</a></li>
-    </ul>
+<header class="bar"><div class="wrap bar-in">
+  <a class="logo" href="#"><span class="lg"><span class="ms">route</span></span><b>TripRide</b></a>
+  <nav class="nav">
+    <button id="nHome" class="on"><span class="ms">home</span><span data-i="home"></span></button>
+    <button id="nProf"><span class="ms">person</span><span data-i="profile"></span></button>
+  </nav>
+  <div class="acts">
+    <button class="tbtn" id="langBtn" aria-label="Language"><span class="ms">translate</span></button>
+    <a class="hbtn" id="bell" href="notifications.html" aria-label="Notifications"><span class="ms">notifications</span><span class="badge hide" id="badge">0</span></a>
+    <button class="hbtn sos" id="sosBtn">SOS</button>
+    <div class="avwrap" id="avWrap"><div class="av" id="hAv"><span class="ms">person</span></div></div>
   </div>
-</header>
+</div></header>
 
-<main>
-<section class="hero"><div class="container hero-in">
-  <div>
-    <span class="pillk reveal">Travel Beyond Ordinary</span>
-    <h1 class="reveal d1">Travel Smarter. <span class="grad">Explore Further.</span></h1>
-    <p class="lead reveal d2">Tripride brings trips, intercity rides, tour packages, rentals, taxis, daily commute sharing and a vehicle marketplace into one friendly platform.</p>
-    <div class="cta reveal d3"><a href="#services" class="btn">Explore Services <svg class="i"><use href="#i-arr"/></svg></a><a href="about.html" class="btn out">Discover Tripride</a></div>
-    <div class="stats reveal d3"><span><b>7 services</b>one platform</span><span><b>Share &amp; save</b>on every journey</span><span><b>Made for India</b>routes and cities</span></div>
-  </div>
-  <div class="visual reveal d2">
-    <div class="vimg v1"><img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=900&q=70" alt="" loading="eager" onerror="this.remove()"></div>
-    <div class="vimg v2"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=70" alt="" loading="lazy" onerror="this.remove()"></div>
-    <div class="vimg v3"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=70" alt="" loading="lazy" onerror="this.remove()"></div>
-    <div class="float f1"><span class="ico"><svg class="i"><use href="#i-ryd"/></svg></span><span><b>Share the ride</b><small>Split the agreed cost</small></span></div>
-    <div class="float f2"><span class="ico" style="--c:#2AA38B"><svg class="i"><use href="#i-tour"/></svg></span><span><b>Explore further</b><small>Trips &amp; tour packages</small></span></div>
-  </div>
-</div></section>
-
-<div class="mq" aria-hidden="true"><div>
-  <span>Trips</span><span>Place to Place</span><span>Tour Packages</span><span>Rentals</span><span>Taxi</span><span>Rydora</span><span>Buy / Sell</span>
-  <span>Trips</span><span>Place to Place</span><span>Tour Packages</span><span>Rentals</span><span>Taxi</span><span>Rydora</span><span>Buy / Sell</span>
-</div></div>
-
-<section class="section" id="services"><div class="container">
-  <div class="sec-head"><span class="kicker">Our Services</span><h2>Seven ways to move, meet and explore</h2><p class="lead">Pick a service to see how it works. Each one has its own page.</p></div>
-  <div class="bento">
-    <a href="tripsreal.html" class="tile big reveal" style="--c:#0F8BD0"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=70" alt="" loading="lazy" onerror="this.remove()"><span class="ico"><svg class="i"><use href="#i-trips"/></svg></span><span class="go"><svg class="i"><use href="#i-arr"/></svg></span><span class="tag">Travel Together</span><h3>Trips</h3><p>Find people heading to the same destination, join a group or start your own trip, and share agreed expenses.</p></a>
-    <a href="place-to-place.html" class="tile reveal d1" style="--c:#1D5FD1"><img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=700&q=70" alt="" loading="lazy" onerror="this.remove()"><span class="ico"><svg class="i"><use href="#i-p2p"/></svg></span><span class="go"><svg class="i"><use href="#i-arr"/></svg></span><span class="tag">Intercity Ride Sharing</span><h3>Place to Place</h3><p>Share intercity rides and split the agreed cost.</p></a>
-    <a href="tour-packages.html" class="tile reveal d2" style="--c:#17A2B8"><img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=700&q=70" alt="" loading="lazy" onerror="this.remove()"><span class="ico"><svg class="i"><use href="#i-tour"/></svg></span><span class="go"><svg class="i"><use href="#i-arr"/></svg></span><span class="tag">Multi-Destination Journeys</span><h3>Tour Packages</h3><p>Complete itineraries for groups, families and couples.</p></a>
-    <a href="rentals.html" class="tile reveal d1" style="--c:#2AA38B"><img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=700&q=70" alt="" loading="lazy" onerror="this.remove()"><span class="ico"><svg class="i"><use href="#i-rent"/></svg></span><span class="go"><svg class="i"><use href="#i-arr"/></svg></span><span class="tag">Bike &amp; Car Rentals</span><h3>Rentals</h3><p>Daily pricing, clear specs and availability.</p></a>
-    <a href="taxi.html" class="tile reveal d2" style="--c:#7C5CFF"><img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=700&q=70" alt="" loading="lazy" onerror="this.remove()"><span class="ico"><svg class="i"><use href="#i-taxi"/></svg></span><span class="go"><svg class="i"><use href="#i-arr"/></svg></span><span class="tag">Local Ride Booking</span><h3>Taxi</h3><p>Bike and car taxi with upfront fare information.</p></a>
-    <a href="rydora.html" class="tile wide reveal" style="--c:#5BB5E8"><img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1000&q=70" alt="" loading="lazy" onerror="this.remove()"><span class="ico"><svg class="i"><use href="#i-ryd"/></svg></span><span class="go"><svg class="i"><use href="#i-arr"/></svg></span><span class="tag">Daily Route Sharing</span><h3>Rydora</h3><p>Match with people on your daily office route for morning pickups and evening returns, every working day.</p></a>
-    <a href="buy-sell.html" class="tile wide reveal d1" style="--c:#3E7CB1"><img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1000&q=70" alt="" loading="lazy" onerror="this.remove()"><span class="ico"><svg class="i"><use href="#i-buy"/></svg></span><span class="go"><svg class="i"><use href="#i-arr"/></svg></span><span class="tag">Vehicle Marketplace</span><h3>Buy / Sell</h3><p>Buy and sell new and second-hand bikes and cars with photos, specs, filters and direct seller contact.</p></a>
-  </div>
-</div></section>
-
-<section class="section dark"><div class="container">
-  <div class="sec-head"><span class="kicker">Why Choose Tripride</span><h2>Travel that feels lighter</h2><p class="lead">We focus on what makes journeys easier: people, routes and fair costs.</p></div>
-  <div class="g4">
-    <div class="feat reveal"><span class="ico"><svg class="i"><use href="#i-trips"/></svg></span><h4>One app, seven journeys</h4><p>From a local taxi to a multi-city tour, everything lives in one place.</p></div>
-    <div class="feat reveal d1"><span class="ico"><svg class="i"><use href="#i-ryd"/></svg></span><h4>Share the cost, not the stress</h4><p>Transparent, agreed cost sharing on trips and rides.</p></div>
-    <div class="feat reveal d2"><span class="ico"><svg class="i"><use href="#i-p2p"/></svg></span><h4>Built around real routes</h4><p>Designed for how people in India actually travel and commute.</p></div>
-    <div class="feat reveal d3"><span class="ico"><svg class="i"><use href="#i-tour"/></svg></span><h4>Community first</h4><p>Meet travel companions and regular commuters heading your way.</p></div>
-  </div>
-</div></section>
-
-<section class="section"><div class="container">
-  <div class="sec-head"><span class="kicker">How It Works</span><h2>Four simple steps</h2><p class="lead">The same easy flow across every Tripride service.</p></div>
-  <div class="steps">
-    <div class="step reveal"><h4>Choose a service</h4><p>Trips, rides, rentals, taxi, tours, Rydora or marketplace.</p></div>
-    <div class="step reveal d1"><h4>Search or post</h4><p>Enter your route, destination or vehicle and set your dates.</p></div>
-    <div class="step reveal d2"><h4>Connect</h4><p>Match with travel companions, drivers, riders or sellers.</p></div>
-    <div class="step reveal d3"><h4>Go together</h4><p>Agree the details, share the cost and enjoy the journey.</p></div>
-  </div>
-</div></section>
-
-<section class="section" style="padding-top:0"><div class="container">
-  <div class="sec-head"><span class="kicker">Popular Destinations</span><h2>Where will Tripride take you?</h2><p class="lead">Find travel companions or a ready-made package for these favourites.</p></div>
-  <div class="dest-row">
-    <a href="tour-packages.html" class="dest"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=70" alt="" loading="lazy" onerror="this.remove()"><div><h4>Goa</h4><span>Beaches &amp; nightlife</span></div></a>
-    <a href="tour-packages.html" class="dest"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=70" alt="" loading="lazy" onerror="this.remove()"><div><h4>Coorg</h4><span>Coffee hills</span></div></a>
-    <a href="tour-packages.html" class="dest"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=70" alt="" loading="lazy" onerror="this.remove()"><div><h4>Manali</h4><span>Snow &amp; adventure</span></div></a>
-    <a href="tour-packages.html" class="dest"><img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=70" alt="" loading="lazy" onerror="this.remove()"><div><h4>Agra</h4><span>Heritage trails</span></div></a>
-    <a href="tour-packages.html" class="dest"><img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600&q=70" alt="" loading="lazy" onerror="this.remove()"><div><h4>Kerala</h4><span>Backwaters</span></div></a>
-  </div>
-</div></section>
-
-<section class="section" id="download" style="padding-top:0"><div class="container">
-  <div class="cta-band reveal">
-    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=70" alt="" loading="lazy" onerror="this.remove()">
-    <span class="kicker">Download App</span>
-    <h2>Take Tripride with you.</h2>
-    <p>The Tripride app is in development. Get ready to find companions, share rides and explore further from your phone.</p>
-    <div class="cta">
-      <button class="store" data-toast="The Tripride app is coming soon. Store links will be added at launch."><span><small>Coming soon on</small><b>Google Play</b></span></button>
-      <button class="store" data-toast="The Tripride app is coming soon. Store links will be added at launch."><span><small>Coming soon on</small><b>App Store</b></span></button>
+<!-- ============ HOME TAB ============ -->
+<main id="homeTab">
+  <section class="hero"><div class="wrap hero-in">
+    <div class="hl">
+      <div class="hello"><span class="ms" style="color:#6D4AE8">waving_hand</span><div class="greet"><b id="greet">Good Morning, Traveler</b><small data-i="journeyStarts"></small></div></div>
+      <p class="tag">Go. Share. Explore.</p>
+      <h1>Make every journey worth remembering.</h1>
+      <div class="srow">
+        <div class="search"><span class="ms" style="color:#6D4AE8;font-size:22px">search</span><input id="q" data-iph="searchServices"></div>
+        <button class="sq" id="locBtn2" aria-label="Refresh location"><span class="ms" style="font-size:24px">my_location</span></button>
+      </div>
+      <div class="ticket">
+        <div class="tk-ic"><span class="ms" style="font-size:28px">location_on</span></div><i class="perf"></i>
+        <div class="tk-tx"><small>Your current location</small><span class="t" id="locTxt">Finding your location…</span></div>
+        <button id="locBtn" aria-label="Refresh location"><span class="ms" style="font-size:20px">my_location</span></button>
+      </div>
+      <div class="guide hide" id="guide"><span class="ms">translate</span>
+        <div style="flex:1"><b>Change language here</b><p>Tap the translate icon at the top to choose your preferred language.</p></div>
+        <button id="guideEnd">End tour</button></div>
     </div>
-  </div>
-</div></section>
+    <aside class="stcard">
+      <div class="sh"><h3 data-i="status"></h3><button id="seeBtn"><span class="ms" style="font-size:17px">visibility</span><span data-i="seeHere"></span></button></div>
+      <div class="strip" id="strip"></div>
+      <p class="stnote">Photo and video statuses disappear after 24 hours.</p>
+    </aside>
+  </div></section>
+
+  <section class="wrap sec">
+    <div class="q"><h2 data-i="needToday"></h2><p data-i="allServices"></p></div>
+    <div class="grid" id="grid"></div>
+    <div class="trust"><div class="ib"><span class="ms" style="font-size:28px">verified_user</span></div>
+      <div style="flex:1"><b data-i="travelConfidence"></b><p>Verified profiles • Secure bookings • Better journeys</p></div>
+      <span class="ms" style="color:#0E9F6E;font-size:30px">shield</span></div>
+  </section>
 </main>
 
-<footer class="footer"><div class="container"><div class="foot-grid">
-  <div><span class="wordmark">TRIP<b>RIDE</b></span><p style="margin:14px 0 18px;max-width:300px">Travel Beyond Ordinary. One platform for sharing trips, rides and journeys across India.</p><p style="font-size:.85rem">Tripride is in early development. Pages show design previews and sample data.</p></div>
-  <div><h5>Services</h5><ul><li><a href="tripsreal.html">Trips</a></li><li><a href="place-to-place.html">Place to Place</a></li><li><a href="tour-packages.html">Tour Packages</a></li><li><a href="rentals.html">Rentals</a></li><li><a href="taxi.html">Taxi</a></li><li><a href="rydora.html">Rydora</a></li><li><a href="buy-sell.html">Buy / Sell</a></li></ul></div>
-  <div><h5>Company</h5><ul><li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li><li><a href="how-it-works.html">How It Works</a></li><li><a href="about.html">About Us</a></li><li><a href="support.html">Support</a></li></ul></div>
-  <div><h5>Get the app</h5><p style="font-size:.9rem;margin-bottom:14px">Apps are coming soon.</p><button class="store" data-toast="The Tripride app is coming soon. Store links will be added at launch."><span><small>Coming soon</small><b>Google Play</b></span></button><div style="height:10px"></div><button class="store" data-toast="The Tripride app is coming soon. Store links will be added at launch."><span><small>Coming soon</small><b>App Store</b></span></button></div>
-</div><div class="foot-bottom"><span>© <span class="yr">2026</span> Tripride. All rights reserved.</span><span>Travel Beyond Ordinary.</span></div></div></footer>
+<!-- ============ PROFILE TAB ============ -->
+<div id="profTab" class="hide">
+  <div class="pf">
+    <aside class="pcard">
+      <div class="avbox"><div class="big" id="pAv"></div><span class="cam-b"><span class="ms" style="font-size:18px">photo_camera</span></span></div>
+      <h2 id="pName">Traveler</h2>
+      <div class="cityrow"><span class="ms" style="font-size:16px;color:#8B6CF6">location_on</span><span id="pCity">India</span><span class="ms hide" id="pVer" style="font-size:18px;color:#16A34A">verified</span></div>
+      <div class="blurb"><span class="ms" style="color:#6D4AE8">explore</span><div><b data-p="Your travel profile">Your travel profile</b><small data-p="Bookings, trips and account preferences">Bookings, trips and account preferences</small></div></div>
+      <div class="pc" id="pCard"></div>
+      <button class="btn" id="changePhoto">Upload New Photo</button>
+    </aside>
+    <section class="pcol">
+      <div class="top2">
+        <a class="wal" href="wallet.html"><i class="ib2"><span class="ms">account_balance_wallet</span></i><div><b data-p="Wallet & Payments">Wallet & Payments</b><small><span data-p="Available balance ₹">Available balance ₹</span><span id="walBal">0.00</span></small></div><span class="ms chev">chevron_right</span></a>
+        <a class="ref" href="referral.html"><i class="ib2"><span class="ms">card_giftcard</span></i><div><b data-p="Refer & Earn">Refer & Earn</b><small>Give ₹25 • Get ₹25 for every successful referral</small></div><span class="ms chev">chevron_right</span></a>
+      </div>
+      <div id="menus" style="display:grid;gap:16px"></div>
+      <p class="ver">TripRide • Version 1.0.0</p>
+    </section>
+  </div>
+</div>
 
-<nav class="mbar" aria-label="Quick actions">
-  <a href="#services" class="m1">Services</a>
-  <a href="#download" class="m2">Get the App</a>
-</nav>
+<footer class="foot"><div class="wrap"><span>© TripRide</span><span>Verified profiles • Secure bookings • Better journeys</span></div></footer>
+</div>
 
-<script>
-(function(){
-  'use strict';
-  const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-  let te,tt;
-  function toast(m){if(!te){te=document.createElement('div');te.className='toast';te.setAttribute('role','status');document.body.appendChild(te);}te.textContent=m;te.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>te.classList.remove('show'),3800);}
-  document.addEventListener('click',e=>{const t=e.target.closest('[data-toast]');if(t){e.preventDefault();toast(t.dataset.toast);}});
-  const burger=$('.burger'),menu=$('.menu'),nav=$('.nav');
-  function closeMenu(){if(!burger||!menu)return;menu.classList.remove('open');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Open menu');document.body.classList.remove('menu-open');}
-  if(burger&&menu){
-    burger.addEventListener('click',()=>{const o=!menu.classList.contains('open');menu.classList.toggle('open',o);burger.classList.toggle('open',o);burger.setAttribute('aria-expanded',String(o));burger.setAttribute('aria-label',o?'Close menu':'Open menu');document.body.classList.toggle('menu-open',o);});
-    $$('.menu a').forEach(a=>a.addEventListener('click',closeMenu));
+<!-- contact -->
+<div class="ov" id="ctOv"><div class="sheet"><div class="grab"></div><h3>Contact TripRide</h3>
+  <p class="hint" style="padding:0 20px 12px">Need help? Our support team is here for you.</p>
+  <div class="mg" style="margin:0 16px">
+    <a class="mi" href="tel:+919951994651"><i class="ib2"><span class="ms">phone</span></i><div><small>Call Us</small><b>+91 9951994651</b></div></a>
+    <a class="mi" href="mailto:admin@tripride.co.in?subject=TripRide%20Support"><i class="ib2"><span class="ms">mail</span></i><div><small>Email</small><b>admin@tripride.co.in</b></div></a>
+    <a class="mi" href="https://www.tripride.co.in" target="_blank" rel="noopener"><i class="ib2"><span class="ms">language</span></i><div><small>Website</small><b>www.tripride.co.in</b></div></a>
+  </div></div></div>
+<!-- confirm -->
+<div class="ov" id="cfOv" style="z-index:170"><div class="dlg"><h3 id="cfT"></h3><p id="cfM"></p><div class="r"><button class="gh" id="cfNo">Cancel</button><button id="cfYes">OK</button></div></div></div>
+<input type="file" id="photoIn" accept="image/*" class="hide">
+<input type="file" id="stIn" class="hide">
+
+<!-- language -->
+<div class="ov" id="langOv"><div class="sheet" id="langSheet"></div></div>
+<!-- status create -->
+<div class="ov" id="stOv"><div class="sheet"><div class="grab"></div><h3>Create Status</h3>
+  <div class="act">
+    <button data-st="image|camera"><span class="ms" style="font-size:30px">photo_camera</span><b>Photo</b><small>Camera</small></button>
+    <button data-st="image|gallery"><span class="ms" style="font-size:30px">photo_library</span><b>Photo</b><small>Gallery</small></button>
+    <button data-st="video|camera"><span class="ms" style="font-size:30px">videocam</span><b>Video</b><small>Camera • max 30s</small></button>
+    <button data-st="video|gallery"><span class="ms" style="font-size:30px">video_library</span><b>Video</b><small>Gallery • max 30s</small></button>
+  </div>
+  <div style="padding:10px 20px 0"><button id="stDel" class="hide" style="color:#dc2626;font-weight:700;width:100%;padding:10px">🗑 Delete my status</button></div></div></div>
+<!-- SOS confirm -->
+<div class="ov" id="sosOv"><div class="dlg"><h3><span class="ms" style="color:#E5383B;font-size:28px">sos</span>Emergency SOS</h3>
+  <p>Use SOS only during a real emergency such as women safety, harassment, threat, accident or medical emergency.<br><br>You can cancel if SOS was opened by mistake.</p>
+  <div class="r"><button class="gh" id="sosNo">Cancel</button><button class="red" id="sosYes">ACTIVATE SOS</button></div></div></div>
+<!-- SOS close confirm -->
+<div class="ov" id="sosCloseOv" style="z-index:160"><div class="dlg"><h3>Close SOS?</h3>
+  <p>If this SOS was opened by mistake and you are safe, you can close it now. If you are still in danger, keep SOS active and contact 112.</p>
+  <div class="r"><button class="gh" id="keepSos">KEEP SOS ACTIVE</button><button class="red" id="closeSos">CLOSE SOS</button></div></div></div>
+
+<!-- SOS screen -->
+<div id="sos"><div class="sbar"><b>Emergency SOS</b><button id="sosClose">CLOSE</button></div>
+  <div class="sbody">
+    <div class="box alert"><b>SOS IS ACTIVE</b><p>If you are in immediate danger, call 112. Do not put yourself at further risk to record evidence.</p></div>
+    <a class="call" href="tel:112"><span class="ms">phone_in_talk</span>CALL 112 EMERGENCY</a>
+    <div class="box"><b style="font-size:14px;font-weight:800">What is happening?</b><div class="chips" id="etypes"></div></div>
+    <div class="box" style="display:flex;gap:10px;align-items:center"><span class="ms" style="color:#6D4AE8">my_location</span>
+      <div><b style="font-weight:800;font-size:14px">Current emergency location</b><div id="sosLoc" style="font-size:12px;color:#6B7094;margin-top:3px">Getting your location...</div></div></div>
+    <video id="cam" class="hide" autoplay playsinline muted></video>
+    <button class="btn hide" id="recBtn" style="background:#7C3AED;margin:0">START EMERGENCY VIDEO RECORDING</button>
+    <div class="hint hide" id="recNote" style="text-align:center">Record only when it is safe to do so. Do not confront anyone or risk your safety just to obtain a video.</div>
+    <div class="box" id="police"></div><div class="box" id="hosp"></div>
+    <div class="box" style="background:#FFFBEB;border-color:#FDE68A;font-size:11px;line-height:1.45;color:#78350F;font-weight:500">For harassment, threats, unsafe behaviour, assault, accident, or any serious emergency, prioritize your safety and contact 112. TripRide SOS is an emergency-support feature and does not replace police, ambulance or other emergency services.</div>
+  </div></div>
+
+<!-- status viewer -->
+<div id="viewer"><div class="bars" id="bars"></div>
+  <div id="vmedia"></div>
+  <div class="zone" style="left:0" id="zPrev"></div><div class="zone" style="right:0" id="zNext"></div>
+  <div class="vtop"><div class="av" id="vAv"></div><strong id="vName"></strong>
+    <button id="vViews" class="hide"><span class="ms" style="font-size:18px">visibility</span><span id="vCount">0</span></button>
+    <button id="vDel" class="hide"><span class="ms">delete</span></button><button id="vClose"><span class="ms">close</span></button></div></div>
+<div class="ov" id="viewOv"><div class="sheet" id="viewSheet"></div></div>
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, where, orderBy, onSnapshot, documentId, Timestamp, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+import { getStorage, ref as sref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-storage.js";
+
+/* ================= CONFIG ================= */
+const LOGIN_URL = "login.html";
+const API_BASE = "https://er3fg.aiccloud.online/";   // same backend as the Flutter app (use https in production)
+const PT = { te:{"Your travel profile":"మీ ప్రయాణ ప్రొఫైల్","Bookings, trips and account preferences":"బుకింగ్‌లు, ప్రయాణాలు మరియు ఖాతా ఎంపికలు","Wallet & Payments":"వాలెట్ & చెల్లింపులు","Available balance ₹":"అందుబాటులో ఉన్న బ్యాలెన్స్ ₹","Refer & Earn":"రిఫర్ చేసి సంపాదించండి","Friends & Following":"స్నేహితులు & ఫాలోయింగ్","Your Journey":"మీ ప్రయాణం","Ride History":"ప్రయాణ చరిత్ర","My Bookings":"నా బుకింగ్‌లు","My Trips":"నా ట్రిప్‌లు","Chats":"చాట్‌లు","Saved Trips":"సేవ్ చేసిన ట్రిప్‌లు","Updates":"అప్‌డేట్‌లు","Notifications":"నోటిఫికేషన్‌లు","Account & Support":"ఖాతా & సహాయం","Settings":"సెట్టింగ్‌లు","Contact Us":"మమ్మల్ని సంప్రదించండి","Logout":"లాగ్ అవుట్","Delete Account":"ఖాతాను తొలగించండి","India":"భారతదేశం"} };
+// Paste more languages from the Flutter _translations map into PT the same way (keys are the English text).
+const pt = t => (PT[lang] && PT[lang][t]) || t;
+const GOOGLE_KEY = "";
+const SERVICES = [
+  { k:"trips", s:"exploreTrips", icon:"travel_explore", c:"#8B5CF6", href:"tripsreal.html" },
+  { k:"placeToPlace", s:"findRide", icon:"route", c:"#2563EB", href:"place-to-place.html" },
+  { k:"tourPackages", s:"planTour", icon:"map", c:"#7C3AED", href:"tour-packages.html" },
+  { k:"rentals", s:"carBike", icon:"key", c:"#0891B2", href:"rentals.html" },
+  { k:"taxi", s:"bookRide", icon:"local_taxi", c:"#EA580C", href:"taxi.html" },
+  { title:"RYDORA", sub:"Daily ride sharing", icon:"people_alt", c:"#6D35D4", href:"rydora.html" },
+  { k:"buySell", s:"usedVehicles", icon:"directions_car", c:"#0F766E", href:"buy-sell.html" }
+];
+const app = getApps()[0] || initializeApp({
+  apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw", authDomain:"tripmate-74df9.firebaseapp.com",
+  databaseURL:"https://tripmate-74df9-default-rtdb.asia-southeast1.firebasedatabase.app", projectId:"tripmate-74df9",
+  storageBucket:"tripmate-74df9.firebasestorage.app", messagingSenderId:"931960941543", appId:"1:931960941543:web:ced98c012dc22fcb776b42"
+});
+const auth = getAuth(app), db = getFirestore(app), storage = getStorage(app);
+
+/* ================= LANGUAGES ================= */
+const LANGS = [["en","English"],["as","অসমীয়া"],["bn","বাংলা"],["brx","बर’"],["doi","डोगरी"],["gu","ગુજરાતી"],["hi","हिन्दी"],["kn","ಕನ್ನಡ"],["ks","کٲشُر"],["kok","कोंकणी"],["mai","मैथिली"],["ml","മലയാളം"],["mni","মৈতৈলোন্"],["mr","मराठी"],["ne","नेपाली"],["or","ଓଡ଼ିଆ"],["pa","ਪੰਜਾਬੀ"],["sa","संस्कृतम्"],["sat","ᱥᱟᱱᱛᱟᱲᱤ"],["sd","سنڌي"],["ta","தமிழ்"],["te","తెలుగు"],["ur","اردو"]];
+// Translations: en + te are here. Paste your other blocks (hi, ta, kn, ml, bn) from your old file right below "te".
+const T = {
+ en:{searchServices:"Search services",needToday:"What do you need today?",allServices:"All your travel services in one place",trips:"Trips",exploreTrips:"Explore trips",placeToPlace:"Place to Place",findRide:"Find a ride",tourPackages:"Tour Packages",planTour:"Plan a tour",rentals:"Rentals",carBike:"Car & bike",taxi:"Taxi",bookRide:"Book a ride",buySell:"Buy / Sell",usedVehicles:"Used vehicles",status:"Status",seeHere:"See here",addStatus:"Add Status",myStatus:"My Status",home:"Home",profile:"Profile",travelConfidence:"Travel with confidence",journeyStarts:"Your next journey starts here",morning:"Good Morning",afternoon:"Good Afternoon",evening:"Good Evening",night:"Good Night",language:"Language"},
+ te:{searchServices:"సేవలను వెతకండి",needToday:"ఈ రోజు మీకు ఏమి కావాలి?",allServices:"మీ ప్రయాణ సేవలన్నీ ఒకేచోట",trips:"ట్రిప్స్",exploreTrips:"ట్రిప్స్ చూడండి",placeToPlace:"ఒక చోటు నుంచి మరొక చోటుకు",findRide:"రైడ్ వెతకండి",tourPackages:"టూర్ ప్యాకేజీలు",planTour:"టూర్ ప్లాన్ చేయండి",rentals:"రెంటల్స్",carBike:"కారు & బైక్",taxi:"టాక్సీ",bookRide:"రైడ్ బుక్ చేయండి",buySell:"కొనండి / అమ్మండి",usedVehicles:"వాడిన వాహనాలు",status:"స్టేటస్",seeHere:"ఇక్కడ చూడండి",addStatus:"స్టేటస్ జోడించండి",myStatus:"నా స్టేటస్",home:"హోమ్",profile:"ప్రొఫైల్",travelConfidence:"నమ్మకంగా ప్రయాణించండి",journeyStarts:"మీ తదుపరి ప్రయాణం ఇక్కడ ప్రారంభమవుతుంది",morning:"శుభోదయం",afternoon:"శుభ మధ్యాహ్నం",evening:"శుభ సాయంత్రం",night:"శుభ రాత్రి",language:"భాష"}
+};
+
+/* ================= HELPERS ================= */
+const $ = id => document.getElementById(id);
+const LS = { get:k=>{try{return localStorage.getItem(k)}catch(_){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(_){}} };
+let lang = "en", uid = null, me = {}, myStatus = null, following = [];
+let walletDoc = null;   // wallets/{uid} snapshot — same source as the Wallet screen
+const tr = k => (T[lang] && T[lang][k]) || T.en[k] || k;
+function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+let tt; function toast(m){ const t=$("toast"); t.textContent=m; t.style.display="block"; clearTimeout(tt); tt=setTimeout(()=>t.style.display="none",4000); }
+const safeUrl = u => /^https:\/\//.test(u||"") ? u : "";
+const bg = (node, url) => { const s = safeUrl(url); if (!s) return false;
+  node.style.backgroundImage = `url("${s.replace(/"/g,"%22")}")`;
+  const im = new Image(); im.onerror = () => { node.style.backgroundImage = ""; if (node.id==="pAv") node.textContent = (me.name||"T").charAt(0).toUpperCase(); else if (!node.firstChild) node.append(el("span","ms","person")); }; im.src = s; return true; };
+const mask = p => { const d=String(p||"").replace(/\D/g,"").slice(-10); return d.length===10 ? "+91 "+d.slice(0,2)+"XXXXXX"+d.slice(-2) : ""; };
+const show = (id,on=true) => $(id).classList.toggle("show",on);
+const firstName = () => (me.name||"Traveler").trim().split(/\s+/)[0] || "Traveler";
+
+function applyI18n(){
+  document.querySelectorAll("[data-i]").forEach(n => n.textContent = tr(n.dataset.i));
+  document.querySelectorAll("[data-iph]").forEach(n => n.placeholder = tr(n.dataset.iph));
+  document.querySelectorAll("[data-p]").forEach(n => n.textContent = pt(n.dataset.p));
+  renderMenu();
+  const h = new Date().getHours();
+  const [g,e] = h>=5&&h<12 ? ["morning","☀️"] : h>=12&&h<17 ? ["afternoon","🌤️"] : h>=17&&h<21 ? ["evening","🌇"] : ["night","🌙"];
+  $("greet").textContent = `${tr(g)}, ${firstName()} ${e}`;
+  renderGrid(); renderStrip();
+}
+function renderGrid(){
+  const g = $("grid"); g.textContent = "";
+  const f = ($("q").value||"").trim().toLowerCase();
+  SERVICES.forEach(s => {
+    const title = s.title || tr(s.k), sub = s.sub || tr(s.s);
+    if (f && !(title+" "+sub).toLowerCase().includes(f)) return;
+    const a = el("a","tile"); a.href = s.href;
+    const ib = el("div","ib"); ib.style.background = s.c+"1c"; const i = el("span","ms",s.icon); i.style.color = s.c; ib.append(i);
+    a.append(ib, el("b",null,title), el("small",null,sub)); g.append(a);
+  });
+}
+$("q").addEventListener("input", renderGrid);
+
+/* ---------- language ---------- */
+function openLang(){
+  const sh = $("langSheet"); sh.textContent = "";
+  const h = el("h3"); h.append(Object.assign(el("span","ms","translate"),{}), el("span",null,tr("language"))); sh.append(el("div","grab"), h);
+  LANGS.forEach(([c,n]) => {
+    const b = el("button","lang"+(c===lang?" on":"")); const d = el("div"); d.append(el("b",null,n), el("small",null,c.toUpperCase()));
+    b.append(d, el("span","ms", c===lang?"check_circle":"radio_button_unchecked")); b.firstChild;
+    b.onclick = () => { lang = c; LS.set("tripride_home_language", c); show("langOv", false); applyI18n(); updateProfile(); };
+    sh.append(b);
+  });
+  show("langOv");
+}
+$("langBtn").onclick = openLang;
+$("langOv").onclick = e => { if (e.target.id==="langOv") show("langOv",false); };
+$("guideEnd").onclick = () => { $("guide").classList.add("hide"); LS.set("tripride_language_guide_dismissed_v1","1"); };
+
+/* ---------- location ---------- */
+function getLocation(){
+  $("locTxt").textContent = "Finding your location…";
+  if (!navigator.geolocation) { $("locTxt").textContent = "Location not supported"; return; }
+  navigator.geolocation.getCurrentPosition(async p => {
+    const {latitude:la, longitude:lo} = p.coords;
+    let txt = `${la.toFixed(5)}, ${lo.toFixed(5)}`;
+    if (GOOGLE_KEY) {
+      try {
+        const r = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${la},${lo}&key=${encodeURIComponent(GOOGLE_KEY)}&language=en&region=in`);
+        const d = await r.json(); const f = d.results && d.results[0] && d.results[0].formatted_address; if (f) txt = f;
+      } catch(e){ console.warn("GEOCODE ERROR", e); }
+    }
+    $("locTxt").textContent = txt;
+  }, () => { $("locTxt").textContent = "Location permission required"; }, { enableHighAccuracy:true, timeout:15000 });
+}
+$("locBtn").onclick = $("locBtn2").onclick = getLocation;
+
+/* ================= USER / PROFILE ================= */
+function renderHeaderAvatar(){
+  const a = $("hAv"); a.textContent = ""; a.style.backgroundImage = "";
+  if (!bg(a, me.profilePhoto)) a.append(el("span","ms","person"));
+}
+// Same balance rule as the Wallet screen: wallets/{uid}.balance, else users/{uid}.wallet / walletBalance
+function walletBalance(){
+  const raw = walletDoc && walletDoc.exists() ? walletDoc.data().balance : (me.wallet ?? me.walletBalance);
+  const n = typeof raw === "number" ? raw : parseFloat(raw);
+  return isFinite(n) ? n : 0;
+}
+function updateProfile(){
+  const nm = me.name || "Traveler";
+  $("pName").textContent = nm;
+  const p = $("pAv"); p.textContent = ""; p.style.backgroundImage = "";
+  if (!bg(p, me.profilePhoto)) p.textContent = nm.charAt(0).toUpperCase();
+  $("pCity").textContent = (me.city && String(me.city).trim()) ? me.city : pt("India");
+  $("pVer").classList.toggle("hide", !me.verified);
+  $("walBal").textContent = walletBalance().toFixed(2);
+  const rows = [["TripRide ID", me.triprideId||"—"],["Mobile", mask(me.phone||me.phoneNumber)||"—"],["Trust score", me.trustScore ?? "—"],["Verified", me.verified ? "✓ Verified Traveler" : "No"]];
+  const c = $("pCard"); c.textContent = "";
+  rows.forEach(([k,v]) => { const d = el("div"); d.append(el("span",null,k), el("b",null,String(v))); c.append(d); });
+}
+function makeId(d){
+  const ex = String(d.triprideId||"").trim();
+  if (/^[A-Z]{1,4}\d{4}$/.test(ex)) return ex.toUpperCase();
+  const name = String(d.name||"USER").replace(/[^A-Za-z]/g,""), ph = String(d.phone||"").replace(/\D/g,"");
+  return (name.slice(0,4)+(ph.length>=4?ph.slice(-4):"0000")).toUpperCase();
+}
+async function loadUser(){
+  try {
+    const snap = await getDoc(doc(db,"users",uid));
+    me = snap.exists() ? snap.data() : {};
+    if (snap.exists()) {
+      const id = makeId(me);
+      if (me.triprideId !== id) { me.triprideId = id; setDoc(doc(db,"users",uid),{triprideId:id},{merge:true}).catch(()=>{}); }
+    }
+  } catch(e){ console.warn("HOME USER ERROR", e); me = {}; }
+  renderHeaderAvatar(); updateProfile(); applyI18n();
+}
+
+/* ---------- notifications badge ---------- */
+let unread = 0;
+function refreshBadge(){
+  const t = unread>99 ? "99+" : String(unread);
+  ["badge","pBadge"].forEach(id => { const b = $(id); if (!b) return; b.textContent = t; b.classList.toggle("hide", unread===0); });
+}
+function watchNotifications(){
+  onSnapshot(query(collection(db,"notifications"), where("userId","==",uid)), s => {
+    unread = 0; s.forEach(d => { if (d.data().read !== true) unread++; }); refreshBadge();
+  }, e => console.warn("NOTIF ERROR", e));
+}
+function watchUser(){
+  onSnapshot(doc(db,"users",uid), s => {
+    if (!s.exists()) return; const d = s.data();
+    me = { ...d, triprideId: d.triprideId || me.triprideId || makeId(d) };
+    renderHeaderAvatar(); updateProfile(); applyI18n();
+  }, e => console.warn("USER WATCH ERROR", e));
+}
+function watchWallet(){
+  onSnapshot(doc(db,"wallets",uid), s => { walletDoc = s; updateProfile(); }, e => console.warn("WALLET WATCH ERROR", e));
+}
+
+/* ---------- profile photo ---------- */
+$("avWrap").onclick = $("changePhoto").onclick = $("pAv").onclick = () => $("photoIn").click();
+$("photoIn").onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  if (!f.type.startsWith("image/")) return toast("Please choose an image.");
+  try {
+    toast("Uploading photo…");
+    const r = sref(storage, `users/${uid}/profile.jpg`);
+    await uploadBytes(r, f, { contentType: f.type });
+    const url = await getDownloadURL(r);
+    await setDoc(doc(db,"users",uid), { profilePhoto:url }, { merge:true });
+    me.profilePhoto = url; renderHeaderAvatar(); updateProfile(); toast("Profile photo updated successfully");
+  } catch(err){ console.error("PHOTO UPDATE ERROR", err); toast("Unable to update profile photo right now."); }
+};
+
+/* ---------- tabs / logout ---------- */
+function tab(p){ $("homeTab").classList.toggle("hide",p); $("profTab").classList.toggle("hide",!p); $("nHome").classList.toggle("on",!p); $("nProf").classList.toggle("on",p); scrollTo(0,0); }
+$("nHome").onclick = () => tab(false); $("nProf").onclick = () => tab(true);
+function ask(title, msg, ok, danger){
+  return new Promise(res => {
+    $("cfT").textContent = title; $("cfM").textContent = msg;
+    const y = $("cfYes"); y.textContent = ok; y.className = danger ? "red" : "pri"; show("cfOv");
+    const done = v => { show("cfOv",false); res(v); };
+    $("cfNo").textContent = pt("Cancel"); $("cfNo").onclick = () => done(false); y.onclick = () => done(true);
+  });
+}
+const clearLocal = () => ["userId","userPhone","userEmail"].forEach(k=>{try{localStorage.removeItem(k)}catch(_){}});
+async function doLogout(){
+  if (!(await ask(pt("Logout"), "Are you sure you want to logout?", pt("Logout"), false))) return;
+  try { await signOut(auth); } catch(e){ return toast("Unable to logout right now. Please try again."); }
+  clearLocal(); location.replace(LOGIN_URL);
+}
+async function doDelete(){
+  const u = auth.currentUser;
+  if (!u) return toast("Please log in again before deleting your account.");
+  if (!(await ask(pt("Delete Account"), "Your TripRide account will be permanently deleted. You will not be able to create another account with the same mobile number for 3 months. This action cannot be undone.", "Delete", true))) return;
+  try {
+    const tk = await u.getIdToken(true);
+    if (!tk) return toast("Authentication expired. Please log in again.");
+    const r = await fetch(API_BASE + "auth/delete-account", { method:"POST", headers:{ "Content-Type":"application/json", "Authorization":"Bearer " + tk }, body:JSON.stringify({ confirm:true }) });
+    let b = {}; try { b = await r.json(); } catch(_){}
+    if (r.ok && b.success === true) { try { await signOut(auth); } catch(_){} clearLocal(); location.replace(LOGIN_URL); return; }
+    toast(b.message || "Unable to delete your account right now. Please try again.");
+  } catch(err){
+    console.error("DELETE ACCOUNT ERROR", err);
+    toast(err.code === "auth/requires-recent-login" ? "For security, please log out, log in again, and then delete your account." : "Unable to delete your account right now. Please try again.");
   }
-  const closeDD=()=>$$('.has-dd.open').forEach(d=>{d.classList.remove('open');const b=$('.dd-btn',d);if(b)b.setAttribute('aria-expanded','false');});
-  $$('.has-dd').forEach(dd=>{const b=$('.dd-btn',dd);if(!b)return;b.addEventListener('click',e=>{e.stopPropagation();const o=dd.classList.toggle('open');b.setAttribute('aria-expanded',String(o));});});
-  document.addEventListener('click',e=>{$$('.has-dd.open').forEach(d=>{if(!d.contains(e.target)){d.classList.remove('open');const b=$('.dd-btn',d);if(b)b.setAttribute('aria-expanded','false');}});});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDD();closeMenu();}});
-  window.addEventListener('resize',()=>{if(innerWidth>1180){closeMenu();closeDD();}});
-  const onScroll=()=>nav&&nav.classList.toggle('scrolled',scrollY>8);
-  addEventListener('scroll',onScroll,{passive:true});onScroll();
-  const logo=$('.logo-img');
-  if(logo){const chk=()=>{if(logo.naturalWidth&&logo.naturalHeight&&logo.naturalWidth/logo.naturalHeight>2.4){const w=$('.brand .wordmark');if(w)w.style.display='none';logo.style.height='38px';}};
-    logo.complete?chk():logo.addEventListener('load',chk);logo.addEventListener('error',()=>{logo.style.display='none';});}
-  const rev=$$('.reveal');
-  if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});rev.forEach(r=>io.observe(r));}
-  else rev.forEach(r=>r.classList.add('in'));
-  $$('.yr').forEach(y=>y.textContent=new Date().getFullYear());
-})();
+}
+$("ctOv").onclick = e => { if (e.target.id==="ctOv") show("ctOv",false); };
+const MENU = [
+ ["", [["people_alt","Friends & Following","Follow requests, followers & following","friends.html"]]],
+ ["Your Journey", [["history","Ride History","Trips & place-to-place rides","ride-history.html"],["book_online","My Bookings","Upcoming trip & group bookings","my-bookings.html"],["travel_explore","My Trips","Trips & group trips created by you","my-tripsreal.html"],["chat_bubble","Chats","Upcoming ride conversations","chats.html"],["favorite","Saved Trips","Trips & group trips you saved","saved-tripsreal.html"]]],
+ ["Updates", [["notifications","Notifications","Bookings, payments & trip updates","notifications.html","pBadge"]]],
+ ["Account & Support", [["settings","Settings","Profile, city & preferences","settings.html"],["support_agent","Contact Us","Phone, email & website","#contact"]]],
+ ["", [["logout","Logout","Sign out of your account","#logout","","warn"],["delete_outline","Delete Account","Permanently delete your account","#delete","","dang"]]]
+];
+function renderMenu(){
+  const root = $("menus"); root.textContent = "";
+  MENU.forEach(([title, items]) => {
+    if (title) root.append(el("h3","sect",pt(title)));
+    const g = el("div","mg");
+    items.forEach(([ic,t,sub,href,badge,kind]) => {
+      const local = href.startsWith("#"), cls = "mi" + (kind ? " "+kind : "");
+      const a = local ? el("button",cls) : el("a",cls); if (!local) a.href = href;
+      const ib = el("i","ib2"); ib.append(el("span","ms",ic));
+      if (badge) { const b = el("i","nbd hide"); b.id = badge; ib.append(b); }
+      const d = el("div"); d.append(el("b",null,pt(t)), el("small",null,pt(sub)));
+      a.append(ib, d, el("span","ms chev","chevron_right"));
+      if (href==="#contact") a.onclick = () => show("ctOv");
+      if (href==="#logout") a.onclick = doLogout;
+      if (href==="#delete") a.onclick = doDelete;
+      g.append(a);
+    });
+    root.append(g);
+  });
+  refreshBadge();
+}
+
+/* ================= STATUS ================= */
+let stLoading = false;
+async function loadStatuses(){
+  if (!uid || stLoading) return; stLoading = true;
+  try {
+    const now = Date.now();
+    const mine = await getDoc(doc(db,"statuses",uid)); myStatus = null;
+    if (mine.exists()) {
+      const d = mine.data(), ex = d.expiresAt && d.expiresAt.toMillis ? d.expiresAt.toMillis() : 0;
+      if (ex > now) myStatus = { uid:mine.id, ...d }; else deleteDoc(mine.ref).catch(()=>{});
+    }
+    const fs = await getDocs(collection(db,"users",uid,"following"));
+    const ids = fs.docs.map(d=>d.id).filter(i=>i && i!==uid), vis = [];
+    for (let i=0;i<ids.length;i+=30) {
+      const s = await getDocs(query(collection(db,"statuses"), where(documentId(),"in",ids.slice(i,i+30))));
+      s.docs.forEach(d => { const x=d.data(), ex = x.expiresAt && x.expiresAt.toMillis ? x.expiresAt.toMillis() : 0; if (ex>now) vis.push({uid:d.id,...x}); });
+    }
+    vis.sort((a,b)=>(b.createdAt?.toMillis?.()||0)-(a.createdAt?.toMillis?.()||0));
+    following = vis;
+  } catch(e){ console.warn("STATUS LOAD ERROR", e); }
+  finally { stLoading = false; renderStrip(); }
+}
+function bubble(name, photo, mine, has, onClick){
+  const b = el("div","bub"), r = el("div","ring"+(has?" on":"")), i = el("div");
+  if (!bg(i, photo)) i.append(el("span","ms", mine?"add_a_photo":"person"));
+  r.append(i); b.append(r, el("span",null,name)); b.onclick = onClick; return b;
+}
+function renderStrip(){
+  const s = $("strip"); s.textContent = "";
+  s.append(bubble(myStatus?tr("myStatus"):tr("addStatus"), me.profilePhoto, true, !!myStatus, () => myStatus ? openViewer([myStatus],0) : openCreate()));
+  if (!following.length) { s.append(el("div","hint","Follow friends to see their 24-hour photo and video statuses here.")); return; }
+  following.forEach((st,i) => s.append(bubble(st.name||"Traveler", st.profilePhoto, false, true, () => openViewer(following,i))));
+}
+$("seeBtn").onclick = async () => { await loadStatuses(); if (following.length) openViewer(following,0); };
+
+let stPick = null;
+function openCreate(){ $("stDel").classList.toggle("hide", !myStatus); show("stOv"); }
+$("stOv").onclick = e => { if (e.target.id==="stOv") show("stOv",false); };
+document.querySelectorAll("[data-st]").forEach(b => b.onclick = () => {
+  const [type, src] = b.dataset.st.split("|"); stPick = type; show("stOv",false);
+  const inp = $("stIn"); inp.accept = type==="image" ? "image/*" : "video/*";
+  if (src==="camera") inp.setAttribute("capture", type==="image" ? "environment" : "user"); else inp.removeAttribute("capture");
+  inp.click();
+});
+$("stDel").onclick = async () => { show("stOv",false); try{ await deleteDoc(doc(db,"statuses",uid)); await loadStatuses(); }catch(e){ toast("Unable to delete status."); } };
+function videoDuration(file){
+  return new Promise(res => { const v = document.createElement("video"); v.preload="metadata"; v.onloadedmetadata = () => { URL.revokeObjectURL(v.src); res(v.duration); }; v.onerror = () => res(0); v.src = URL.createObjectURL(file); });
+}
+$("stIn").onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  try {
+    const type = f.type.startsWith("video/") ? "video" : "image";
+    if (type==="video" && (await videoDuration(f)) > 30.5) return toast("Video must be 30 seconds or less.");
+    if (f.size > 100*1024*1024) return toast("File is too large (max 100 MB).");
+    toast("Uploading status...");
+    const ext = type==="video" ? (f.name.split(".").pop()||"mp4").toLowerCase().replace(/[^a-z0-9]/g,"") : "jpg";
+    const r = sref(storage, `statuses/${uid}/${Date.now()}.${ext}`);
+    await uploadBytes(r, f, { contentType: f.type || (type==="video"?"video/mp4":"image/jpeg"), customMetadata:{ uid, statusType:type } });
+    const url = await getDownloadURL(r);
+    await setDoc(doc(db,"statuses",uid), { uid, name:me.name||"Traveler", profilePhoto:me.profilePhoto||"", mediaUrl:url, mediaType:type,
+      createdAt:serverTimestamp(), expiresAt:Timestamp.fromDate(new Date(Date.now()+24*3600*1000)) });
+    await loadStatuses(); toast("Status added successfully.");
+  } catch(err){ console.error("STATUS SAVE ERROR", err); toast("Unable to update status."); }
+};
+
+/* ---------- viewer ---------- */
+const V = { list:[], i:0, timer:null, vid:null, raf:null, viewers:[] };
+function openViewer(list,i){ V.list = list; V.i = i; $("viewer").classList.add("show"); document.body.style.overflow="hidden"; vShow(); }
+function vClose(){ clearTimeout(V.timer); cancelAnimationFrame(V.raf); if (V.vid) V.vid.pause(); V.vid = null; $("vmedia").textContent=""; $("viewer").classList.remove("show"); document.body.style.overflow=""; loadStatuses(); }
+function vNext(){ if (V.i+1 < V.list.length) { V.i++; vShow(); } else vClose(); }
+function vPrev(){ if (V.i>0) { V.i--; vShow(); } else vClose(); }
+async function recordView(st){
+  if (!st.uid || st.uid===uid) return;
+  try { await setDoc(doc(db,"statuses",st.uid,"views",uid), { uid, name:me.name||"Traveler", profilePhoto:me.profilePhoto||"", triprideId:me.triprideId||"", lastViewedAt:serverTimestamp() }, { merge:true }); }
+  catch(e){ console.warn("STATUS VIEW RECORD ERROR", e); }
+}
+async function loadViewers(st){
+  if (st.uid !== uid) return;
+  try {
+    const s = await getDocs(query(collection(db,"statuses",uid,"views"), orderBy("lastViewedAt","desc")));
+    V.viewers = s.docs.map(d=>({uid:d.id,...d.data()})); $("vCount").textContent = V.viewers.length;
+  } catch(e){ console.warn("VIEWERS ERROR", e); }
+}
+function vShow(){
+  clearTimeout(V.timer); cancelAnimationFrame(V.raf); if (V.vid) V.vid.pause(); V.vid = null;
+  const st = V.list[V.i], mine = st.uid===uid;
+  const bars = $("bars"); bars.textContent = "";
+  V.list.forEach((_,k) => { const i = el("i"), b = el("b"); b.style.width = k<V.i ? "100%" : "0"; i.append(b); bars.append(i); });
+  const cur = bars.children[V.i].firstChild;
+  const av = $("vAv"); av.textContent=""; av.style.backgroundImage=""; if (!bg(av, st.profilePhoto)) av.append(el("span","ms","person"));
+  $("vName").textContent = st.name || "Traveler";
+  $("vViews").classList.toggle("hide",!mine); $("vDel").classList.toggle("hide",!mine);
+  const m = $("vmedia"); m.textContent = "";
+  recordView(st); loadViewers(st);
+  const url = safeUrl(st.mediaUrl);
+  const animate = ms => { const t0 = performance.now(); const tick = () => { const p = Math.min(1,(performance.now()-t0)/ms); cur.style.width = (p*100)+"%"; if (p<1) V.raf = requestAnimationFrame(tick); }; tick(); };
+  if (st.mediaType==="video" && url) {
+    const v = document.createElement("video"); v.src = url; v.playsInline = true; v.autoplay = true; v.controls = false; m.append(v); V.vid = v;
+    v.onended = vNext; v.onerror = () => { V.timer = setTimeout(vNext, 2000); };
+    v.ontimeupdate = () => { if (v.duration) cur.style.width = Math.min(100, v.currentTime/v.duration*100)+"%"; };
+    v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
+    V.timer = setTimeout(vNext, 30000);
+  } else {
+    if (url) { const im = document.createElement("img"); im.src = url; im.alt = ""; m.append(im); }
+    else { const t = el("div",null,st.text||"Status"); t.style.cssText="color:#fff;font-size:28px;font-weight:900;text-align:center;padding:30px"; m.append(t); }
+    animate(5000); V.timer = setTimeout(vNext, 5000);
+  }
+}
+$("zNext").onclick = vNext; $("zPrev").onclick = vPrev; $("vClose").onclick = vClose;
+$("vDel").onclick = async () => {
+  if (!confirm("Delete status? This status will disappear for all your followers.")) return;
+  const st = V.list[V.i];
+  try { await deleteDoc(doc(db,"statuses",uid)); if (st.mediaUrl) deleteObject(sref(storage, st.mediaUrl)).catch(()=>{}); vClose(); }
+  catch(e){ toast("Unable to delete status."); }
+};
+$("vViews").onclick = async () => {
+  clearTimeout(V.timer); if (V.vid) V.vid.pause();
+  await loadViewers(V.list[V.i]);
+  const sh = $("viewSheet"); sh.textContent = ""; const h = el("h3"); h.append(el("span","ms","visibility"), el("span",null,`Viewed by ${V.viewers.length}`)); sh.append(el("div","grab"), h);
+  if (!V.viewers.length) { const p = el("p","hint","No one has viewed this status yet."); p.style.padding="10px 20px"; sh.append(p); }
+  V.viewers.forEach(v => { const r = el("div","lang"); const a = el("div","av"); a.style.cssText="width:40px;height:40px;margin-right:12px;flex:none"; if (!bg(a, v.profilePhoto)) a.append(el("span","ms","person"));
+    const d = el("div"); d.append(el("b",null,v.name||"Traveler"), el("small",null,v.triprideId||"Viewed your status")); r.append(a,d,el("span","ms","check_circle")); r.lastChild.style.color="#22C55E"; sh.append(r); });
+  show("viewOv");
+};
+$("viewOv").onclick = e => { if (e.target.id==="viewOv") { show("viewOv",false); vShow(); } };
+
+/* ================= SOS ================= */
+const ETYPES = ["Women Safety","Harassment / Misbehaviour","Threat / Assault","Accident","Medical Emergency","Unsafe Driver / Rider","Vehicle Problem","Other"];
+const S = { caseId:null, type:"Women Safety", pos:null, watch:null, stream:null, rec:null, chunks:[], recording:false };
+$("sosBtn").onclick = () => show("sosOv");
+$("sosNo").onclick = () => show("sosOv",false);
+$("sosYes").onclick = () => { show("sosOv",false); startSOS(); };
+async function startSOS(){
+  $("sos").classList.add("show"); document.body.style.overflow="hidden";
+  const c = $("etypes"); c.textContent = "";
+  ETYPES.forEach(t => { const b = el("button", t===S.type?"on":"", t); b.onclick = () => { S.type = t; [...c.children].forEach(x=>x.classList.toggle("on",x===b)); updateCase({emergencyType:t}); }; c.append(b); });
+  await getPos(); await createCase(); nearby(); initCam();
+}
+function getPos(){
+  return new Promise(res => { if (!navigator.geolocation) { $("sosLoc").textContent = "Location unavailable"; return res(); }
+    navigator.geolocation.getCurrentPosition(p => { S.pos = p.coords; $("sosLoc").textContent = `${p.coords.latitude.toFixed(6)}, ${p.coords.longitude.toFixed(6)}`; res(); },
+      () => { $("sosLoc").textContent = "Location unavailable"; res(); }, { enableHighAccuracy:true, timeout:15000 }); });
+}
+async function updateCase(data){
+  if (!S.caseId) return; const u = { ...data, updatedAt:serverTimestamp() };
+  try { await setDoc(doc(db,"sosAlerts",S.caseId), u, {merge:true}); await setDoc(doc(db,"users",uid,"sosCases",S.caseId), u, {merge:true}); } catch(e){ console.warn("SOS UPDATE ERROR", e); }
+}
+async function createCase(){
+  try {
+    const ref = doc(collection(db,"sosAlerts")); S.caseId = ref.id;
+    const data = { caseId:ref.id, userId:uid, service:"TripRide", status:"active", emergencyType:S.type, createdAt:serverTimestamp(), updatedAt:serverTimestamp(), latitude:S.pos?.latitude ?? null, longitude:S.pos?.longitude ?? null };
+    await setDoc(ref, data); await setDoc(doc(db,"users",uid,"sosCases",ref.id), data);
+    if (navigator.geolocation) S.watch = navigator.geolocation.watchPosition(p => { S.pos = p.coords; $("sosLoc").textContent = `${p.coords.latitude.toFixed(6)}, ${p.coords.longitude.toFixed(6)}`; updateCase({latitude:p.coords.latitude, longitude:p.coords.longitude}); }, ()=>{}, { enableHighAccuracy:true, maximumAge:5000 });
+  } catch(e){ console.error("SOS CASE CREATE ERROR", e); }
+}
+async function search(type){
+  if (!GOOGLE_KEY || !S.pos) return [];
+  try {
+    const r = await fetch("https://places.googleapis.com/v1/places:searchNearby", { method:"POST",
+      headers:{ "Content-Type":"application/json","X-Goog-Api-Key":GOOGLE_KEY,"X-Goog-FieldMask":"places.displayName,places.formattedAddress,places.location" },
+      body:JSON.stringify({ includedTypes:[type], maxResultCount:5, rankPreference:"DISTANCE", locationRestriction:{ circle:{ center:{latitude:S.pos.latitude,longitude:S.pos.longitude}, radius:10000 } } }) });
+    if (!r.ok) return []; const d = await r.json();
+    return (d.places||[]).map(p => ({ name:p.displayName?.text||"Emergency service", addr:p.formattedAddress||"", la:p.location?.latitude, lo:p.location?.longitude })).filter(p=>p.la&&p.lo);
+  } catch(e){ return []; }
+}
+function fill(id, title, icon, list){
+  const b = $(id); b.textContent = ""; const h = el("div"); h.style.cssText="display:flex;gap:8px;align-items:center;font-weight:800;font-size:15px"; const i = el("span","ms",icon); i.style.color="#E5383B"; h.append(i, el("span",null,title)); b.append(h);
+  if (!list.length) { const p = el("div","hint","No nearby result found. Use 112 for immediate emergency assistance."); p.style.marginTop="8px"; b.append(p); return; }
+  list.forEach(p => { const r = el("div","pl"); const d = el("div"); d.append(el("b",null,p.name), el("small",null,p.addr));
+    const a = el("a"); a.href = `https://www.google.com/maps/dir/?api=1&destination=${p.la},${p.lo}&travelmode=driving`; a.target="_blank"; a.rel="noopener"; a.append(el("span","ms","directions")); r.append(d,a); b.append(r); });
+}
+async function nearby(){ const [p,h] = await Promise.all([search("police"), search("hospital")]); fill("police","Nearest Police Stations","local_police",p); fill("hosp","Nearest Hospitals","local_hospital",h); }
+async function initCam(){
+  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return;
+  try { S.stream = await navigator.mediaDevices.getUserMedia({ video:{facingMode:"environment"}, audio:true });
+    const v = $("cam"); v.srcObject = S.stream; v.classList.remove("hide"); $("recBtn").classList.remove("hide"); $("recNote").classList.remove("hide"); }
+  catch(e){ console.warn("SOS CAMERA ERROR", e); }
+}
+$("recBtn").onclick = () => S.recording ? stopRec() : startRec();
+function startRec(){
+  if (!S.stream) return; S.chunks = [];
+  try { S.rec = new MediaRecorder(S.stream); } catch(e){ return toast("Unable to start emergency video recording."); }
+  S.rec.ondataavailable = e => { if (e.data.size) S.chunks.push(e.data); };
+  S.rec.onstop = uploadEvidence; S.rec.start(); S.recording = true; $("recBtn").textContent = "STOP & SAVE EMERGENCY VIDEO"; $("recBtn").style.background = "#17143A";
+}
+function stopRec(){ if (S.rec && S.recording) { S.recording = false; S.rec.stop(); } }
+async function uploadEvidence(){
+  const btn = $("recBtn"); btn.textContent = "SAVING EVIDENCE..."; btn.disabled = true;
+  try {
+    const blob = new Blob(S.chunks, { type:S.rec.mimeType || "video/webm" }), cid = `sos_${Date.now()}_${uid.slice(0,8)}`;
+    const r = sref(storage, `users/${uid}/sos_evidence/${cid}.webm`); await uploadBytes(r, blob, { contentType:blob.type });
+    const url = await getDownloadURL(r);
+    await setDoc(doc(db,"users",uid,"sosCases",cid), { caseId:cid, status:"evidence_recorded", createdAt:serverTimestamp(), updatedAt:serverTimestamp(), latitude:S.pos?.latitude ?? null, longitude:S.pos?.longitude ?? null, videoUrl:url, evidenceType:"emergency_video", platform:"TripRide" }, {merge:true});
+    toast("Emergency video evidence was saved securely to your TripRide account.");
+  } catch(e){ console.error("SOS EVIDENCE UPLOAD ERROR", e); toast("Video was recorded, but upload failed. Please try again when internet is available."); }
+  finally { btn.disabled = false; btn.textContent = "START EMERGENCY VIDEO RECORDING"; btn.style.background = "#7C3AED"; }
+}
+function endSOSUi(){ if (S.watch!=null) navigator.geolocation.clearWatch(S.watch); S.watch = null; if (S.stream) S.stream.getTracks().forEach(t=>t.stop()); S.stream = null; $("cam").classList.add("hide"); $("recBtn").classList.add("hide"); $("recNote").classList.add("hide"); $("sos").classList.remove("show"); document.body.style.overflow=""; S.caseId = null; }
+$("sosClose").onclick = () => { if (S.recording) stopRec(); show("sosCloseOv"); };
+$("keepSos").onclick = () => show("sosCloseOv",false);
+$("closeSos").onclick = async () => { show("sosCloseOv",false); await updateCase({ status:"cancelled_by_user", closedAt:serverTimestamp() }); endSOSUi(); };
+
+/* ================= START ================= */
+lang = LS.get("tripride_home_language") || "en"; if (!LANGS.some(l=>l[0]===lang)) lang = "en";
+if (!LS.get("tripride_language_guide_dismissed_v1")) $("guide").classList.remove("hide");
+applyI18n(); getLocation();
+
+onAuthStateChanged(auth, async user => {
+  if (!user) { location.replace(LOGIN_URL); return; }
+  uid = user.uid; $("boot").style.display = "none";
+  await loadUser(); watchUser(); watchWallet(); watchNotifications(); loadStatuses();
+});
+document.addEventListener("visibilitychange", () => { if (document.visibilityState==="visible" && uid) getLocation(); });
 </script>
 </body>
 </html>
