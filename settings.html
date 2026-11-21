@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Settings | TripRide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+:root{--ink:#0F1B3D;--pri:#6D4AE8;--acc:#FFB703;--bg:#F5F7FB;--mut:#5F6B8A;--line:#E3E8F2;--tint:#EEEAFF}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Figtree,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+h1,h2,h3,.hd{font-family:'Bricolage Grotesque',Figtree,sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:24px;line-height:1;display:inline-block;font-variation-settings:'FILL' 1,'wght' 500;user-select:none}
+button,input{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.bar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.bar-in{max-width:760px;margin:0 auto;height:62px;display:flex;align-items:center;gap:12px;padding:0 16px}
+.ib{width:42px;height:42px;border-radius:14px;background:var(--bg);display:grid;place-items:center;flex:none}
+.bar h1{font-size:22px;font-weight:800;letter-spacing:-.02em;flex:1}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 50px}
+.ph{position:relative;text-align:center;background:#fff;border:1px solid var(--line);border-radius:28px;padding:20px}
+.ph::after{content:"";position:absolute;right:-10px;top:-10px;width:36px;height:36px;border-radius:50%;background:var(--acc)}
+.ph .lab{display:flex;align-items:center;gap:8px;color:var(--pri);font-size:11px;letter-spacing:1.4px;font-weight:800;text-align:left}.ph .lab span:nth-child(2){flex:1}
+.pa{width:88px;height:88px;margin:20px auto 12px;border-radius:50%;background:var(--tint) center/cover;color:var(--pri);font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;display:grid;place-items:center;box-shadow:0 0 0 3px var(--pri);border:4px solid #fff}
+.ph h2{font-size:21px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ph p{font-size:12px;color:var(--mut);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill{display:inline-flex;gap:6px;align-items:center;margin-top:16px;padding:8px 13px;border-radius:30px;background:var(--tint);color:var(--pri);font-size:11px;font-weight:700}.pill .ms{font-size:15px}
+.sec{margin:26px 4px 10px;font-size:12px;letter-spacing:.8px;color:var(--mut);font-weight:800;text-transform:uppercase}
+.mg{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.mi{display:flex;align-items:center;gap:14px;width:100%;padding:13px 16px;text-align:left;border-bottom:1px solid #F0F1F8;text-decoration:none;color:inherit}
+.mi:last-child{border-bottom:0}button.mi:hover,a.mi:hover{background:var(--bg)}
+.ic{position:relative;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;flex:none}
+.mi>div{flex:1;min-width:0}.mi b{display:block;font-size:14.5px;font-weight:700}.mi small{display:block;font-size:12px;color:var(--mut);margin-top:3px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.chev{color:#A3A9C4;font-size:20px}
+.sw{position:relative;width:48px;height:28px;border-radius:20px;background:#CBD5E1;flex:none;transition:background .2s}.sw::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}
+.sw.on{background:var(--pri)}.sw.on::after{transform:translateX(20px)}
+.ver{text-align:center;font-size:12px;color:#94A3B8;margin-top:24px}
+.empty{text-align:center;padding:70px 20px;color:var(--mut)}.empty h2{color:var(--ink);font-size:21px;margin-bottom:8px}
+.spin{width:36px;height:36px;margin:70px auto;border:4px solid #e0e7ff;border-top-color:var(--pri);border-radius:50%;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
+.ov{position:fixed;inset:0;background:#17143a99;z-index:100;display:none;align-items:flex-end;justify-content:center}.ov.show{display:flex}
+.sheet{width:100%;max-width:560px;max-height:88vh;overflow:auto;background:#fff;border-radius:28px 28px 0 0;padding:12px 20px calc(28px + env(safe-area-inset-bottom))}
+.grab{width:42px;height:4px;border-radius:20px;background:#D9DBEA;margin:0 auto 16px}.sheet h3{font-size:21px;font-weight:800}.sheet>p{color:var(--mut);margin:6px 0 16px}
+.sr{display:flex;gap:12px;align-items:center;background:var(--bg);border-radius:15px;padding:14px;margin-bottom:12px;text-decoration:none;color:inherit}.sr small{display:block;font-size:11px;color:var(--mut)}.sr b{font-weight:700}.sr .ms{color:var(--pri)}
+.doc{white-space:pre-line;font-size:14px;line-height:1.7;color:#475569;margin-top:14px}
+.dlg{background:#fff;border-radius:24px;padding:22px;max-width:400px;width:calc(100% - 32px);margin:auto}.dlg h3{font-size:19px;margin-bottom:14px}
+.dlg label{display:block;font-size:12px;font-weight:700;color:var(--mut);margin-bottom:6px}
+.dlg input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:14px;font-size:15px;outline:0}.dlg input:focus{border-color:var(--pri)}
+.err{color:#DC2626;font-size:12px;margin-top:6px;min-height:16px}
+.dlg .r{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.dlg .r button{padding:11px 16px;border-radius:13px;font-weight:800;font-size:13px}.dlg .pri{background:var(--pri);color:#fff}.dlg .gh{color:var(--pri)}
+#busy{position:fixed;inset:0;background:#0000001f;z-index:150;display:none;place-items:center}#busy.show{display:grid}#busy div{background:#fff;border-radius:16px;padding:18px 24px;display:flex;gap:14px;align-items:center;font-weight:600}#busy .spin{margin:0;width:22px;height:22px;border-width:3px}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);max-width:90%;background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;z-index:200;display:none}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <button class="ib" id="back" aria-label="Back"><span class="ms">arrow_back</span></button>
+  <h1 id="ttl">Settings</h1>
+</div></header>
+<main class="wrap" id="root"><div class="spin"></div></main>
+
+<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+<div class="ov" id="ed" style="z-index:120;align-items:center"><div class="dlg">
+  <h3 id="edT"></h3><label id="edL" for="edI"></label><input id="edI"><div class="err" id="edE"></div>
+  <div class="r"><button class="gh" id="edNo"></button><button class="pri" id="edYes"></button></div></div></div>
+<div id="busy"><div><i class="spin"></i><span id="busyT"></span></div></div>
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+const LOGIN_URL = "login.html", HOME_URL = "home.html", GUIDE_URL = "tripride-guide.html";
+const STORE_URL = "";   // put your Play Store / App Store link here for "Rate TripRide"
+const app = getApps()[0] || initializeApp({
+  apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw", authDomain:"tripmate-74df9.firebaseapp.com", projectId:"tripmate-74df9",
+  storageBucket:"tripmate-74df9.firebasestorage.app", messagingSenderId:"931960941543", appId:"1:931960941543:web:ced98c012dc22fcb776b42"
+});
+const auth = getAuth(app), db = getFirestore(app);
+
+/* keys = English text; paste more languages from the Flutter _settingsTranslations map */
+const T = {
+ te:{"Settings":"సెట్టింగ్స్","Profile unavailable":"ప్రొఫైల్ అందుబాటులో లేదు","We could not find your profile settings right now.":"ప్రస్తుతం మీ ప్రొఫైల్ సెట్టింగ్స్ కనుగొనలేకపోయాము.","Account":"ఖాతా","Edit Profile":"ప్రొఫైల్ మార్చండి","Change your name":"మీ పేరును మార్చండి","City":"నగరం","Not selected":"ఎంచుకోలేదు","Email":"ఇమెయిల్","Add email address":"ఇమెయిల్ చిరునామా జోడించండి","Phone Number":"ఫోన్ నంబర్","Not available":"అందుబాటులో లేదు","Preferences":"ప్రాధాన్యతలు","Notifications":"నోటిఫికేషన్లు","Notifications are enabled":"నోటిఫికేషన్లు ఆన్‌లో ఉన్నాయి","Notifications are disabled":"నోటిఫికేషన్లు ఆఫ్‌లో ఉన్నాయి","TripRide Guide":"TripRide గైడ్","How to Use TripRide":"TripRide ఎలా ఉపయోగించాలి","Learn booking, trips, payments and more":"బుకింగ్‌లు, ట్రిప్‌లు, చెల్లింపులు మరిన్ని తెలుసుకోండి","Legal & Support":"చట్టపరమైన సమాచారం & సహాయం","Privacy Policy":"గోప్యతా విధానం","How TripRide handles your information":"TripRide మీ సమాచారాన్ని ఎలా నిర్వహిస్తుంది","Terms & Conditions":"నిబంధనలు & షరతులు","Terms for using TripRide":"TripRide ఉపయోగ నిబంధనలు","Rate TripRide":"TripRide‌కు రేటింగ్ ఇవ్వండి","Share your experience with us":"మీ అనుభవాన్ని మాతో పంచుకోండి","Contact Support":"సహాయాన్ని సంప్రదించండి","Get help from TripRide support":"TripRide సపోర్ట్ నుంచి సహాయం పొందండి","About":"గురించి","About TripRide":"TripRide గురించి","Updating...":"అప్‌డేట్ చేస్తోంది...","Full Name":"పూర్తి పేరు","Enter your name":"మీ పేరు నమోదు చేయండి","Cancel":"రద్దు చేయండి","Save":"సేవ్ చేయండి","Please enter a valid name.":"దయచేసి సరైన పేరు నమోదు చేయండి.","Add Email":"ఇమెయిల్ జోడించండి","Change Email":"ఇమెయిల్ మార్చండి","Email Address":"ఇమెయిల్ చిరునామా","Please enter a valid email address.":"దయచేసి సరైన ఇమెయిల్ చిరునామా నమోదు చేయండి.","Change City":"నగరం మార్చండి","Example: Bengaluru":"ఉదా: బెంగళూరు","Please enter a valid city.":"దయచేసి సరైన నగరాన్ని నమోదు చేయండి.","Update":"అప్‌డేట్ చేయండి","Settings updated successfully.":"సెట్టింగ్స్ విజయవంతంగా అప్‌డేట్ అయ్యాయి.","Unable to update settings right now. Please try again.":"ప్రస్తుతం సెట్టింగ్స్ అప్‌డేట్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.","TripRide Support":"TripRide సపోర్ట్","Need help? Contact our support team.":"సహాయం కావాలా? మా సపోర్ట్ టీమ్‌ను సంప్రదించండి.","Manage your TripRide account":"మీ TripRide ఖాతాను నిర్వహించండి","ACCOUNT SETTINGS":"ఖాతా సెట్టింగ్స్","Your account • Your preferences":"మీ ఖాతా • మీ ప్రాధాన్యతలు","Unable to load settings":"సెట్టింగ్స్ లోడ్ చేయలేకపోయాం","Check your internet connection and try again.":"ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.","Unable to open rating right now. Please try again later.":"ప్రస్తుతం రేటింగ్ తెరవలేకపోయాం. తర్వాత మళ్లీ ప్రయత్నించండి."},
+ hi:{"Settings":"सेटिंग्स","Account":"खाता","Edit Profile":"प्रोफ़ाइल संपादित करें","Change your name":"अपना नाम बदलें","City":"शहर","Not selected":"चयन नहीं किया गया","Email":"ईमेल","Add email address":"ईमेल पता जोड़ें","Phone Number":"फ़ोन नंबर","Not available":"उपलब्ध नहीं","Preferences":"प्राथमिकताएँ","Notifications":"सूचनाएँ","Notifications are enabled":"सूचनाएँ चालू हैं","Notifications are disabled":"सूचनाएँ बंद हैं","TripRide Guide":"TripRide गाइड","How to Use TripRide":"TripRide का उपयोग कैसे करें","Legal & Support":"कानूनी जानकारी और सहायता","Privacy Policy":"गोपनीयता नीति","Terms & Conditions":"नियम और शर्तें","Rate TripRide":"TripRide को रेट करें","Contact Support":"सहायता से संपर्क करें","About":"जानकारी","About TripRide":"TripRide के बारे में","Full Name":"पूरा नाम","Cancel":"रद्द करें","Save":"सेव करें","Update":"अपडेट करें","Settings updated successfully.":"सेटिंग्स सफलतापूर्वक अपडेट हुईं।","TripRide Support":"TripRide सहायता"}
+};
+let lang = "en"; try { lang = localStorage.getItem("tripride_home_language") || "en"; } catch(_){}
+const tr = k => (T[lang] && T[lang][k]) || k;
+const $ = id => document.getElementById(id);
+const el = (t,c,x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const first = a => { for (const v of a) { if (v == null) continue; const s = String(v).trim(); if (s && s.toLowerCase() !== "null") return s; } return ""; };
+const safeUrl = u => /^https:\/\//.test(u || "") ? u : "";
+let tt; const toast = m => { const t = $("toast"); t.textContent = m; t.style.display = "block"; clearTimeout(tt); tt = setTimeout(() => t.style.display = "none", 3500); };
+const back = () => history.length > 1 ? history.back() : location.href = HOME_URL;
+$("back").onclick = back; $("ttl").textContent = tr("Settings"); document.title = tr("Settings") + " | TripRide";
+
+/* ---- long documents (shortened here — paste your full Privacy Policy / Terms text into these two strings) ---- */
+const PRIVACY = `Last updated: July 28, 2026
+
+Welcome to TripRide.
+
+1. INFORMATION WE COLLECT
+Name, mobile number, email address, profile photo, city or location information, and trip details such as destination, meeting location, travel date and time, vehicle and seat information, and booking details.
+
+2. LOCATION INFORMATION
+TripRide may use location information for discovering trips, showing meeting locations and navigation. You can manage location permission in your device or browser settings.
+
+3. PAYMENTS
+Payments may be processed by third-party providers such as Razorpay. TripRide may store payment identifiers, order identifiers, status and booking amounts, but does not intend to store your complete card number, CVV, UPI PIN or banking password.
+
+4. HOW WE USE YOUR INFORMATION
+To create and manage your account, provide trip and ride-sharing features, process bookings, prevent misuse and fraud, provide support and send service notifications where enabled.
+
+5. INFORMATION SHARED WITH OTHER USERS
+Some profile and trip information may be visible to other users when needed to provide a trip or booking feature. Avoid adding sensitive personal information to public trip descriptions or chat messages.
+
+6. DATA SECURITY & RETENTION
+We use reasonable measures to protect your information, but no system can guarantee absolute security. Records may be retained as long as reasonably necessary to operate TripRide, resolve disputes and meet legal obligations.
+
+7. YOUR CHOICES
+You may update your profile, change notification preferences, manage device permissions and request correction or deletion of your data.
+
+8. CONTACT US
+TripRide Support
+Email: admin@tripride.co.in
+Website: www.tripride.co.in`;
+const TERMS = `Last updated: July 28, 2026
+
+Welcome to TripRide. By creating an account or using TripRide, you agree to these terms.
+
+1. ELIGIBILITY
+You must be legally eligible to use TripRide and provide accurate information. You are responsible for activity on your account.
+
+2. TRIP CREATION
+Trip creators must provide accurate trip details. Once a trip has been successfully created and the trip creation payment completed, it cannot be cancelled or deleted by the creator. Trip creation fees are non-refundable once the trip is created, except where required by law or approved by TripRide.
+
+3. JOINING AND BOOKING A TRIP
+A booking is confirmed only after payment succeeds and TripRide confirms it. Seat availability may change until then.
+
+4. PAYMENTS, FEES AND REFUNDS
+Payments may be processed by third-party providers such as Razorpay. Any fee is shown before payment. Refunds for failed, duplicate or exceptional transactions follow the payment status, TripRide policy and applicable law.
+
+5. USER CONDUCT
+Do not commit fraud, create false trips, manipulate bookings or payments, harass others, impersonate anyone or attempt unauthorized access. TripRide may restrict or suspend accounts for misuse.
+
+6. SAFETY
+Users remain responsible for their own conduct and for complying with road, vehicle, licensing, insurance and safety requirements.
+
+7. SERVICE AVAILABILITY & CHANGES
+Uninterrupted service cannot be guaranteed. These Terms may be updated when services, policies or legal requirements change.
+
+8. CONTACT US
+TripRide Support
+Email: admin@tripride.co.in
+Website: www.tripride.co.in`;
+
+let uid = null, user = null, data = null, state = "loading";
+function render(){
+  const R = $("root"); R.textContent = "";
+  if (state === "loading") return R.append(el("div","spin"));
+  if (state !== "ok") { const e = el("div","empty"); e.append(el("h2",null, state === "missing" ? tr("Profile unavailable") : tr("Unable to load settings")),
+    el("p",null, state === "missing" ? tr("We could not find your profile settings right now.") : tr("Check your internet connection and try again."))); return R.append(e); }
+  const d = data, name = first([d.name,d.fullName,d.displayName,user.displayName,"tripride User"]), email = first([d.email,user.email]),
+    phone = first([d.phone,d.phoneNumber,user.phoneNumber]), city = first([d.city,d.location]), photo = first([d.profilePhoto,d.photoUrl,d.photoURL,user.photoURL]),
+    notif = typeof d.notificationsEnabled === "boolean" ? d.notificationsEnabled : true;
+
+  const ph = el("div","ph"), lab = el("div","lab"); lab.append(el("span","ms","tune"), el("span",null,tr("ACCOUNT SETTINGS")), el("span","ms","shield_person"));
+  const pa = el("div","pa"); const u = safeUrl(photo); if (u) { pa.style.backgroundImage = `url("${u}")`; } else pa.textContent = (name[0] || "U").toUpperCase();
+  const pill = el("div","pill"); pill.append(el("span","ms","verified_user"), el("span",null,tr("Your account • Your preferences")));
+  ph.append(lab, pa, el("h2",null,name), el("p",null, email || tr("Manage your TripRide account")), pill); R.append(ph);
+
+  R.append(el("div","sec",tr("Account")));
+  R.append(group([
+    row("person","#EFF6FF","#2563EB",tr("Edit Profile"),tr("Change your name"),() => editField({ title:tr("Edit Profile"), label:tr("Full Name"), ph:tr("Enter your name"), val:name === "tripride User" ? "" : name, max:50, ok:tr("Save"), check:v => v.length >= 2, err:tr("Please enter a valid name."), key:"name", after:v => updateProfile(user, { displayName:v }).catch(()=>{}) })),
+    row("location_on","#ECFDF5","#059669",tr("City"),city || tr("Not selected"),() => editField({ title:tr("Change City"), label:tr("City"), ph:tr("Example: Bengaluru"), val:city, max:60, ok:tr("Update"), check:v => v.length >= 2, err:tr("Please enter a valid city."), key:"city" })),
+    row("mail","#FFF7ED","#EA580C",tr("Email"),email || tr("Add email address"),() => editField({ title: email ? tr("Change Email") : tr("Add Email"), label:tr("Email Address"), ph:"example@gmail.com", val:email, max:120, ok:tr("Save"), check:v => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(v), err:tr("Please enter a valid email address."), key:"email" })),
+    row("phone","#F5F3FF","#7C3AED",tr("Phone Number"),phone || tr("Not available"))
+  ]));
+  R.append(el("div","sec",tr("Preferences")));
+  const sw = row("notifications","#FFF7ED","#EA580C",tr("Notifications"), notif ? tr("Notifications are enabled") : tr("Notifications are disabled"), () => save({ notificationsEnabled:!notif }), null, true);
+  const s = el("i","sw" + (notif ? " on" : "")); s.setAttribute("role","switch"); s.setAttribute("aria-checked", String(notif)); sw.append(s); R.append(group([sw]));
+  R.append(el("div","sec",tr("TripRide Guide")));
+  R.append(group([row("menu_book","#EFF6FF","#2563EB",tr("How to Use TripRide"),tr("Learn booking, trips, payments and more"),null,GUIDE_URL)]));
+  R.append(el("div","sec",tr("Legal & Support")));
+  R.append(group([
+    row("privacy_tip","#EFF6FF","#2563EB",tr("Privacy Policy"),tr("How TripRide handles your information"),() => doc_(tr("Privacy Policy"), PRIVACY)),
+    row("description","#F5F3FF","#7C3AED",tr("Terms & Conditions"),tr("Terms for using TripRide"),() => doc_(tr("Terms & Conditions"), TERMS)),
+    row("star","#FFFBEB","#D97706",tr("Rate TripRide"),tr("Share your experience with us"),rate),
+    row("support_agent","#ECFDF5","#059669",tr("Contact Support"),tr("Get help from TripRide support"),support)
+  ]));
+  R.append(el("div","sec",tr("About")));
+  R.append(group([row("info","#EFF6FF","#2563EB",tr("About TripRide"),"Version 1.0.0",about)]));
+  R.append(el("p","ver","TripRide • Version 1.0.0"));
+}
+const group = rows => { const g = el("div","mg"); rows.forEach(r => g.append(r)); return g; };
+function row(icon, bg, fg, title, sub, onClick, href, isSwitch){
+  const a = href ? el("a","mi") : el("button","mi"); if (href) a.href = href;
+  const ic = el("div","ic"); ic.style.cssText = `background:${bg};color:${fg}`; ic.append(el("span","ms",icon));
+  const d = el("div"); d.append(el("b",null,title), el("small",null,sub)); a.append(ic, d);
+  if (onClick || href) { if (!isSwitch) a.append(el("span","ms chev","chevron_right")); }
+  if (onClick) a.onclick = onClick; else if (!href) { a.style.cursor = "default"; }
+  return a;
+}
+function sheet(html){ const sh = $("sheet"); sh.textContent = ""; sh.append(el("div","grab")); html(sh); $("ov").classList.add("show"); }
+$("ov").onclick = e => { if (e.target.id === "ov") $("ov").classList.remove("show"); };
+function doc_(title, body){ sheet(sh => { sh.append(el("h3",null,title), el("p",null,"TripRide"), el("div","doc",body)); }); }
+function support(){ sheet(sh => { sh.append(el("h3",null,tr("TripRide Support")), el("p",null,tr("Need help? Contact our support team.")));
+  [["phone","Phone","+91 9951994651","tel:+919951994651"],["mail",tr("Email"),"admin@tripride.co.in","mailto:admin@tripride.co.in?subject=TripRide%20Support"],["language","Website","www.tripride.co.in","https://www.tripride.co.in"]].forEach(([i,k,v,h]) => {
+    const a = el("a","sr"); a.href = h; if (h.startsWith("http")) { a.target = "_blank"; a.rel = "noopener"; } const d = el("div"); d.append(el("small",null,k), el("b",null,v)); a.append(el("span","ms",i), d); sh.append(a); }); }); }
+function about(){ sheet(sh => { sh.style.textAlign = "center"; sh.append(el("h3",null,"TripRide"), el("p",null,"Version 1.0.0"), el("p",null,"Plan trips, share rides, discover group trips and travel together with TripRide.")); setTimeout(() => sh.style.textAlign = "", 300); }); }
+function rate(){ if (STORE_URL) window.open(STORE_URL, "_blank", "noopener"); else toast(tr("Unable to open rating right now. Please try again later.")); }
+
+/* ---- edit dialog ---- */
+function editField(o){
+  $("edT").textContent = o.title; $("edL").textContent = o.label; const i = $("edI"); i.placeholder = o.ph; i.value = o.val || ""; i.maxLength = o.max; i.type = o.key === "email" ? "email" : "text";
+  $("edE").textContent = ""; $("edNo").textContent = tr("Cancel"); $("edYes").textContent = o.ok; $("ed").classList.add("show"); setTimeout(() => i.focus(), 50);
+  const done = () => $("ed").classList.remove("show");
+  $("edNo").onclick = done;
+  $("edYes").onclick = async () => { const v = i.value.trim(); if (!o.check(v)) { $("edE").textContent = o.err; return; }
+    done(); if (v === (o.val || "")) return; if (await save({ [o.key]:v })) o.after && o.after(v); };
+  i.onkeydown = e => { if (e.key === "Enter") $("edYes").click(); };
+}
+$("ed").onclick = e => { if (e.target.id === "ed") $("ed").classList.remove("show"); };
+async function save(patch){
+  $("busyT").textContent = tr("Updating..."); $("busy").classList.add("show");
+  try { await setDoc(doc(db,"users",uid), { ...patch, updatedAt:serverTimestamp() }, { merge:true }); toast(tr("Settings updated successfully.")); return true; }
+  catch(e){ console.error("SETTINGS UPDATE", e); toast(tr("Unable to update settings right now. Please try again.")); return false; }
+  finally { $("busy").classList.remove("show"); }
+}
+
+onAuthStateChanged(auth, u => {
+  if (!u) { location.replace(LOGIN_URL); return; }
+  user = u; uid = u.uid;
+  onSnapshot(doc(db,"users",uid), s => { if (!s.exists()) { state = "missing"; } else { data = s.data(); state = "ok"; } render(); },
+    e => { console.warn("SETTINGS", e); state = "error"; render(); });
+});
+</script>
+</body>
+</html>

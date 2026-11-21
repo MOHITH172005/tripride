@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Chats | TripRide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+:root{--ink:#0F1B3D;--pri:#6D4AE8;--acc:#FFB703;--bg:#F5F7FB;--mut:#5F6B8A;--line:#E3E8F2;--tint:#EEEAFF}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Figtree,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+h1,h2,.hd{font-family:'Bricolage Grotesque',Figtree,sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:24px;line-height:1;display:inline-block;font-variation-settings:'FILL' 1,'wght' 500;user-select:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.bar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.bar-in{max-width:760px;margin:0 auto;height:62px;display:flex;align-items:center;gap:12px;padding:0 16px}
+.ib{width:42px;height:42px;border-radius:14px;background:var(--bg);display:grid;place-items:center;flex:none}
+.bar h1{font-size:22px;font-weight:800;letter-spacing:-.02em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 40px;display:grid;gap:12px}
+.card{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px;background:#fff;border:1px solid var(--line);border-radius:22px;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:4px 4px 0 var(--ink);border-color:var(--ink)}
+.av{position:relative;width:54px;height:54px;border-radius:50%;background:var(--tint) center/cover;color:var(--pri);display:grid;place-items:center;font-weight:800;font-size:20px;flex:none}
+.tp{position:absolute;right:-3px;bottom:-3px;width:21px;height:21px;border-radius:50%;border:2px solid #fff;color:#fff;display:grid;place-items:center;background:var(--pri)}
+.tp.g{background:#059669}.tp .ms{font-size:12px}
+.mid{flex:1;min-width:0}
+.r1{display:flex;gap:8px;align-items:center}.r1 b{flex:1;font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r1 small{font-size:11px;color:#94A3B8;font-weight:500}.un .r1 small{color:var(--pri);font-weight:700}
+.sub{font-size:12px;color:var(--mut);font-weight:600;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r3{display:flex;gap:10px;align-items:center;margin-top:6px}.r3 span{flex:1;font-size:13px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.un .r3 span{color:var(--ink);font-weight:700}
+.bd{min-width:22px;height:22px;padding:0 6px;border-radius:20px;background:var(--pri);color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center}
+.empty{text-align:center;padding:70px 20px;color:var(--mut)}
+.empty .c{width:86px;height:86px;margin:0 auto 16px;border-radius:50%;background:var(--tint);color:var(--pri);display:grid;place-items:center}
+.empty .c .ms{font-size:38px}.empty h2{color:var(--ink);font-size:20px;font-weight:800;margin-bottom:6px}
+.spin{width:36px;height:36px;margin:70px auto;border:4px solid #e0e7ff;border-top-color:var(--pri);border-radius:50%;animation:s 1s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+/* chat screen */
+#chat{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;flex-direction:column}#chat.show{display:flex}
+#msgs{flex:1;overflow:auto;display:flex;flex-direction:column-reverse;gap:10px;padding:16px;max-width:760px;width:100%;margin:0 auto}
+.m{max-width:78%;padding:10px 12px 7px;border-radius:18px 18px 18px 5px;background:#fff;border:1px solid var(--line);font-size:15px;line-height:1.35;word-break:break-word;align-self:flex-start}
+.m.me{align-self:flex-end;background:var(--pri);color:#fff;border-color:var(--pri);border-radius:18px 18px 5px 18px}
+.m small{display:flex;justify-content:flex-end;align-items:center;gap:3px;font-size:10px;margin-top:4px;opacity:.7}
+.m small .ms{font-size:15px}
+.inp{background:#fff;border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.inp-in{max-width:760px;margin:0 auto;display:flex;gap:9px;align-items:flex-end}
+.inp textarea{flex:1;resize:none;max-height:130px;border:1px solid var(--line);border-radius:24px;padding:12px 17px;font:inherit;font-size:15px;outline:0;background:#fff}
+.send{width:48px;height:48px;border-radius:50%;background:var(--pri);color:#fff;display:grid;place-items:center;flex:none}.send:disabled{opacity:.6}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);max-width:90%;background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;z-index:100;display:none}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <button class="ib" id="back" aria-label="Back"><span class="ms">arrow_back</span></button>
+  <h1 id="ttl">Chats</h1>
+</div></header>
+<main class="wrap" id="list"><div class="spin"></div></main>
+
+<section id="chat">
+  <header class="bar"><div class="bar-in">
+    <button class="ib" id="cBack" aria-label="Back"><span class="ms">arrow_back</span></button>
+    <div class="av" id="cAv" style="width:40px;height:40px;font-size:16px"></div>
+    <div style="flex:1;min-width:0"><div class="hd" id="cName" style="font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div><div id="cTrip" style="font-size:11.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div></div>
+  </div></header>
+  <div id="msgs"></div>
+  <div class="inp"><div class="inp-in"><textarea id="txt" rows="1"></textarea><button class="send" id="send" aria-label="Send"><span class="ms">send</span></button></div></div>
+</section>
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, orderBy, limit, onSnapshot, writeBatch, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+const LOGIN_URL = "login.html", HOME_URL = "home.html";
+const app = getApps()[0] || initializeApp({
+  apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw", authDomain:"tripmate-74df9.firebaseapp.com", projectId:"tripmate-74df9",
+  storageBucket:"tripmate-74df9.firebasestorage.app", messagingSenderId:"931960941543", appId:"1:931960941543:web:ced98c012dc22fcb776b42"
+});
+const auth = getAuth(app), db = getFirestore(app);
+
+/* ---- i18n: keys are the English text. Add more languages from the Flutter maps the same way ---- */
+const T = {
+ te:{"Chats":"చాట్‌లు","Please login again":"దయచేసి మళ్లీ లాగిన్ అవ్వండి","Unable to load chats":"చాట్‌లను లోడ్ చేయలేకపోయాం","Check your internet connection and try again.":"ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.","No chats yet":"ఇంకా చాట్‌లు లేవు","Your trip conversations will appear here.":"మీ ట్రిప్ సంభాషణలు ఇక్కడ కనిపిస్తాయి.","Passenger":"ప్రయాణికుడు","Trip Creator":"ట్రిప్ సృష్టించినవారు","Start a conversation":"సంభాషణ ప్రారంభించండి","Trip":"ట్రిప్","Chat":"చాట్","Yesterday":"నిన్న","Mon":"సోమ","Tue":"మంగళ","Wed":"బుధ","Thu":"గురు","Fri":"శుక్ర","Sat":"శని","Sun":"ఆది","Send your first message.":"మీ మొదటి మెసేజ్ పంపండి.","Type a message...":"మెసేజ్ టైప్ చేయండి...","Unable to send message. Check your internet connection and try again.":"మెసేజ్ పంపలేకపోయాం. ఇంటర్నెట్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.","Chat about trip:":"ట్రిప్ గురించి చాట్:"},
+ hi:{"Chats":"चैट","Please login again":"कृपया फिर से लॉगिन करें","Unable to load chats":"चैट लोड नहीं हो सकीं","Check your internet connection and try again.":"इंटरनेट कनेक्शन जाँचें और फिर कोशिश करें।","No chats yet":"अभी कोई चैट नहीं","Your trip conversations will appear here.":"आपकी यात्रा की बातचीत यहाँ दिखाई देगी।","Passenger":"यात्री","Trip Creator":"ट्रिप निर्माता","Start a conversation":"बातचीत शुरू करें","Trip":"ट्रिप","Chat":"चैट","Yesterday":"कल","Type a message...":"मैसेज लिखें...","Send your first message.":"अपना पहला मैसेज भेजें।"}
+};
+let lang = "en"; try { lang = localStorage.getItem("tripride_home_language") || "en"; } catch(_){}
+const tr = k => (T[lang] && T[lang][k]) || k;
+
+const $ = id => document.getElementById(id);
+const el = (t,c,x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const txt = v => (v == null ? "" : String(v).trim());
+const first = a => { for (const v of a) { const s = txt(v); if (s && s.toLowerCase() !== "null") return s; } return ""; };
+const safeUrl = u => /^https:\/\//.test(u || "") ? u : "";
+const initial = n => (txt(n)[0] || "T").toUpperCase();
+let tt; const toast = m => { const t = $("toast"); t.textContent = m; t.style.display = "block"; clearTimeout(tt); tt = setTimeout(() => t.style.display = "none", 4000); };
+const ms = v => v && v.toMillis ? v.toMillis() : v instanceof Date ? v.getTime() : typeof v === "string" ? (Date.parse(v) || 0) : 0;
+const toDate = v => v && v.toDate ? v.toDate() : v instanceof Date ? v : typeof v === "string" ? new Date(v) : null;
+const hm = d => { const h = d.getHours(); return `${h%12||12}:${String(d.getMinutes()).padStart(2,"0")} ${h>=12?"PM":"AM"}`; };
+function listTime(v){
+  const d = toDate(v); if (!d || isNaN(d)) return "";
+  const n = new Date(), diff = Math.round((new Date(n.getFullYear(),n.getMonth(),n.getDate()) - new Date(d.getFullYear(),d.getMonth(),d.getDate())) / 864e5);
+  if (diff === 0) return hm(d); if (diff === 1) return tr("Yesterday");
+  if (diff > 1 && diff < 7) return tr(["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()]);
+  return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+}
+function setAv(node, photo, name){ node.textContent = ""; node.style.backgroundImage = "";
+  const s = safeUrl(photo); if (s) { node.style.backgroundImage = `url("${s}")`; const im = new Image(); im.onerror = () => { node.style.backgroundImage = ""; node.textContent = initial(name); }; im.src = s; } else node.textContent = initial(name); }
+
+let uid = null, chats = [], unread = {}, subs = {}, profiles = {}, loaded = false, failed = false;
+const back = () => history.length > 1 ? history.back() : location.href = HOME_URL;
+$("back").onclick = back; $("ttl").textContent = tr("Chats"); $("txt").placeholder = tr("Type a message...");
+document.title = tr("Chats") + " | TripRide";
+
+function info(d){
+  const creator = txt(d.creatorId), pass = txt(d.passengerId), isCreator = creator === uid;
+  let other = isCreator ? pass : pass === uid ? creator : (Array.isArray(d.userIds) ? d.userIds.find(i => i !== uid) : "") || "";
+  const name = isCreator ? first([d.passengerName, d.otherUserName, tr("Passenger")]) : first([d.creatorName, d.driverName, d.otherUserName, tr("Trip Creator")]);
+  const photo = isCreator ? first([d.passengerPhoto, d.otherUserPhoto]) : first([d.creatorPhoto, d.driverPhoto, d.otherUserPhoto]);
+  return { other, name, photo };
+}
+async function loadProfile(id){
+  if (!id || profiles[id]) return; profiles[id] = {};
+  try { const s = await getDoc(doc(db,"users",id)); if (s.exists()) { const x = s.data();
+    profiles[id] = { name:first([x.name,x.fullName,x.displayName]), photo:first([x.profilePhoto,x.photo,x.photoUrl,x.profileImage]) }; render(); } } catch(e){ console.warn("PROFILE", e); }
+}
+function tripTitle(d){
+  const n = first([d.tripTitle, d.tripName]); if (n) return n;
+  const f = first([d.from, d.pickupLocation]), t = first([d.to, d.destination, d.dropLocation]);
+  if (f && t) return `${f} → ${t}`;
+  return `${first([d.tripType, "Trip"])} ${tr("Chat")}`;
+}
+function render(){
+  const L = $("list"); L.textContent = "";
+  if (failed) return L.append(empty("cloud_off", tr("Unable to load chats"), tr("Check your internet connection and try again.")));
+  if (!loaded) return L.append(el("div","spin"));
+  if (!chats.length) return L.append(empty("chat_bubble_outline", tr("No chats yet"), tr("Your trip conversations will appear here.")));
+  chats.forEach(c => {
+    const d = c.data(), i = info(d), p = profiles[i.other] || {}, name = p.name || i.name, photo = p.photo || i.photo;
+    const at = d.lastMessageAt || d.updatedAt || d.createdAt, u = unread[c.id] || 0, group = txt(d.tripType).toLowerCase().includes("group");
+    const b = el("button","card" + (u ? " un" : "")), av = el("div","av"); setAv(av, photo, name);
+    const tp = el("span","tp" + (group ? " g" : "")); tp.append(el("span","ms", group ? "groups" : "route")); av.append(tp);
+    const mid = el("div","mid"), r1 = el("div","r1"); r1.append(el("b",null,name)); if (at) r1.append(el("small",null,listTime(at)));
+    const r3 = el("div","r3"); r3.append(el("span",null, first([d.lastMessage, tr("Start a conversation")]))); if (u) r3.append(el("span","bd",u > 99 ? "99+" : String(u)));
+    mid.append(r1, el("div","sub",tripTitle(d)), r3); b.append(av, mid, el("span","ms","chevron_right"));
+    b.onclick = () => openChat(c.id, name, photo, tripTitle(d)); L.append(b);
+    loadProfile(i.other);
+    if (!subs[c.id]) subs[c.id] = onSnapshot(query(collection(db,"chats",c.id,"messages"), where("read","==",false)), s => {
+      unread[c.id] = s.docs.filter(m => txt(m.data().senderId) !== uid).length; render(); }, () => {});
+  });
+}
+function empty(icon, t, s){ const e = el("div","empty"), c = el("div","c"); c.append(el("span","ms",icon)); e.append(c, el("h2",null,t), el("p",null,s)); return e; }
+
+/* ---- chat screen ---- */
+let cid = null, unsub = null, done = new Set(), sending = false, tripT = "";
+function openChat(id, name, photo, title){
+  cid = id; tripT = title; done = new Set();
+  $("cName").textContent = name || tr("Trip Chat"); $("cTrip").textContent = title || ""; setAv($("cAv"), photo, name);
+  $("msgs").textContent = ""; $("chat").classList.add("show"); document.body.style.overflow = "hidden";
+  unsub && unsub();
+  unsub = onSnapshot(query(collection(db,"chats",id,"messages"), orderBy("createdAt","desc"), limit(60)), s => {
+    const docs = s.docs, M = $("msgs"); M.textContent = "";
+    if (!docs.length) { const e = el("div","empty",""); e.style.margin = "auto";
+      e.append(el("h2",null,tr("Start a conversation")), el("p",null, title ? `${tr("Chat about trip:")} ${title}.` : tr("Send your first message."))); M.append(e); }
+    docs.forEach(d => { const x = d.data(), mine = txt(x.senderId) === uid, m = el("div","m" + (mine ? " me" : ""));
+      m.append(el("div",null,txt(x.text)));
+      const sm = el("small"), t = toDate(x.createdAt); sm.append(el("span",null, t ? hm(t) : ""));
+      if (mine) sm.append(el("span","ms", x.read === true ? "done_all" : "done")); m.append(sm); M.append(m); });
+    markRead(docs);
+  }, e => { console.warn("MSG ERROR", e); toast(tr("Check your internet connection and try again.")); });
+}
+async function markRead(docs){
+  const todo = docs.filter(d => !done.has(d.id) && d.data().read !== true && txt(d.data().senderId) !== uid); if (!todo.length) return;
+  try { const b = writeBatch(db); todo.forEach(d => { b.update(d.ref, { read:true }); done.add(d.id); }); await b.commit(); } catch(e){ console.warn("READ", e); }
+}
+function closeChat(){ unsub && unsub(); unsub = null; cid = null; $("chat").classList.remove("show"); document.body.style.overflow = ""; }
+$("cBack").onclick = closeChat;
+async function sendMsg(){
+  const t = $("txt").value.trim(); if (!t || sending || !cid) return;
+  sending = true; $("send").disabled = true; $("txt").value = "";
+  try {
+    const b = writeBatch(db), mref = doc(collection(db,"chats",cid,"messages"));
+    b.set(mref, { senderId:uid, text:t, createdAt:serverTimestamp(), read:false });
+    b.set(doc(db,"chats",cid), { lastMessage:t, lastMessageSenderId:uid, lastMessageAt:serverTimestamp(), updatedAt:serverTimestamp() }, { merge:true });
+    await b.commit(); $("msgs").scrollTop = 0;
+  } catch(e){ console.error("SEND", e); $("txt").value = t; toast(tr("Unable to send message. Check your internet connection and try again.")); }
+  finally { sending = false; $("send").disabled = false; }
+}
+$("send").onclick = sendMsg;
+$("txt").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
+$("txt").addEventListener("input", e => { e.target.style.height = "auto"; e.target.style.height = Math.min(130, e.target.scrollHeight) + "px"; });
+
+onAuthStateChanged(auth, user => {
+  if (!user) { location.replace(LOGIN_URL); return; }
+  uid = user.uid;
+  onSnapshot(query(collection(db,"chats"), where("userIds","array-contains",uid)), s => {
+    chats = s.docs.slice().sort((a,b) => { const f = d => ms(d.lastMessageAt || d.updatedAt || d.createdAt); return f(b.data()) - f(a.data()); });
+    loaded = true; failed = false; render();
+  }, e => { console.warn("CHATS ERROR", e); failed = true; render(); });
+});
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") { try { const l = localStorage.getItem("tripride_home_language") || "en"; if (l !== lang) { lang = l; location.reload(); } } catch(_){} } });
+</script>
+</body>
+</html>

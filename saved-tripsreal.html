@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Saved Trips | TripRide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+:root{--ink:#0F1B3D;--pri:#6D4AE8;--acc:#FFB703;--bg:#F5F7FB;--mut:#5F6B8A;--line:#E3E8F2;--tint:#EEEAFF;--grn:#059669;--blu:#2563EB}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Figtree,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+h1,h2,h3,.hd{font-family:'Bricolage Grotesque',Figtree,sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:24px;line-height:1;display:inline-block;font-variation-settings:'FILL' 1,'wght' 500;user-select:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.bar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.bar-in{max-width:860px;margin:0 auto;height:62px;display:flex;align-items:center;gap:12px;padding:0 16px}
+.ib{width:42px;height:42px;border-radius:14px;background:var(--bg);display:grid;place-items:center;flex:none}
+.bar h1{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.wrap{max-width:860px;margin:0 auto;padding:16px 16px 50px}
+.sum{position:relative;padding:22px;border-radius:26px;background:var(--ink);color:#fff;overflow:hidden}
+.sum::after{content:"";position:absolute;right:-14px;top:-14px;width:64px;height:64px;border-radius:50%;background:var(--acc)}
+.sum h2{display:flex;gap:9px;align-items:center;font-size:19px;font-weight:800}.sum p{margin-top:6px;font-size:13px;color:#ffffffb3}
+.nums{display:flex;margin-top:20px}.nums div{flex:1;text-align:center;border-left:1px solid #ffffff3d}.nums div:first-child{border:0}
+.nums b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800}.nums small{font-size:11px;color:#ffffffb3}
+.sec{display:flex;align-items:center;gap:8px;margin:28px 0 12px}.sec h3{flex:1;font-size:19px;font-weight:800}
+.cnt{padding:4px 11px;border-radius:30px;font-size:12px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.tc{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;display:flex;flex-direction:column}
+.tc-b{padding:17px;flex:1}
+.h{display:flex;align-items:center;gap:12px}.h .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none}
+.h b{flex:1;font-size:16px;font-weight:800;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.h button{width:40px;height:40px;border-radius:12px;color:var(--pri);display:grid;place-items:center}.h button:hover{background:var(--tint)}
+.rt{display:flex;gap:11px;margin-top:16px}.rt .ln{display:flex;flex-direction:column;align-items:center}
+.dot{width:11px;height:11px;border-radius:50%;background:#16A34A;margin-top:4px}.bar2{width:2px;height:28px;background:#CBD5E1}.pin{color:#DC2626;font-size:18px}
+.rt .tx{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:20px;font-weight:700;font-size:14px}.tx span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.inf{display:flex;gap:7px;align-items:center;margin-top:14px;font-size:12.5px;font-weight:600;color:var(--mut)}.inf .ms{font-size:17px}
+.mt{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.st{padding:5px 10px;border-radius:30px;font-size:11px;font-weight:800;background:#DCFCE7;color:#15803D}.st.c{background:#F1F5F9;color:#475569}.st.x{background:#FEE2E2;color:#B91C1C}
+.seat{display:flex;gap:4px;align-items:center;font-size:12px;font-weight:600;color:var(--mut)}.seat .ms{font-size:16px}
+.pr{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:800}
+.view{border-top:1px solid var(--line);padding:12px;color:var(--pri);font-weight:800;font-size:14px;display:flex;gap:6px;justify-content:center;align-items:center;width:100%}.view:hover{background:var(--tint)}
+.note{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:17px;color:var(--mut);font-size:14px}
+.note button{color:var(--pri);font-weight:800}
+.empty{text-align:center;padding:70px 20px;color:var(--mut)}.empty .c{width:86px;height:86px;margin:0 auto 16px;border-radius:50%;background:var(--tint);color:var(--pri);display:grid;place-items:center}
+.empty .c .ms{font-size:38px}.empty h2{color:var(--ink);font-size:20px;font-weight:800;margin-bottom:6px}
+.sk{height:130px;background:#fff;border-radius:22px;display:grid;place-items:center}
+.spin{width:30px;height:30px;border:4px solid #e0e7ff;border-top-color:var(--pri);border-radius:50%;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
+.ov{position:fixed;inset:0;background:#17143a99;z-index:100;display:none;align-items:flex-end;justify-content:center}.ov.show{display:flex}
+.sheet{width:100%;max-width:560px;max-height:88vh;overflow:auto;background:var(--bg);border-radius:28px 28px 0 0;padding:12px 18px calc(28px + env(safe-area-inset-bottom))}
+.grab{width:42px;height:5px;border-radius:10px;background:#CBD5E1;margin:0 auto 20px}
+.dt{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}.dt small{display:block;font-size:11px;color:var(--mut)}.dt b{display:block;margin-top:5px;font-weight:700;word-break:break-word;user-select:text}
+.dlg{background:#fff;border-radius:24px;padding:22px;max-width:380px;width:calc(100% - 32px);margin:auto}.dlg h3{font-size:19px}.dlg p{margin:12px 0 18px;font-size:14px;line-height:1.5;color:#3D4162}
+.dlg .r{display:flex;justify-content:flex-end;gap:8px}.dlg .r button{padding:11px 16px;border-radius:13px;font-weight:800;font-size:13px}.dlg .pri{background:var(--pri);color:#fff}.dlg .gh{color:var(--pri)}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);max-width:90%;background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;z-index:200;display:none}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <button class="ib" id="back" aria-label="Back"><span class="ms">arrow_back</span></button>
+  <h1 id="ttl">Saved Trips</h1>
+</div></header>
+<main class="wrap" id="root"><div class="sk"><div class="spin"></div></div></main>
+<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+<div class="ov" id="cf" style="z-index:150;align-items:center"><div class="dlg"><h3 id="cfT"></h3><p id="cfM"></p><div class="r"><button class="gh" id="cfNo"></button><button class="pri" id="cfYes"></button></div></div></div>
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getFirestore, doc, collection, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+const LOGIN_URL = "login.html", HOME_URL = "home.html";
+const app = getApps()[0] || initializeApp({
+  apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw", authDomain:"tripmate-74df9.firebaseapp.com", projectId:"tripmate-74df9",
+  storageBucket:"tripmate-74df9.firebasestorage.app", messagingSenderId:"931960941543", appId:"1:931960941543:web:ced98c012dc22fcb776b42"
+});
+const auth = getAuth(app), db = getFirestore(app);
+
+/* keys = English text. Paste more languages from the Flutter _savedTripsTranslations map the same way */
+const T = {
+ te:{"Saved Trips":"సేవ్ చేసిన ప్రయాణాలు","Please login again":"దయచేసి మళ్లీ లాగిన్ అవ్వండి","Unable to load saved trips":"సేవ్ చేసిన ప్రయాణాలను లోడ్ చేయలేకపోయాం","Check your internet connection and try again.":"ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.","No saved trips":"సేవ్ చేసిన ప్రయాణాలు లేవు","Trips you save will appear here.":"మీరు సేవ్ చేసిన ప్రయాణాలు ఇక్కడ కనిపిస్తాయి.","Your Saved Trips":"మీ సేవ్ చేసిన ప్రయాణాలు","Keep your favourite trips in one place.":"మీ ఇష్టమైన ప్రయాణాలన్నీ ఒకేచోట ఉంచండి.","Total":"మొత్తం","Rides":"రైడ్లు","Groups":"గ్రూపులు","Place to Place":"ఒక ప్రదేశం నుంచి మరొక ప్రదేశానికి","Group Trips":"గ్రూప్ ప్రయాణాలు","Remove from saved":"సేవ్ చేసిన వాటి నుంచి తొలగించండి","View Trip Details":"ప్రయాణ వివరాలు చూడండి","From":"నుంచి","To":"వరకు","Date & Time":"తేదీ & సమయం","Price":"ధర","Available Seats":"అందుబాటులో ఉన్న సీట్లు","Vehicle":"వాహనం","Trip ID":"ప్రయాణ ID","Remove Saved Trip?":"సేవ్ చేసిన ప్రయాణాన్ని తొలగించాలా?","This trip will be removed from your saved trips.":"ఈ ప్రయాణం సేవ్ చేసిన జాబితా నుంచి తొలగించబడుతుంది.","Cancel":"రద్దు","Remove":"తొలగించు","Trip removed from saved trips.":"ప్రయాణం సేవ్ చేసిన జాబితా నుంచి తొలగించబడింది.","Unable to remove this trip right now. Please try again.":"ప్రస్తుతం ఈ ప్రయాణాన్ని తొలగించలేకపోయాం. మళ్లీ ప్రయత్నించండి.","This trip is no longer available.":"ఈ ప్రయాణం ఇక అందుబాటులో లేదు.","Trip details are unavailable right now.":"ప్రస్తుతం ప్రయాణ వివరాలు అందుబాటులో లేవు.","Starting Point":"ప్రారంభ స్థానం","Destination":"గమ్యస్థానం","Completed":"పూర్తయింది","Upcoming":"రాబోయేది","Not available":"అందుబాటులో లేదు","seats":"సీట్లు"},
+ hi:{"Saved Trips":"सेव की गई यात्राएँ","Please login again":"कृपया फिर से लॉगिन करें","Unable to load saved trips":"सेव की गई यात्राएँ लोड नहीं हो सकीं","No saved trips":"कोई सेव की गई यात्रा नहीं","Trips you save will appear here.":"आपकी सेव की गई यात्राएँ यहाँ दिखाई देंगी।","Your Saved Trips":"आपकी सेव की गई यात्राएँ","Keep your favourite trips in one place.":"अपनी पसंदीदा यात्राएँ एक जगह रखें।","Total":"कुल","Rides":"राइड्स","Groups":"ग्रुप","Place to Place":"एक जगह से दूसरी जगह","Group Trips":"ग्रुप यात्राएँ","Remove from saved":"सेव सूची से हटाएँ","View Trip Details":"यात्रा विवरण देखें","From":"से","To":"तक","Date & Time":"तारीख और समय","Price":"कीमत","Available Seats":"उपलब्ध सीटें","Vehicle":"वाहन","Remove Saved Trip?":"सेव की गई यात्रा हटाएँ?","Cancel":"रद्द करें","Remove":"हटाएँ","Completed":"पूरा हुआ","Upcoming":"आगामी","seats":"सीटें"}
+};
+let lang = "en"; try { lang = localStorage.getItem("tripride_home_language") || "en"; } catch(_){}
+const tr = k => (T[lang] && T[lang][k]) || k;
+const $ = id => document.getElementById(id);
+const el = (t,c,x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const txt = v => (v == null ? "" : String(v).trim());
+const first = a => { for (const v of a) { const s = txt(v); if (s && s.toLowerCase() !== "null") return s; } return ""; };
+const firstVal = a => a.find(v => v != null) ?? null;
+const num = a => { for (const v of a) { if (typeof v === "number") return v; if (typeof v === "string") { const n = parseFloat(v.replace(/[₹,]/g,"").trim()); if (!isNaN(n)) return n; } } return 0; };
+const money = n => n === Math.round(n) ? String(n) : n.toFixed(2);
+const toDate = v => v && v.toDate ? v.toDate() : v instanceof Date ? v : typeof v === "string" ? (isNaN(Date.parse(v)) ? null : new Date(v)) : null;
+const ms = v => (toDate(v) || 0) && toDate(v).getTime();
+const p2 = n => String(n).padStart(2,"0");
+const fmtDT = v => { const d = toDate(v); if (!d) return tr("Not available"); const h = d.getHours(); return `${p2(d.getDate())}/${p2(d.getMonth()+1)}/${d.getFullYear()} • ${h%12||12}:${p2(d.getMinutes())} ${h>=12?"PM":"AM"}`; };
+let tt; const toast = m => { const t = $("toast"); t.textContent = m; t.style.display = "block"; clearTimeout(tt); tt = setTimeout(() => t.style.display = "none", 3500); };
+const normType = v => ["group","group_trip","grouptrip"].includes(txt(v).toLowerCase()) ? "group" : "place_to_place";
+const from = t => first([t.from, t.pickupLocation, t.tripStartLocation, t.meetingLocation, t.startLocation, tr("Starting Point")]);
+const to = t => first([t.to, t.destination, t.dropLocation, t.tripEndLocation, t.endLocation, tr("Destination")]);
+const status = (t, date) => { const s = first([t.status]); if (s) return s[0].toUpperCase() + s.slice(1); const d = toDate(date); return d && d < new Date() ? "Completed" : "Upcoming"; };
+
+let uid = null, saved = [], trips = {}, subs = {}, loaded = false, failed = false;
+const back = () => history.length > 1 ? history.back() : location.href = HOME_URL;
+$("back").onclick = back; $("ttl").textContent = tr("Saved Trips"); document.title = tr("Saved Trips") + " | TripRide";
+
+function empty(icon, t, s){ const e = el("div","empty"), c = el("div","c"); c.append(el("span","ms",icon)); e.append(c, el("h2",null,t), el("p",null,s)); return e; }
+function render(){
+  const R = $("root"); R.textContent = "";
+  if (failed) return R.append(empty("cloud_off", tr("Unable to load saved trips"), tr("Check your internet connection and try again.")));
+  if (!loaded) { const s = el("div","sk"); s.append(el("div","spin")); return R.append(s); }
+  if (!saved.length) return R.append(empty("bookmark_border", tr("No saved trips"), tr("Trips you save will appear here.")));
+  const pl = saved.filter(d => normType(d.data().tripType) === "place_to_place"), gr = saved.filter(d => normType(d.data().tripType) === "group");
+  const sm = el("div","sum"), h = el("h2"); h.append(el("span","ms","bookmarks"), el("span",null,tr("Your Saved Trips")));
+  const n = el("div","nums"); [[saved.length,"Total"],[pl.length,"Rides"],[gr.length,"Groups"]].forEach(([v,l]) => { const d = el("div"); d.append(el("b",null,String(v)), el("small",null,tr(l))); n.append(d); });
+  sm.append(h, el("p",null,tr("Keep your favourite trips in one place.")), n); R.append(sm);
+  [[pl,"route","Place to Place","var(--blu)","#2563EB1a"],[gr,"groups","Group Trips","var(--grn)","#0596691a"]].forEach(([list,ic,title,col,bgc]) => {
+    if (!list.length) return;
+    const s = el("div","sec"); const i = el("span","ms",ic); i.style.color = col; const c = el("span","cnt",String(list.length)); c.style.cssText = `background:${bgc};color:${col}`;
+    s.append(i, el("h3",null,tr(title)), c); const g = el("div","grid");
+    list.forEach(d => g.append(card(d))); R.append(s, g);
+  });
+}
+function card(sd){
+  const s = sd.data(), id = sd.id, tid = txt(s.tripId), type = normType(s.tripType), st = trips[id];
+  const box = el("div","tc");
+  if (!tid || (st && st.s === "missing")) return broken(id, "link_off", tr("This trip is no longer available."), true);
+  if (!st || st.s === "loading") { const k = el("div","sk"); k.append(el("div","spin")); return k; }
+  if (st.s === "err") return broken(id, "cloud_off", tr("Check your internet connection and try again."), false);
+  const t = st.d, g = type === "group", date = firstVal([t.tripDate,t.rideDate,t.startDate,t.date,t.departureTime]);
+  const price = num([t.price,t.tripPrice,t.tripCost,t.amount,t.pricePerSeat]), seats = num([t.availableSeats,t.seatsAvailable,t.remainingSeats,t.seats]);
+  const title = g ? first([t.tripName, t.title, "Group Trip"]) : `${from(t)} → ${to(t)}`, stt = status(t, date), sl = stt.toLowerCase();
+  const b = el("div","tc-b"), h = el("div","h"), ic = el("div","ic"); ic.style.cssText = g ? "background:#ECFDF5;color:#059669" : "background:#EFF6FF;color:#2563EB"; ic.append(el("span","ms", g ? "groups" : "route"));
+  const rm = el("button"); rm.title = tr("Remove from saved"); rm.setAttribute("aria-label", tr("Remove from saved")); rm.append(el("span","ms","bookmark")); rm.onclick = () => removeSaved(id);
+  h.append(ic, el("b",null,title), rm); b.append(h);
+  const rt = el("div","rt"), ln = el("div","ln"), pin = el("span","ms pin","location_on"); ln.append(el("i","dot"), el("i","bar2"), pin);
+  const tx = el("div","tx"); tx.append(el("span",null,from(t)), el("span",null,to(t))); rt.append(ln, tx); b.append(rt);
+  if (date) { const i = el("div","inf"); i.append(el("span","ms","calendar_month"), el("span",null,fmtDT(date))); b.append(i); }
+  const mt = el("div","mt"); mt.append(el("span","st" + (sl.includes("cancel") ? " x" : sl.includes("complete") ? " c" : ""), stt));
+  if (seats > 0) { const e = el("span","seat"); e.append(el("span","ms","event_seat"), el("span",null,`${money(seats)} ${tr("seats")}`)); mt.append(e); }
+  if (price > 0) mt.append(el("span","pr","₹" + money(price))); b.append(mt);
+  const v = el("button","view"); v.append(el("span","ms","visibility"), el("span",null,tr("View Trip Details"))); v.style.fontSize = "14px"; v.onclick = () => details(tid, g, t);
+  box.append(b, v); return box;
+}
+function broken(id, icon, msg, canRemove){
+  const n = el("div","note"); const i = el("span","ms",icon); i.style.color = "#94A3B8"; const p = el("span",null,msg); p.style.flex = "1"; n.append(i, p);
+  if (canRemove) { const b = el("button",null,tr("Remove")); b.onclick = () => removeSaved(id); n.append(b); } return n;
+}
+function details(tid, g, t){
+  const sh = $("sheet"); sh.textContent = ""; sh.append(el("div","grab"));
+  const h = el("div","h"), ic = el("div","ic"); ic.style.cssText = (g ? "background:#ECFDF5;color:#059669" : "background:#EFF6FF;color:#2563EB") + ";width:50px;height:50px"; ic.append(el("span","ms", g ? "groups" : "route"));
+  const title = g ? first([t.tripName,"Group Trip"]) : `${from(t)} → ${to(t)}`; const b = el("b",null,title); b.style.fontSize = "19px"; h.append(ic, b); sh.append(h); sh.lastChild.style.marginBottom = "22px";
+  const date = firstVal([t.tripDate,t.rideDate,t.startDate,t.date]), price = num([t.price,t.tripPrice,t.tripCost,t.amount,t.pricePerSeat]),
+    veh = first([t.vehicle,t.vehicleName,t.vehicleType,t.carModel]), seats = num([t.availableSeats,t.seatsAvailable,t.remainingSeats,t.seats]);
+  [[tr("From"),from(t)],[tr("To"),to(t)],date&&[tr("Date & Time"),fmtDT(date)],price>0&&[tr("Price"),"₹"+money(price)],seats>0&&[tr("Available Seats"),money(seats)],veh&&[tr("Vehicle"),veh],[tr("Trip ID"),tid]]
+    .filter(Boolean).forEach(([k,v]) => { const d = el("div","dt"); d.append(el("small",null,k), el("b",null,v)); sh.append(d); });
+  $("ov").classList.add("show");
+}
+$("ov").onclick = e => { if (e.target.id === "ov") $("ov").classList.remove("show"); };
+function ask(title, msg, ok){ return new Promise(res => { $("cfT").textContent = title; $("cfM").textContent = msg; $("cfYes").textContent = ok; $("cfNo").textContent = tr("Cancel");
+  $("cf").classList.add("show"); const d = v => { $("cf").classList.remove("show"); res(v); }; $("cfNo").onclick = () => d(false); $("cfYes").onclick = () => d(true); }); }
+async function removeSaved(id){
+  if (!(await ask(tr("Remove Saved Trip?"), tr("This trip will be removed from your saved trips."), tr("Remove")))) return;
+  try { await deleteDoc(doc(db,"users",uid,"saved_trips",id)); toast(tr("Trip removed from saved trips.")); }
+  catch(e){ console.error("REMOVE", e); toast(tr("Unable to remove this trip right now. Please try again.")); }
+}
+function watchTrip(sd){
+  const id = sd.id, s = sd.data(), tid = txt(s.tripId); if (!tid || subs[id]) return;
+  trips[id] = { s:"loading" };
+  subs[id] = onSnapshot(doc(db, normType(s.tripType) === "group" ? "group_trips" : "trips", tid),
+    x => { trips[id] = x.exists() && x.data() ? { s:"ok", d:x.data() } : { s:"missing" }; render(); },
+    e => { console.warn("TRIP", e); trips[id] = { s:"err" }; render(); });
+}
+onAuthStateChanged(auth, user => {
+  if (!user) { location.replace(LOGIN_URL); return; }
+  uid = user.uid;
+  onSnapshot(collection(db,"users",uid,"saved_trips"), snap => {
+    saved = snap.docs.slice().sort((a,b) => ms(b.data().savedAt) - ms(a.data().savedAt));
+    Object.keys(subs).forEach(k => { if (!snap.docs.some(d => d.id === k)) { subs[k](); delete subs[k]; delete trips[k]; } });
+    saved.forEach(watchTrip); loaded = true; failed = false; render();
+  }, e => { console.warn("SAVED", e); failed = true; render(); });
+});
+</script>
+</body>
+</html>
