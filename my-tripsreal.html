@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#ffffff"><title>TripRide</title><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet"><style>
+:root{--ink:#0F1B3D;--pri:#6D4AE8;--pri2:#8B6CF6;--acc:#FFB703;--bg:#F5F7FB;--mut:#5F6B8A;--line:#E3E8F2;--tint:#EEEAFF;--sh:0 8px 24px #0f1b3d10}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:Figtree,system-ui,sans-serif;color:var(--ink);min-height:100vh;padding-bottom:calc(48px + env(safe-area-inset-bottom));background:radial-gradient(640px 320px at 100% 0,#E2D9FF88,transparent 70%),radial-gradient(520px 320px at 0 100%,#FFEFC288,transparent 70%),var(--bg);background-attachment:fixed}
+h1,h2,h3{font-family:'Bricolage Grotesque',Figtree,system-ui,sans-serif;letter-spacing:-.015em}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit;text-align:left}
+button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+input{font:inherit;color:var(--ink)}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:24px;line-height:1;display:inline-block;font-variation-settings:'FILL' 1,'wght' 500;user-select:none}
+.hide{display:none!important}.grow{flex:1;min-width:0}.row{display:flex;align-items:center;gap:12px}
+.wrap{max-width:780px;margin:0 auto;padding:0 18px}#main{max-width:780px;margin:0 auto;padding:22px 18px 0;animation:up .35s ease both}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#boot{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:300}
+.spin{width:38px;height:38px;border:4px solid #e0e7ff;border-top-color:var(--pri);border-radius:50%;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
+/* top bar */
+.bar{position:sticky;top:0;z-index:60;background:#ffffffd9;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.bar-in{display:flex;align-items:center;gap:12px;height:64px}
+.bar h1{font-size:21px;font-weight:800;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbtn{width:42px;height:42px;border-radius:14px;background:var(--bg);display:grid;place-items:center;flex:none;transition:.15s;color:var(--ink)}.tbtn:hover{background:var(--tint);color:var(--pri)}
+/* text */
+.h2{font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.sub{color:var(--mut);margin:8px 0 24px;font-size:15px;line-height:1.55}
+.sect{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--mut);margin:22px 4px 10px}
+.mut,small{color:var(--mut);font-size:12.5px}
+/* cards */
+.card,.sc{background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;margin-bottom:14px;display:block;width:100%;box-shadow:var(--sh);animation:up .4s ease both}
+.tap{cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s}
+.tap:hover,.cat:hover{transform:translateY(-3px);border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}.tap:active,.cat:active{transform:scale(.99)}
+.cat{display:flex;align-items:center;gap:16px;transition:transform .18s,box-shadow .18s,border-color .18s;padding:20px}
+.cat b{font-family:'Bricolage Grotesque',Figtree,sans-serif;font-size:18px;display:block;margin-bottom:3px}
+.ib{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;flex:none;background:var(--tint);color:var(--pri)}.ib .ms{font-size:27px}.ib.big{width:84px;height:84px;border-radius:50%}
+.chev{color:#94A3B8}
+.pill{padding:5px 11px;border-radius:30px;font-size:11px;font-weight:800;white-space:nowrap;letter-spacing:.02em}
+.pill.ok{background:#DCFCE7;color:#15803D}.pill.bad{background:#FEE2E2;color:#B91C1C}.pill.warn{background:#FEF3C7;color:#B45309}.pill.lt{background:#ffffff33;color:#fff;backdrop-filter:blur(6px)}
+.rt p{padding-left:24px;position:relative;font-weight:700;font-size:14px;line-height:1.35}
+.rt p::before{content:"";position:absolute;left:0;top:4px;width:12px;height:12px;border-radius:50%;background:#16A34A;box-shadow:0 0 0 4px #16A34A22}
+.rt p+p{margin-top:20px}.rt p+p::before{background:#DC2626;box-shadow:0 0 0 4px #DC262622}
+.rt p+p::after{content:"";position:absolute;left:5px;top:-19px;height:19px;border-left:2px dashed #CBD3E6}
+.mi{display:flex;gap:9px;align-items:flex-start;margin-top:9px;font-size:13px;font-weight:600;color:#475569;line-height:1.4}.mi .ms{font-size:18px;color:#2563EB}
+hr{border:0;border-top:1px dashed #D5DBEA;margin:14px 0}
+.more{margin-top:12px;text-align:right;color:#2563EB;font-weight:800;font-size:13px}.more .ms{font-size:17px;vertical-align:middle}
+.av{border-radius:50%;background:linear-gradient(135deg,#EFF6FF,#E0E7FF) center/cover;display:grid;place-items:center;font-weight:800;color:#2563EB;flex:none;border:2px solid #fff;box-shadow:0 0 0 2px var(--line)}
+/* hero */
+.hero{position:relative;overflow:hidden;color:#fff;border-radius:28px;padding:22px;margin-bottom:16px;background:linear-gradient(135deg,#2563EB,#1E3A8A);box-shadow:0 18px 36px #1e3a8a33;animation:up .4s ease both}
+.hero.g{background:linear-gradient(135deg,#059669,#065F46);box-shadow:0 18px 36px #065f4633}
+.hero::before{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:#ffffff14}
+.hero::after{content:"";position:absolute;right:30px;bottom:-30px;width:70px;height:70px;border-radius:50%;background:var(--acc);opacity:.9}
+.hero>*{position:relative;z-index:1}
+.hero small{display:block;color:#ffffffb3;margin-top:22px;font-size:13px}.hero h2{font-size:23px;margin:2px 0 12px;max-width:85%}.hero p{font-size:13px;margin-top:8px;font-weight:600;color:#ffffffe0}
+/* sections */
+.sc h3{font-size:17px;margin-bottom:6px}
+.dr{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #EEF1F6;font-size:13px}.dr:last-child{border:0;padding-bottom:0}.dr span{color:var(--mut)}.dr b{text-align:right;word-break:break-word}
+.empty{text-align:center;padding:56px 20px}.empty .ib{margin:0 auto 18px;background:#EFF6FF;color:#2563EB}.empty .ib .ms{font-size:38px}.empty p{color:var(--mut);margin-top:6px;line-height:1.55}
+/* buttons / inputs */
+.btn{display:block;width:100%;padding:15px;border-radius:16px;background:var(--pri);color:#fff;font-weight:800;text-align:center;margin-top:12px;box-shadow:0 10px 22px #6d4ae840;transition:.15s}.btn:hover{filter:brightness(1.07)}.btn:active{transform:scale(.98)}
+.btn.red{background:#DC2626;box-shadow:0 10px 22px #dc262640}.btn.out{background:#fff;color:#2563EB;border:1px solid var(--line);box-shadow:none}
+.btn.sm{display:inline-block;width:auto;padding:10px 16px;margin:0;font-size:13px;border-radius:14px;box-shadow:none}.btn:disabled{opacity:.5;pointer-events:none}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin:16px 0;scrollbar-width:none;padding:2px}.tabs::-webkit-scrollbar{display:none}
+.tabs button{padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;color:var(--mut);background:#fff;border:1px solid var(--line);white-space:nowrap;transition:.15s}.tabs .on{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:3px 3px 0 var(--acc)}
+.inp{display:flex;gap:10px;margin-bottom:12px}.inp input{flex:1;height:52px;border:2px solid var(--ink);border-radius:999px;padding:0 20px;background:#fff;box-shadow:4px 4px 0 var(--ink);outline:0;font-weight:600}
+.inp .btn{border-radius:50%;width:52px;height:52px;padding:0;display:grid;place-items:center}
+.otp{border:1px solid #DDD6FE;background:linear-gradient(180deg,#F5F3FF,#fff);border-radius:18px;padding:16px;text-align:center;margin-top:12px}.otp b{display:block;font-size:30px;letter-spacing:7px;margin:8px 0;font-family:'Bricolage Grotesque',sans-serif}
+.grid3{display:flex;background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px 8px;margin-bottom:16px;text-align:center;box-shadow:var(--sh)}.grid3>div{flex:1;border-right:1px dashed #D5DBEA}.grid3>div:last-child{border:0}.grid3 b{font-size:24px;display:block;font-family:'Bricolage Grotesque',sans-serif}
+#toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:90%;background:var(--ink);color:#fff;padding:13px 18px;border-radius:16px;font-size:13px;font-weight:600;z-index:400;display:none;box-shadow:0 12px 30px #0f1b3d55}
+/* language sheet */
+.ov{position:fixed;inset:0;background:#17143a99;z-index:100;display:none;align-items:flex-end;justify-content:center}.ov.show{display:flex}
+.sheet{width:100%;max-width:520px;max-height:76vh;overflow:auto;background:#fff;border-radius:28px 28px 0 0;padding:12px 0 calc(20px + env(safe-area-inset-bottom))}
+.sheet .grab{width:42px;height:4px;border-radius:20px;background:#D9DBEA;margin:0 auto 14px}.sheet h3{padding:0 20px 10px}
+.sheet button{display:flex;width:100%;padding:14px 20px;border-top:1px solid #F0F1F8;font-weight:600}.sheet button.on{color:var(--pri);font-weight:800}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition:none!important}}
+</style></head><body><main id="main"></main>
+<script type="module">
+import {initializeApp,getApps} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import {getAuth,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import * as F from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+const app=getApps()[0]||initializeApp({apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw",authDomain:"tripmate-74df9.firebaseapp.com",projectId:"tripmate-74df9",storageBucket:"tripmate-74df9.firebasestorage.app",messagingSenderId:"931960941543",appId:"1:931960941543:web:ced98c012dc22fcb776b42"});
+const auth=getAuth(app),db=F.getFirestore(app);
+/* i18n: same key as home. Paste more titles from your Flutter maps here. */
+const T={te:{"Refer & Earn":"రిఫర్ చేసి సంపాదించండి","Friends & Following":"స్నేహితులు & ఫాలోయింగ్","Ride History":"రైడ్ చరిత్ర","My Bookings":"నా బుకింగ్‌లు","My Trips":"నా ట్రిప్స్"},hi:{"Refer & Earn":"रेफर करें और कमाएँ","Friends & Following":"दोस्त और फ़ॉलोइंग","Ride History":"राइड इतिहास","My Bookings":"मेरी बुकिंग","My Trips":"मेरी यात्राएँ"}};
+let lang="en";try{lang=localStorage.getItem("tripride_home_language")||"en"}catch{}
+const tr=k=>T[lang]?.[k]||k;
+/* helpers */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const h=s=>{const t=document.createElement("template");t.innerHTML=s.trim();return t.content.firstChild};
+const txt=v=>v==null?"":String(v).trim();
+const ft=(...a)=>{for(const v of a){const t=txt(v);if(t&&t.toLowerCase()!=="null")return t}return""};
+const fv=(...a)=>a.find(v=>v!=null)??null;
+const fn=(...a)=>{for(const v of a){if(typeof v==="number")return v;if(typeof v==="string"){const n=parseFloat(v.replace(/[₹,]/g,""));if(!isNaN(n))return n}}return 0};
+const dt=v=>{if(v==null)return null;if(v.toDate)return v.toDate();if(v instanceof Date)return v;if(typeof v==="string"){const d=new Date(v);return isNaN(d)?null:d}return null};
+const ms=v=>dt(v)?.getTime()||0;
+const p2=n=>String(n).padStart(2,"0");
+const fd=v=>{const d=dt(v);return d?`${p2(d.getDate())}/${p2(d.getMonth()+1)}/${d.getFullYear()}`:"Not available"};
+const fdt=v=>{const d=dt(v);return d?`${fd(d)} • ${d.getHours()%12||12}:${p2(d.getMinutes())} ${d.getHours()>=12?"PM":"AM"}`:"Not available"};
+const money=n=>n===Math.round(n)?String(Math.round(n)):n.toFixed(2);
+const findDate=(t,b,fs)=>{for(const f of fs){if(t[f]!=null)return t[f];if(b[f]!=null)return b[f]}return null};
+const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9]/g,"");
+const belongs=(d,uid)=>["customerId","userId","customerUid","uid","passengerId","bookedUserId","passengerUid","riderId","riderUid","customerUID","userUID"].some(k=>txt(d[k])===uid);
+const matches=(d,s)=>{const w=norm(s),al={carrental:["carrental","rentalcar"],bikerental:["bikerental","rentalbike","motorcyclerental"]},c=["serviceType","service","bookingType","rideType","category","vehicleType","vehicleCategory"].filter(k=>d[k]!=null).map(k=>norm(d[k]));return(al[w]||[w]).some(a=>c.includes(a))};
+const TAXI={"Car Taxi":["carTaxiRequests","carTaxiTrips"],"Bike Taxi":["bikeTaxiRequests","bikeTaxiTrips"],"Auto Taxi":["autoTaxiRequests","autoTaxiTrips"]};
+let tt;export const toast=m=>{const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(tt);tt=setTimeout(()=>t.style.display="none",4000)};
+/* taxi scan: partners/{id}/{svc}Requests (+ optional {svc}Trips), merged per ride */
+async function scanTaxi(svc,uid,{trips=false,ok,prio}){
+ const [rq,tc]=TAXI[svc],map=new Map();
+ const put=(k,it)=>{const o=map.get(k);if(!o||prio(it.data)>prio(o.data))map.set(k,it)};
+ const ps=await F.getDocs(F.collection(db,"partners"));
+ await Promise.all(ps.docs.map(async p=>{try{
+  const rs=await F.getDocs(F.collection(p.ref,rq));
+  for(const d of rs.docs){const r=d.data();let t={};const tid=ft(r.tripId,r.activeTripId,r.rideTripId);
+   if(trips&&tid){try{const s=await F.getDoc(F.doc(p.ref,tc,tid));if(s.exists())t=s.data()}catch{}}
+   const m={...r,...t,partnerId:p.id};m.requestId=ft(r.requestId,t.requestId,r.rideId,t.rideId,r.bookingId,t.bookingId,d.id);
+   if(!belongs(m,uid)||!ok(m))continue;
+   put(m.requestId,{id:m.requestId,data:m,path:Object.keys(t).length?`${p.ref.path}/${tc}/${tid}`:d.ref.path})}
+  if(trips){const ts=await F.getDocs(F.collection(p.ref,tc));for(const d of ts.docs){const t={...d.data(),partnerId:p.id};if(!belongs(t,uid)||!ok(t))continue;const k=ft(t.requestId,t.rideId,t.bookingId,t.tripId,d.id);put(k,{id:k,data:t,path:d.ref.path})}}
+ }catch(e){console.warn("partner",p.id,e)}}));
+ return [...map.values()]}
+/* html bits */
+const pill=(s,l)=>{const v=(s||"").toLowerCase();return `<span class="pill ${l?"lt":/cancel|fail/.test(v)?"bad":/complete|confirm|success|active|return|verified|book/.test(v)?"ok":"warn"}">${esc(s||"Confirmed")}</span>`};
+const avatar=(p,n,r=20)=>{const s=`width:${r*2}px;height:${r*2}px;font-size:${r*.8}px`;return /^https:/.test(p||"")?`<div class="av" style="${s};background-image:url(${encodeURI(p).replace(/['()]/g,escape)})"></div>`:`<div class="av" style="${s}">${esc((n||"U").trim().charAt(0).toUpperCase())}</div>`};
+const route=(f,t)=>`<div class="rt"><p>${esc(f)}</p><p>${esc(t)}</p></div>`;
+const sec=(t,rows)=>`<section class="sc"><h3>${esc(t)}</h3>${rows.filter(Boolean).map(([k,v])=>`<div class="dr"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")}</section>`;
+const hero=(tag,st,f,t,lines=[],g)=>`<div class="hero${g?" g":""}"><div class="row"><b class="grow">${esc(tag)}</b>${pill(st,1)}</div><small>${esc(f)}</small><span class="ms">arrow_downward</span><h2>${esc(t)}</h2>${lines.filter(Boolean).map(l=>`<p>${esc(l)}</p>`).join("")}</div>`;
+const empty=(i,t,s)=>`<div class="empty"><div class="ib big"><span class="ms">${i}</span></div><h3>${esc(t)}</h3><p>${esc(s)}</p></div>`;
+const cat=({icon,color="#2563EB",bg="#EFF6FF",title,sub,go})=>{const e=h(`<button class="card cat"><div class="ib" style="background:${bg};color:${color}"><span class="ms">${icon}</span></div><div class="grow"><b>${esc(title)}</b><small>${esc(sub)}</small></div><span class="ms chev">chevron_right</span></button>`);e.onclick=go;return e};
+const rcard=(o,go)=>{const e=h(`<div class="card tap"><div class="row"><div class="ib" style="width:46px;height:46px;background:${o.bg||"#EFF6FF"};color:${o.color||"#2563EB"}"><span class="ms">${o.icon}</span></div><b class="grow">${esc(o.title)}</b>${pill(o.status)}</div>${o.from?`<div style="margin:16px 0">${route(o.from,o.to)}</div>`:""}${(o.lines||[]).filter(Boolean).map(l=>`<div class="mi"><span class="ms">${l[0]}</span>${esc(l[1])}</div>`).join("")}<hr><div class="row">${avatar(o.photo,o.who)}<div class="grow"><b>${esc(o.who)}</b>${o.phone?`<br><small>${esc(o.phone)}</small>`:""}</div>${o.amt>0?`<b>₹${money(o.amt)}</b>`:""}</div><div class="more">${esc(o.more||"View Details")} <span class="ms">arrow_forward</span></div></div>`);e.onclick=go;return e};
+/* tiny view stack: list -> details, back button pops */
+const stack=[];
+function push(title,fn_){stack.push({title,fn_});draw()}
+function pop(){stack.pop();if(!stack.length){history.length>1?history.back():location.href="index.html";return}draw()}
+function draw(){const s=stack[stack.length-1];$("ttl").textContent=s.title;const m=$("main");m.textContent="";scrollTo(0,0);s.fn_(m)}
+const redraw=draw;
+function boot(title,run){
+ document.title=title+" | TripRide";
+ document.body.insertAdjacentHTML("afterbegin",`<div id="boot"><div class="spin"></div></div><header class="bar"><div class="wrap bar-in"><button class="tbtn" id="bk" aria-label="Back"><span class="ms">arrow_back</span></button><h1 id="ttl"></h1><button class="tbtn" id="lg" aria-label="Language"><span class="ms">translate</span></button></div></header><div class="ov" id="lov"><div class="sheet" id="lsh"></div></div><div id="toast"></div>`);
+ $("bk").onclick=pop;
+ const LG=[["en","English"],["as","অসমীয়া"],["bn","বাংলা"],["brx","बर’"],["doi","डोगरी"],["gu","ગુજરાતી"],["hi","हिन्दी"],["kn","ಕನ್ನಡ"],["ks","کٲشُر"],["kok","कोंकणी"],["mai","मैथिली"],["ml","മലയാളം"],["mni","মৈতৈলোন্"],["mr","मराठी"],["ne","नेपाली"],["or","ଓଡ଼ିଆ"],["pa","ਪੰਜਾਬੀ"],["sa","संस्कृतम्"],["sat","ᱥᱟᱱᱛᱟᱲᱤ"],["sd","سنڌي"],["ta","தமிழ்"],["te","తెలుగు"],["ur","اردو"]];
+ $("lg").onclick=()=>{$("lsh").innerHTML='<div class="grab"></div><h3>Language</h3>'+LG.map(([c,n])=>`<button data-c="${c}" class="${c===lang?"on":""}">${n}</button>`).join("");$("lsh").querySelectorAll("button").forEach(b=>b.onclick=()=>{try{localStorage.setItem("tripride_home_language",b.dataset.c)}catch{}location.reload()});$("lov").classList.add("show")};
+ $("lov").onclick=e=>{if(e.target.id==="lov")$("lov").classList.remove("show")};let ran=0;
+ F.getFirestore;onAuthStateChanged(auth,u=>{if(!u){location.replace("login.html");return}if(ran++)return;$("boot").remove();run(u)})}
+
+/* ===== page logic ===== */
+
+const {collection,query,where,getDocs,getDoc,doc,setDoc,updateDoc,writeBatch,serverTimestamp,increment}=F;
+const from=(t,g)=>g?ft(t.tripStartLocation,t.meetingLocation,t.from,"Starting Point"):ft(t.from,t.pickupLocation,"Pickup");
+const to=(t,g)=>g?ft(t.destination,t.tripEndLocation,t.to,t.tripName,"Destination"):ft(t.to,t.dropLocation,"Destination");
+const tdate=(t,g)=>g?fv(t.tripDate,t.startDate,t.rideDate,t.date):fv(t.rideDate,t.tripDate,t.date);
+const price=(t,g)=>g?fn(t.tripCost,t.price,t.amount):fn(t.price,t.tripPrice,t.amount);
+function endTime(t,fb){const e=dt(fv(t.tripEndTime,t.rideEndTime,t.endTime,t.tripEndDateTime,t.endDateTime,t.expectedEndTime,t.expectedTripEnd));if(e)return e;const s=dt(fv(t.tripDate,t.startDate,t.rideDate,t.date,fb));if(!s)return null;const mi=fn(t.tripDurationMinutes,t.rideDurationMinutes,t.durationMinutes,t.estimatedDurationMinutes);if(mi>0)return new Date(s.getTime()+mi*6e4);const hr=fn(t.tripDurationHours,t.rideDurationHours,t.durationHours,t.estimatedDurationHours);return hr>0?new Date(s.getTime()+hr*36e5):s}
+function status(t,d){const e=ft(t.status);if(e.toLowerCase().includes("cancel"))return e[0].toUpperCase()+e.slice(1);const en=endTime(t,d);if(en&&en<=new Date())return "Completed";if(e)return e[0].toUpperCase()+e.slice(1);const x=dt(d);return !x?"Active":x<new Date()?"Completed":"Upcoming"}
+const sp=s=>{const v=(s||"").toLowerCase();return `<span class="pill ${/cancel|fail/.test(v)?"bad":/complete/.test(v)?"warn":"ok"}">${esc(s)}</span>`};
+const active=d=>!/cancel/i.test(ft(d.bookingStatus,d.status,"Confirmed"));
+const bcount=async(id,g)=>{try{return(await getDocs(query(collection(db,g?"group_bookings":"bookings"),where("tripId","==",id)))).docs.filter(d=>active(d.data())).length}catch{return 0}};
+async function loadUser(uid,fb){try{const d=(await getDoc(doc(db,"users",uid))).data()||{};return{name:ft(d.name,d.fullName,d.displayName,fb.name),photo:ft(d.profilePhoto,d.photo,d.photoUrl,d.profileImage,fb.photo),phone:ft(d.phone,d.phoneNumber,d.mobile,d.mobileNumber,fb.phone)}}catch{return fb}}
+boot(tr("My Trips"),u=>{const uid=u.uid;
+ push(tr("My Trips"),m=>{m.innerHTML=`<h2 class="h2">Trips Created by You</h2><p class="sub">Manage your trips, view bookings and chat with passengers.</p>`;
+  m.append(cat({icon:"route",title:"Place to Place Trips",sub:"Trips created by you and passenger bookings.",go:()=>list(false)}));
+  m.append(cat({icon:"groups",color:"#059669",bg:"#ECFDF5",title:"Group Trips",sub:"Group trips created by you and booked members.",go:()=>list(true)}))});
+
+ function list(g){push(g?"My Group Trips":"My Place to Place Trips",async m=>{m.innerHTML='<div class="empty"><div class="spin" style="margin:auto"></div></div>';
+  try{const s=await getDocs(query(collection(db,g?"group_trips":"trips"),where(g?"creatorId":"driverId","==",uid)));
+   const docs=s.docs.sort((a,b)=>ms(tdate(b.data(),g))-ms(tdate(a.data(),g)));m.textContent="";
+   if(!docs.length)return m.innerHTML=empty(g?"groups":"route","No trips created yet",g?"Your created group trips will appear here.":"Your created place-to-place trips will appear here.");
+   docs.forEach(d=>{const t=d.data(),date=tdate(t,g),st=status(t,date),f=from(t,g),to_=to(t,g),pr=price(t,g),veh=ft(t.vehicle,t.vehicleName,t.vehicleType,t.carModel);
+    // auto-complete once the ride end time has passed
+    const raw=ft(t.status).toLowerCase(),en=endTime(t,date);if(!raw.includes("cancel")&&raw!=="completed"&&en&&en<=new Date())updateDoc(d.ref,{status:"Completed",completedAt:serverTimestamp(),updatedAt:serverTimestamp()}).catch(()=>{});
+    const e=h(`<div class="card tap"><div class="row"><div class="ib" style="width:47px;height:47px;background:${g?"#ECFDF5":"#EFF6FF"};color:${g?"#059669":"#2563EB"}"><span class="ms">${g?"groups":"route"}</span></div><b class="grow">${esc(g?ft(t.tripName,"Group Trip"):`${f} → ${to_}`)}</b>${sp(st)}</div><div style="margin:16px 0">${route(f,to_)}</div>${st.toLowerCase()==="completed"?'<div class="card" style="background:#ECFDF5;border-color:#A7F3D0;color:#047857;font-weight:800;font-size:13px;padding:11px 13px;margin:0 0 12px">✔ Ride Completed • View ride details</div>':""}${date?`<div class="mi"><span class="ms">calendar_month</span>${fdt(date)}</div>`:""}${veh?`<div class="mi"><span class="ms">directions_car</span>${esc(veh)}</div>`:""}<hr><div class="row"><span class="ms" style="color:#64748B">people_alt</span><b class="grow mut bc">0 bookings</b>${pr>0?`<b style="font-size:17px">₹${money(pr)}</b>`:""}</div><div class="row" style="margin-top:12px">${st.toLowerCase()!=="completed"&&ft(t.status)!=="Cancelled by Creator"?'<button class="btn out sm cx" style="color:#DC2626">Cancel Trip</button>':""}<span class="grow"></span><b style="color:#2563EB;font-size:13px">Manage Trip →</b></div></div>`);
+    bcount(d.id,g).then(n=>e.querySelector(".bc").textContent=n+" bookings");
+    e.onclick=()=>detail(d.id,t,g);const cx=e.querySelector(".cx");if(cx)cx.onclick=ev=>{ev.stopPropagation();cancel(d.id,g,cx)};m.append(e)})
+  }catch(e){console.error(e);m.innerHTML=empty("cloud_off","Unable to load trips","Check your internet connection and try again.")}})}
+
+ async function cancel(id,g,btn){
+  const ref=doc(db,g?"group_trips":"trips",id);if(ft((await getDoc(ref)).data()?.status)==="Cancelled by Creator")return toast("This trip is already cancelled.");
+  if(!confirm("Cancel Trip\n\nAre you sure?\n\n• This trip will be cancelled.\n• Every booked passenger will be refunded their booking fee.\n• The refunded amount will be deducted from your wallet.\n• If your wallet balance becomes negative, you cannot create a new trip until your dues are cleared."))return;
+  btn.disabled=true;btn.textContent="Cancelling...";
+  try{const bs=await getDocs(query(collection(db,g?"group_bookings":"bookings"),where("tripId","==",id))),act=bs.docs.filter(x=>active(x.data())),b=writeBatch(db);
+   if(g)b.update(ref,{status:"Cancelled by Creator",seatsAvailable:0,bookedSeats:0});
+   else{const n=act.reduce((a,x)=>{const k=x.data(),v=fn(k.seats,k.seatsBooked,k.bookedSeats,k.numberOfSeats);return a+(v>0?Math.trunc(v):1)},0);b.update(ref,{status:"Cancelled by Creator",availableSeats:increment(n),bookedSeats:increment(-n)})}
+   let tot=0;for(const x of act){const k=x.data(),pid=k.passengerId||k.userId||k.bookedUserId,r=Math.round(fn(k.bookingFee,k.totalAmount,k.amount)),amt=r>0?r:50;b.update(x.ref,{bookingStatus:"Cancelled by Creator",cancelledBy:"Creator",cancelledAt:serverTimestamp()});if(!pid)continue;tot+=amt;b.update(doc(db,"users",pid),{wallet:increment(amt)})}
+   b.update(doc(db,"users",uid),{wallet:increment(-tot)});await b.commit();
+   toast(tot>0?`Trip cancelled. ₹${tot} refunded across ${act.length} passenger(s).`:"Trip cancelled successfully.");pop();list(g);
+  }catch(e){console.error(e);toast("Unable to cancel the trip right now. Check your internet connection and try again.");btn.disabled=false;btn.textContent="Cancel Trip"}}
+
+ function detail(id,t,g){push("Trip Details",m=>{
+  const f=from(t,g),to_=to(t,g),date=tdate(t,g),pr=price(t,g),st=status(t,date),veh=ft(t.vehicle,t.vehicleName,t.vehicleType,t.carModel),vno=ft(t.vehicleNumber,t.registrationNumber,t.vehicleNo),ts=fn(t.totalSeats,t.seats,t.seatCapacity),as=fn(t.availableSeats,t.seatsAvailable,t.remainingSeats),cr=fv(t.createdAt,t.postedAt),en=endTime(t,date);
+  m.innerHTML=hero(g?"Group Trip":"Place to Place",st,f,to_,[date&&fdt(date)],g)+
+  sec("Trip Information",[["From",f],["To",to_],date&&["Date & Time",fdt(date)],veh&&["Vehicle",veh],vno&&["Vehicle No.",vno],pr>0&&["Price","₹"+money(pr)],ts>0&&["Total Seats",money(ts)],as>0&&["Available Seats",money(as)],["Status",st],st.toLowerCase()==="completed"&&en&&["Ride Completed",fdt(en)],["Trip ID",id],cr&&["Created On",fdt(cr)]])+
+  `<h2 style="margin:18px 0 12px">Booked Passengers</h2><div id="pax"></div>`;
+  const box=m.querySelector("#pax");box.innerHTML='<div class="empty"><div class="spin" style="margin:auto"></div></div>';
+  getDocs(query(collection(db,g?"group_bookings":"bookings"),where("tripId","==",id))).then(async s=>{
+   const docs=s.docs.filter(d=>active(d.data())).sort((a,b)=>ms(b.data().createdAt)-ms(a.data().createdAt));box.textContent="";
+   if(!docs.length)return box.innerHTML='<div class="card mut">No passengers booked this trip yet.</div>';
+   for(const d of docs){const b=d.data(),pid=ft(b.passengerId,b.bookedUserId,b.userId),fb={name:ft(b.passengerName,b.bookedUserName,b.userName,b.name,"Passenger"),photo:ft(b.passengerPhoto,b.bookedUserPhoto,b.profilePhoto,b.userPhoto),phone:ft(b.passengerPhone,b.passengerMobile,b.bookedUserPhone,b.bookedUserMobile,b.phone,b.phoneNumber,b.mobile,b.mobileNumber)},p=await loadUser(pid,fb),amt=fn(b.totalAmount,b.tripPrice,b.amount,b.bookingFee),seats=fn(b.seats,b.seatsBooked,b.bookedSeats,b.numberOfSeats);
+    const e=h(`<div class="card"><div class="row">${avatar(p.photo,p.name,25)}<div class="grow"><b>${esc(p.name)}</b>${p.phone?`<br><small>📞 ${esc(p.phone)}</small>`:""}<br><small>${seats>0?money(seats)+" seat"+(seats==1?"":"s")+" booked":"Trip passenger"}</small></div>${pill(ft(b.bookingStatus,b.status,"Confirmed"))}</div><div class="row" style="margin:12px 0"><b class="grow">${amt>0?"₹"+money(amt):""}</b><small>${fdt(b.createdAt)}</small></div><div class="row"><button class="btn out sm grow dt" style="text-align:center">Details</button><button class="btn sm grow ch" style="text-align:center" ${pid?"":"disabled"}>Chat</button></div></div>`);
+    e.querySelector(".dt").onclick=()=>pdetail(d.id,b,p,id,pid);e.querySelector(".ch").onclick=()=>chat(pid,p,id,t,g);box.append(e)}
+  }).catch(()=>box.innerHTML='<div class="card mut">Unable to load bookings</div>')})}
+
+ function pdetail(bid,b,p,tid,pid){push("Passenger Details",m=>{
+  const fee=fn(b.bookingFee,b.bookingAmount),tot=fn(b.totalAmount,b.tripPrice,b.amount),rem=fn(b.remainingAmount,b.remainingPayment),seats=fn(b.seats,b.seatsBooked,b.bookedSeats,b.numberOfSeats),na="Not available";
+  m.innerHTML=sec("Passenger",[["Name",p.name],p.phone&&["Mobile",p.phone],pid&&["ID",pid]])+
+  sec("Booking Information",[["Booking ID",bid],["Trip ID",tid],seats>0&&["Seats",money(seats)],["Booking Status",ft(b.bookingStatus,b.status,"Confirmed")],["Booked On",fv(b.createdAt,b.bookedAt)?fdt(fv(b.createdAt,b.bookedAt)):na]])+
+  sec("Payment Details",[tot>0&&["Total Amount","₹"+money(tot)],fee>0&&["Booking Fee","₹"+money(fee)],rem>0&&["Remaining","₹"+money(rem)],["Payment Status",ft(b.paymentStatus,b.payment_status,na)],["Payment Method",ft(b.paymentMethod,b.payment_method,na)],["Payment ID",ft(b.paymentId,b.razorpayPaymentId,b.razorpay_payment_id,na)]])})}
+
+ async function chat(pid,p,tid,t,g){
+  if(!pid)return;if(pid===uid)return toast("You cannot chat with yourself.");
+  const type=g?"group":"place_to_place",cid=`${type}_${tid}_${uid}_${pid}`,f=from(t,g),to_=to(t,g),title=g?ft(t.tripName,`${f} → ${to_}`,"Group Trip"):`${f} → ${to_}`,me=await loadUser(uid,{name:"Trip Creator",photo:"",phone:""}),ref=doc(db,"chats",cid);
+  try{const ex=await getDoc(ref),d={chatId:cid,userIds:[uid,pid],creatorId:uid,passengerId:pid,creatorName:me.name,creatorPhoto:me.photo,passengerName:p.name,passengerPhoto:p.photo,tripId:tid,tripType:type,tripTitle:title,from:f,to:to_,updatedAt:serverTimestamp()};
+   if(!ex.exists()){d.createdAt=serverTimestamp();d.lastMessage=""}await setDoc(ref,d,{merge:true});
+   location.href=`chat.html?id=${encodeURIComponent(cid)}`;  // <- point this at your chat page
+  }catch(e){console.error(e);toast("Unable to open chat right now. Check your internet connection and try again.")}}
+});
+</script></body></html>
