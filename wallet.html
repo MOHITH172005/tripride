@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Wallet & Payments | TripRide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+:root{--ink:#0F1B3D;--pri:#6D4AE8;--acc:#FFB703;--bg:#F5F7FB;--mut:#5F6B8A;--line:#E3E8F2;--tint:#EEEAFF;--ok:#16A34A;--bad:#DC2626}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Figtree,system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+h1,h2,h3,.big{font-family:'Bricolage Grotesque',Figtree,sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:400;font-style:normal;font-size:24px;line-height:1;display:inline-block;font-variation-settings:'FILL' 1,'wght' 500;user-select:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.hide{display:none!important}
+.bar{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.bar-in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px;height:64px;padding:0 16px}
+.back{width:42px;height:42px;border-radius:14px;background:var(--bg);display:grid;place-items:center}
+.bar h1{font-size:20px;font-weight:800;letter-spacing:-.02em;flex:1}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px calc(40px + env(safe-area-inset-bottom));display:grid;gap:18px}
+.card{position:relative;overflow:hidden;background:var(--ink);color:#fff;border-radius:30px;padding:26px}
+.card::after{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:var(--pri);opacity:.9}
+.card::before{content:"";position:absolute;right:60px;top:70px;width:46px;height:46px;border-radius:50%;background:var(--acc)}
+.card>*{position:relative;z-index:1}
+.card .lbl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#ffffffb3}
+.card .amt{margin-top:26px;font-size:clamp(36px,9vw,52px);font-weight:800;letter-spacing:-.03em}
+.card small{display:block;color:#ffffffa0;font-size:13px;margin-top:4px}
+.card .sec{display:flex;align-items:center;gap:6px;margin-top:22px;font-size:12px;color:#ffffffa0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.act{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 10px;background:#fff;border:1px solid var(--line);border-radius:22px;font-weight:800;font-size:14px;transition:transform .15s,box-shadow .15s,border-color .15s}
+.act:hover:not(:disabled){transform:translateY(-3px);border-color:var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.act i{width:48px;height:48px;border-radius:16px;background:var(--tint);color:var(--pri);display:grid;place-items:center;font-style:normal}
+.h{font-size:13px;font-weight:800;color:var(--mut);margin:10px 4px -6px;letter-spacing:.02em}
+.box{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.pad{padding:16px}
+.info{display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:22px;font-size:13px;line-height:1.45;font-weight:600}
+.info b{display:block;font-size:14px;font-weight:800;margin-bottom:3px}
+.info.use{background:#fff;border:1px solid var(--line);color:var(--mut);align-items:center}
+.info.ref{background:#ECFDF3;border:1px solid #BBF7D0;color:#15803D}.info.ref b{color:#166534}
+.info.warn{background:#FFF7ED;border:1px solid #FED7AA;color:#9A3412;font-size:12px}
+.ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--tint);color:var(--pri)}
+.ref .ic{background:#DCFCE7;color:var(--ok)}
+.tx{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #F0F1F8}
+.tx:last-child{border:0}
+.tx .ic.c{background:#F0FDF4;color:var(--ok)}.tx .ic.d{background:#FEF2F2;color:var(--bad)}
+.tx div{flex:1;min-width:0}
+.tx b{display:block;font-size:14px;font-weight:700}
+.tx small{display:block;font-size:12px;color:var(--mut);margin-top:3px;line-height:1.35}
+.tx .v{flex:none;font-weight:800;font-size:15px}
+.v.c{color:var(--ok)}.v.d{color:var(--bad)}
+.empty{padding:34px 18px;text-align:center;color:var(--mut);font-size:14px}
+.empty .ms{font-size:44px;color:#94A3B8;display:block;margin-bottom:8px}
+.empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+.wr{padding:12px 14px;margin:10px;background:var(--bg);border-radius:16px}
+.wr .top{display:flex;align-items:center;gap:8px}.wr .top b{flex:1;font-size:18px;font-weight:800}
+.pill{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:800}
+.wr small{display:block;font-size:11.5px;color:var(--mut);margin-top:4px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:54px;border-radius:17px;background:var(--pri);color:#fff;font-weight:800;font-size:15px}
+.btn.sm{height:48px;font-size:14px}
+.ghost{color:var(--pri);font-weight:800;font-size:13px;padding:8px 4px}
+.ov{position:fixed;inset:0;background:#17143a99;z-index:100;display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sheet{width:100%;max-width:520px;max-height:92vh;background:#fff;border-radius:28px 28px 0 0;overflow:auto;padding:12px 20px calc(24px + env(safe-area-inset-bottom))}
+.grab{width:42px;height:4px;border-radius:20px;background:#D9DBEA;margin:0 auto 16px}
+.sheet h2{font-size:23px;font-weight:800;letter-spacing:-.02em}
+.sheet .sub{color:var(--mut);font-size:14px;margin-top:5px}
+.fld{display:block;margin-top:12px}
+.fld span{display:block;font-size:12px;font-weight:700;color:var(--mut);margin-bottom:5px}
+.fld input{width:100%;height:50px;padding:0 16px;border:1.5px solid var(--line);background:#F8FAFC;border-radius:15px;font:inherit;font-size:15px;font-weight:600;color:var(--ink)}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 20px}
+.chips button{padding:9px 16px;border-radius:999px;background:var(--tint);color:var(--pri);font-weight:800;font-size:13px}
+.saved{padding:14px;border-radius:16px;background:#F0FDF4;border:1px solid #BBF7D0;font-size:13px;margin-top:16px}
+.saved b{color:#166534}
+.dlg{background:#fff;border-radius:30px;padding:26px 22px;max-width:400px;width:calc(100% - 32px);align-self:center;margin:auto;text-align:center}
+.dlg .ok{width:96px;height:96px;margin:0 auto;border-radius:50%;background:linear-gradient(135deg,#22C55E,#16A34A);color:#fff;display:grid;place-items:center;box-shadow:0 10px 24px #22c55e55}
+.dlg .ok .ms{font-size:48px}
+.dlg h3{font-size:25px;font-weight:800;margin-top:20px}
+.dlg p{color:var(--mut);font-size:14px;margin-top:8px}
+.dlg .got{margin:20px 0;padding:18px;border-radius:20px;background:#F0FDF4;border:1px solid #BBF7D0}
+.dlg .got small{display:block;font-size:11px;font-weight:800;color:#15803D;letter-spacing:.06em}
+.dlg .got b{font-size:34px;font-weight:800;color:#14532D}
+#proc{position:fixed;inset:0;background:#ffffffd9;z-index:200;display:none;place-items:center;text-align:center;font-weight:700}
+#proc.show{display:grid}
+.spin{width:38px;height:38px;border:4px solid #e0e7ff;border-top-color:var(--pri);border-radius:50%;animation:s 1s linear infinite;margin:0 auto 12px}
+@keyframes s{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition:none!important}}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:90%;background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;z-index:400;display:none}
+</style>
+</head>
+<body>
+<div id="proc"><div><div class="spin"></div><span id="procTxt">Please wait…</span></div></div>
+
+<header class="bar"><div class="bar-in">
+  <button class="back" id="back" aria-label="Back"><span class="ms">arrow_back</span></button>
+  <h1 data-i="walletTitle">Wallet & Payments</h1>
+</div></header>
+
+<main class="wrap">
+  <section class="card">
+    <div class="lbl"><span class="ms" style="font-size:20px">account_balance_wallet</span><span data-i="wallet">TRIPRIDE WALLET</span></div>
+    <div class="amt big" id="bal">₹0.00</div>
+    <small data-i="balance">Available Balance</small>
+    <div class="sec"><span class="ms" style="font-size:16px">lock</span><span data-i="secure">Secure payments</span></div>
+  </section>
+
+  <div class="two">
+    <button class="act" id="addBtn"><i><span class="ms">add</span></i><span data-i="addMoney">Add Money</span></button>
+    <button class="act" id="wdBtn"><i><span class="ms">arrow_upward</span></i><span data-i="withdraw">Withdraw</span></button>
+  </div>
+
+  <h3 class="h">WITHDRAWAL REQUEST HISTORY</h3>
+  <div class="box" id="wdHist"><div class="empty">Loading…</div></div>
+
+  <h3 class="h" data-i="payWith">PAY WITH TRIPRIDE</h3>
+  <div class="info use"><span class="ic"><span class="ms">account_balance_wallet</span></span><span data-i="walletUse">Use your TripRide Wallet balance for eligible booking charges, including the RYDORA platform fee.</span></div>
+
+  <div class="info ref"><span class="ic"><span class="ms">card_giftcard</span></span><div><b data-i="referralRewards">Referral Rewards</b><span data-i="referralInfo">Referral rewards are added automatically to your wallet. The transaction history shows who the referral was from.</span></div></div>
+
+  <h3 class="h" data-i="history">TRANSACTION HISTORY</h3>
+  <div class="box" id="txBox"><div class="empty">Loading…</div></div>
+
+  <div class="info warn"><span class="ms" style="font-size:20px;color:#EA580C">info</span><span>Note: If an eligible refund is not credited to your Wallet, please contact Customer Care for assistance.</span></div>
+</main>
+
+<!-- Add money -->
+<div class="ov" id="addOv"><div class="sheet">
+  <div class="grab"></div>
+  <h2 data-i="addMoney">Add Money</h2><p class="sub" data-i="addMoneySubtitle">Add money securely using Razorpay</p>
+  <label class="fld"><span data-i="amount">Amount</span><input id="addAmt" type="text" inputmode="decimal" autocomplete="off" data-iph="enterAmount" placeholder="Enter amount"></label>
+  <div class="chips" id="chips"></div>
+  <button class="btn" id="payGo"><span data-i="continuePay">Continue to Pay</span></button>
+</div></div>
+
+<!-- Withdraw -->
+<div class="ov" id="wdOv"><div class="sheet">
+  <div class="grab"></div>
+  <h2>Withdraw wallet balance</h2><p class="sub" id="wdBal"></p>
+  <div class="saved hide" id="savedBox">
+    <b>✓ Saved bank account</b>
+    <div id="savedTxt" style="margin-top:6px"></div>
+    <button class="ghost" id="chgBank">Change bank account</button>
+  </div>
+  <div id="bankForm">
+    <h3 style="margin-top:18px;font-size:16px">Bank account details</h3>
+    <label class="fld"><span>Account holder name</span><input id="fHolder"></label>
+    <label class="fld"><span>Bank name</span><input id="fBank"></label>
+    <label class="fld"><span>Account number</span><input id="fAcc" inputmode="numeric"></label>
+    <label class="fld"><span>IFSC code</span><input id="fIfsc" style="text-transform:uppercase"></label>
+    <label class="fld"><span>UPI ID (optional)</span><input id="fUpi"></label>
+    <button class="btn sm" id="saveBank" style="margin-top:14px"><span>Save bank account</span></button>
+  </div>
+  <label class="fld" style="margin-top:20px"><span>Withdrawal amount</span><input id="wdAmt" inputmode="decimal" placeholder="₹200 minimum • ₹10,000 maximum"></label>
+  <p style="font-size:11.5px;color:var(--mut);margin-top:6px">Minimum ₹200, maximum ₹10,000 per request</p>
+  <button class="btn" id="wdGo" style="margin-top:16px"><span>Request withdrawal</span></button>
+  <p style="font-size:12px;color:var(--mut);margin-top:10px;line-height:1.4">Funds are reserved when you submit a request. Rejected requests are refunded after admin review.</p>
+</div></div>
+
+<!-- Success -->
+<div class="ov" id="okOv"><div class="dlg">
+  <div class="ok"><span class="ms">account_balance_wallet</span></div>
+  <h3 data-i="moneyAdded">Money Added Successfully!</h3><p data-i="walletReady">Your TripRide Wallet is ready to use.</p>
+  <div class="got"><small data-i="addedWallet">ADDED TO WALLET</small><b class="big" id="okAmt"></b><p style="color:#166534;font-weight:700;font-size:12px">✓ <span data-i="paymentVerified">Payment verified securely</span></p></div>
+  <button class="btn" id="okBtn"><span data-i="done">Done</span></button>
+</div></div>
+<div id="toast"></div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, onSnapshot, runTransaction, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+/* ===== CONFIG ===== */
+const LOGIN_URL = "login.html", HOME_URL = "index.html";
+// Flutter uses http://15.235.145.222:10000 — browsers block http on https pages, so use the https backend.
+// If your wallet routes live on a different https host, change only this line.
+const API_BASE = "https://er3fg.aiccloud.online/";
+const app = getApps()[0] || initializeApp({
+  apiKey:"AIzaSyAdGdyPObmRyJ-dtl6-llbVMJr4uYgBWlw", authDomain:"tripmate-74df9.firebaseapp.com",
+  databaseURL:"https://tripmate-74df9-default-rtdb.asia-southeast1.firebasedatabase.app", projectId:"tripmate-74df9",
+  storageBucket:"tripmate-74df9.firebasestorage.app", messagingSenderId:"931960941543", appId:"1:931960941543:web:ced98c012dc22fcb776b42"
+});
+const auth = getAuth(app), db = getFirestore(app);
+
+/* ===== i18n (reads language saved by home page; missing keys fall back to English) ===== */
+const EN = {walletTitle:"Wallet & Payments",wallet:"TRIPRIDE WALLET",balance:"Available Balance",secure:"Secure payments",addMoney:"Add Money",withdraw:"Withdraw",payWith:"PAY WITH TRIPRIDE",walletUse:"Use your TripRide Wallet balance for eligible booking charges, including the RYDORA platform fee.",referralRewards:"Referral Rewards",referralInfo:"Referral rewards are added automatically to your wallet. The transaction history shows who the referral was from.",history:"TRANSACTION HISTORY",addMoneySubtitle:"Add money securely using Razorpay",amount:"Amount",enterAmount:"Enter amount",continuePay:"Continue to Pay",moneyAdded:"Money Added Successfully!",walletReady:"Your TripRide Wallet is ready to use.",addedWallet:"ADDED TO WALLET",paymentVerified:"Payment verified securely",done:"Done"};
+const TR = {
+ te:{walletTitle:"వాలెట్ & చెల్లింపులు",wallet:"TRIPRIDE వాలెట్",balance:"అందుబాటులో ఉన్న బ్యాలెన్స్",secure:"సురక్షిత చెల్లింపులు",addMoney:"డబ్బు జోడించండి",withdraw:"విత్‌డ్రా చేయండి",payWith:"TRIPRIDE ద్వారా చెల్లించండి",walletUse:"అర్హమైన బుకింగ్ ఛార్జీలకు TripRide వాలెట్‌ను ఉపయోగించండి.",referralRewards:"రిఫరల్ రివార్డులు",referralInfo:"రిఫరల్ రివార్డులు మీ వాలెట్‌లో ఆటోమేటిక్‌గా జమ అవుతాయి. ఎవరి ద్వారా రిఫరల్ వచ్చిందో లావాదేవీ చరిత్రలో చూడవచ్చు.",history:"లావాదేవీల చరిత్ర",addMoneySubtitle:"Razorpay ద్వారా సురక్షితంగా డబ్బు జోడించండి",amount:"మొత్తం",enterAmount:"మొత్తాన్ని నమోదు చేయండి",continuePay:"చెల్లింపుకు కొనసాగండి",moneyAdded:"డబ్బు విజయవంతంగా జమ అయింది!",walletReady:"మీ TripRide వాలెట్ ఉపయోగించడానికి సిద్ధంగా ఉంది.",addedWallet:"వాలెట్‌లో జమ అయింది",paymentVerified:"చెల్లింపు సురక్షితంగా ధృవీకరించబడింది",done:"పూర్తయింది"},
+ hi:{walletTitle:"वॉलेट और भुगतान",wallet:"TRIPRIDE वॉलेट",balance:"उपलब्ध बैलेंस",secure:"सुरक्षित भुगतान",addMoney:"पैसे जोड़ें",withdraw:"निकालें",payWith:"TRIPRIDE से भुगतान करें",walletUse:"योग्य बुकिंग शुल्क के लिए TripRide वॉलेट का उपयोग करें।",referralRewards:"रेफ़रल पुरस्कार",history:"लेन-देन का इतिहास",addMoneySubtitle:"Razorpay से सुरक्षित रूप से पैसे जोड़ें",amount:"राशि",enterAmount:"राशि दर्ज करें",continuePay:"भुगतान जारी रखें",moneyAdded:"पैसे सफलतापूर्वक जुड़ गए!",walletReady:"आपका TripRide वॉलेट उपयोग के लिए तैयार है।",addedWallet:"वॉलेट में जोड़ा गया",paymentVerified:"भुगतान सुरक्षित रूप से सत्यापित",done:"हो गया"},
+ ta:{walletTitle:"வாலெட் மற்றும் பணப்பரிவர்த்தனைகள்",wallet:"TRIPRIDE வாலெட்",balance:"கிடைக்கும் இருப்பு",secure:"பாதுகாப்பான பணப்பரிவர்த்தனை",addMoney:"பணம் சேர்க்கவும்",withdraw:"திரும்பப் பெறவும்",payWith:"TRIPRIDE மூலம் செலுத்தவும்",referralRewards:"பரிந்துரை வெகுமதிகள்",history:"பரிவர்த்தனை வரலாறு",amount:"தொகை",enterAmount:"தொகையை உள்ளிடவும்",continuePay:"பணம் செலுத்த தொடரவும்",done:"முடிந்தது"},
+ kn:{walletTitle:"ವಾಲೆಟ್ ಮತ್ತು ಪಾವತಿಗಳು",wallet:"TRIPRIDE ವಾಲೆಟ್",balance:"ಲಭ್ಯವಿರುವ ಬ್ಯಾಲೆನ್ಸ್",secure:"ಸುರಕ್ಷಿತ ಪಾವತಿಗಳು",addMoney:"ಹಣ ಸೇರಿಸಿ",withdraw:"ಹಿಂಪಡೆಯಿರಿ",payWith:"TRIPRIDE ಮೂಲಕ ಪಾವತಿಸಿ",referralRewards:"ರೆಫರಲ್ ಬಹುಮಾನಗಳು",history:"ವಹಿವಾಟಿನ ಇತಿಹಾಸ",amount:"ಮೊತ್ತ",enterAmount:"ಮೊತ್ತ ನಮೂದಿಸಿ",continuePay:"ಪಾವತಿ ಮುಂದುವರಿಸಿ"},
+ ml:{walletTitle:"വാലറ്റും പേയ്‌മെന്റുകളും",wallet:"TRIPRIDE വാലറ്റ്",balance:"ലഭ്യമായ ബാലൻസ്",secure:"സുരക്ഷിത പേയ്‌മെന്റുകൾ",addMoney:"പണം ചേർക്കുക",withdraw:"പിൻവലിക്കുക",payWith:"TRIPRIDE ഉപയോഗിച്ച് പേയ്‌മെന്റ്",referralRewards:"റഫറൽ റിവാർഡുകൾ",history:"ഇടപാട് ചരിത്രം",amount:"തുക",enterAmount:"തുക നൽകുക",continuePay:"പേയ്‌മെന്റ് തുടരുക"},
+ bn:{walletTitle:"ওয়ালেট ও পেমেন্ট",wallet:"TRIPRIDE ওয়ালেট",balance:"উপলব্ধ ব্যালেন্স",secure:"নিরাপদ পেমেন্ট",addMoney:"টাকা যোগ করুন",withdraw:"তুলুন",payWith:"TRIPRIDE দিয়ে পেমেন্ট",referralRewards:"রেফারেল পুরস্কার",history:"লেনদেনের ইতিহাস",amount:"পরিমাণ",enterAmount:"পরিমাণ লিখুন",continuePay:"পেমেন্ট চালিয়ে যান"}
+};
+let lang = "en"; try { lang = localStorage.getItem("tripride_home_language") || "en"; } catch(_){}
+const tr = k => (TR[lang] && TR[lang][k]) || EN[k] || k;
+
+/* ===== helpers ===== */
+const $ = id => document.getElementById(id);
+const el = (t,c,x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const show = (id,on=true) => $(id).classList.toggle("show",on);
+const fmt = n => "₹" + Number(n||0).toFixed(2);
+const num = v => { const n = typeof v === "number" ? v : parseFloat(v); return isFinite(n) ? n : 0; };
+let tt; const toast = m => { const t=$("toast"); t.textContent=m; t.style.display="block"; clearTimeout(tt); tt=setTimeout(()=>t.style.display="none",4500); };
+const busy = (on,txt) => { $("procTxt").textContent = txt || "Please wait…"; $("proc").classList.toggle("show",on); };
+document.querySelectorAll("[data-i]").forEach(n => n.textContent = tr(n.dataset.i));
+document.querySelectorAll("[data-iph]").forEach(n => n.placeholder = tr(n.dataset.iph));
+$("back").onclick = () => history.length > 1 ? history.back() : (location.href = HOME_URL);
+["addOv","wdOv"].forEach(id => $(id).onclick = e => { if (e.target.id===id) show(id,false); });
+
+let uid = null, cu = null, balance = 0, wDoc = null, uDoc = null, starting = false;
+
+/* ===== balance: wallets/{uid}.balance, fallback users/{uid}.wallet ===== */
+function setBalance(){
+  const w = wDoc && wDoc.exists() ? num(wDoc.data().balance) : num((uDoc && uDoc.data() || {}).wallet ?? (uDoc && uDoc.data() || {}).walletBalance);
+  balance = w; $("bal").textContent = fmt(w);
+}
+function watchBalance(){
+  onSnapshot(doc(db,"wallets",uid), s => { wDoc = s; setBalance(); }, e => console.warn("WALLET ERR", e));
+  onSnapshot(doc(db,"users",uid), s => { uDoc = s; setBalance(); }, e => console.warn("USER ERR", e));
+}
+
+/* ===== backend call ===== */
+async function api(path, opts = {}){
+  const token = await cu.getIdToken(true);
+  const r = await fetch(API_BASE + path, { ...opts, headers:{ "Content-Type":"application/json", "Authorization":"Bearer " + token } });
+  let d = {}; try { d = await r.json(); } catch(_){}
+  return { ok:r.ok, d };
+}
+
+/* ===== add money ===== */
+["100","200","500","1000"].forEach(a => { const b = el("button",null,"₹"+a); b.onclick = () => $("addAmt").value = a; $("chips").append(b); });
+$("addAmt").oninput = e => { if (!/^\d{0,6}(\.\d{0,2})?$/.test(e.target.value)) e.target.value = e.target.value.slice(0,-1); };
+$("addBtn").onclick = () => { if (!starting) show("addOv"); };
+$("payGo").onclick = () => {
+  const a = parseFloat($("addAmt").value);
+  if (!isFinite(a) || a <= 0) return toast("Enter a valid amount");
+  show("addOv",false); startPayment(a);
+};
+async function startPayment(amount){
+  if (starting) return;
+  if (amount < 1 || amount > 100000) return toast("Enter an amount between ₹1 and ₹1,00,000.");
+  if (!window.Razorpay) return toast("Payment module could not load. Check your connection and retry.");
+  starting = true; busy(true,"Starting secure payment…");
+  try {
+    const { ok, d } = await api("wallet/create-order", { method:"POST", body:JSON.stringify({ amount }) });
+    if (!ok || d.success !== true || !d.key_id || !d.order_id || !(num(d.amount) > 0)) throw new Error("create_order_failed");
+    busy(false);
+    const rz = new Razorpay({
+      key:d.key_id, amount:Math.round(num(d.amount)), currency:d.currency || "INR", order_id:d.order_id,
+      name:"TripRide", description:"Add ₹" + amount.toFixed(2) + " to TripRide Wallet",
+      prefill:{ email:cu.email || "", contact:cu.phoneNumber || "" }, theme:{ color:"#6D4AE8" },
+      handler: r => verifyPayment(r),
+      modal:{ ondismiss: () => toast("Payment was cancelled or could not be completed.") }
+    });
+    rz.on("payment.failed", () => toast("Payment was cancelled or could not be completed."));
+    rz.open();
+  } catch(e){ console.error("PAYMENT START", e); busy(false); toast("Unable to start secure payment right now. Please check your connection and try again."); }
+  finally { starting = false; }
+}
+async function verifyPayment(r){
+  busy(true,"Verifying payment…");
+  try {
+    if (!r.razorpay_payment_id || !r.razorpay_order_id || !r.razorpay_signature) throw new Error("Incomplete payment details");
+    const { ok, d } = await api("wallet/verify-payment", { method:"POST", body:JSON.stringify({ razorpay_payment_id:r.razorpay_payment_id, razorpay_order_id:r.razorpay_order_id, razorpay_signature:r.razorpay_signature }) });
+    if (!ok || d.success !== true || d.verified !== true) throw new Error(d.message || "Payment verification failed");
+    busy(false); loadTx();
+    if (d.credited === true) { $("okAmt").textContent = fmt(d.amount); show("okOv"); }
+    else if (d.already_processed === true) toast("This payment was already added to your wallet");
+    else toast("Payment verified successfully");
+  } catch(e){ console.error("VERIFY", e); busy(false); toast("Payment may have been received, but wallet confirmation could not be completed. Please check your wallet or transaction history before paying again."); }
+}
+$("okBtn").onclick = () => show("okOv",false);
+
+/* ===== withdraw ===== */
+let saved = {}, editing = false, wdBusy = false;
+const hasAcc = () => String(saved.accountNumber||"").trim() && String(saved.ifscCode||"").trim();
+function paintBank(){
+  const ready = hasAcc() && !editing, a = String(saved.accountNumber||"");
+  $("savedBox").classList.toggle("hide", !ready); $("bankForm").classList.toggle("hide", ready);
+  $("savedTxt").textContent = `${saved.accountHolderName||""} • ${saved.bankName||"Bank"} — A/C ••••${a.slice(-4)} | IFSC ${saved.ifscCode||""}`;
+  $("wdGo").disabled = !ready || wdBusy;
+}
+$("wdBtn").onclick = async () => {
+  try { const s = await getDoc(doc(db,"wallet_withdrawal_accounts",uid)); saved = s.data() || {}; }
+  catch(e){ return toast("Unable to load bank details. Check your connection and try again."); }
+  editing = !hasAcc();
+  $("fHolder").value = saved.accountHolderName||""; $("fBank").value = saved.bankName||""; $("fAcc").value = saved.accountNumber||"";
+  $("fIfsc").value = saved.ifscCode||""; $("fUpi").value = saved.upiId||""; $("wdAmt").value = "";
+  $("wdBal").textContent = "Available balance: " + fmt(balance);
+  paintBank(); show("wdOv");
+};
+$("chgBank").onclick = () => { editing = true; paintBank(); };
+$("saveBank").onclick = async () => {
+  const f = { accountHolderName:$("fHolder").value.trim(), bankName:$("fBank").value.trim(), accountNumber:$("fAcc").value.trim(), ifscCode:$("fIfsc").value.trim().toUpperCase(), upiId:$("fUpi").value.trim() };
+  if (!f.accountHolderName || !f.bankName || f.accountNumber.length < 6 || !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(f.ifscCode)) return toast("Enter account holder name, bank name, valid account number and IFSC code.");
+  $("saveBank").disabled = true;
+  try { await setDoc(doc(db,"wallet_withdrawal_accounts",uid), { userId:uid, ...f, updatedAt:serverTimestamp() }, { merge:true }); saved = { ...saved, ...f }; editing = false; paintBank(); toast("Bank account details saved successfully."); }
+  catch(e){ console.error("SAVE BANK", e); toast("Could not save bank details. Please try again."); }
+  finally { $("saveBank").disabled = false; }
+};
+$("wdGo").onclick = async () => {
+  const amount = parseFloat($("wdAmt").value);
+  if (!isFinite(amount)) return toast("Please enter a valid withdrawal amount.");
+  if (amount < 200) return toast("Minimum withdrawal amount is ₹200.");
+  if (amount > 10000) return toast("Maximum withdrawal amount is ₹10,000 per request.");
+  if (amount > balance) return toast("Insufficient wallet balance. Your available balance is " + fmt(balance) + ".");
+  if (!hasAcc() || editing) return toast("Please save your bank account details first.");
+  wdBusy = true; paintBank();
+  try {
+    const dayStart = new Date(); dayStart.setHours(0,0,0,0);
+    const snap = await new Promise((res,rej) => { const un = onSnapshot(query(collection(db,"wallet_withdrawal_requests"), where("userId","==",uid)), s => { un(); res(s); }, rej); });
+    let todayTotal = 0;
+    snap.forEach(d => { const x = d.data(), c = x.createdAt && x.createdAt.toDate ? x.createdAt.toDate() : null;
+      if (c && c >= dayStart && String(x.status||"pending").toLowerCase() !== "rejected") todayTotal += num(x.amount); });
+    if (todayTotal + amount > 10000) { toast("Daily withdrawal limit is ₹10,000. Remaining today: " + fmt(Math.min(10000,Math.max(0,10000-todayTotal))) + "."); return; }
+
+    const reqRef = doc(collection(db,"wallet_withdrawal_requests")), walletRef = doc(db,"wallets",uid), userRef = doc(db,"users",uid);
+    const hId = "withdrawal_request_" + reqRef.id;
+    const histRef = doc(db,"wallet_transactions",hId), nestedRef = doc(db,"users",uid,"walletTransactions",hId);
+    const notifRef = doc(collection(db,"users",uid,"notifications")), auditRef = doc(collection(db,"admin_audit_logs"));
+    const last4 = saved.accountNumber.slice(-4);
+    await runTransaction(db, async tx => {
+      const ws = await tx.get(walletRef), us = await tx.get(userRef);
+      const w = ws.data() || {}, u = us.data() || {};
+      const keys = ["balance","walletBalance","availableBalance","amount"];
+      let fresh = num(w.balance ?? w.walletBalance ?? w.availableBalance ?? w.amount);
+      if (!ws.exists() || !keys.some(k => k in w)) fresh = num(u.wallet ?? u.walletBalance);
+      if (fresh < amount) throw new Error("Insufficient wallet balance. Available: " + fmt(fresh) + ".");
+      const after = Number((fresh - amount).toFixed(2));
+      tx.set(walletRef, { userId:uid, balance:after, updatedAt:serverTimestamp() }, { merge:true });
+      const uu = {}; if ("wallet" in u) uu.wallet = after; if ("walletBalance" in u) uu.walletBalance = after;
+      if (Object.keys(uu).length) tx.set(userRef, { ...uu, updatedAt:serverTimestamp() }, { merge:true });
+      tx.set(reqRef, { requestId:reqRef.id, userId:uid, userName:cu.displayName || cu.email || cu.phoneNumber || "TRIPRIDE User", userEmail:cu.email || "", amount,
+        accountHolderName:saved.accountHolderName, bankName:saved.bankName, accountNumberMasked:"••••"+last4, ifscCode:saved.ifscCode, upiId:saved.upiId || "",
+        payoutMethod: saved.upiId ? "Bank transfer / UPI" : "Bank transfer", status:"pending", fundsHeld:true, adminReason:"", payoutReference:"",
+        balanceBefore:fresh, balanceAfterReservation:after, createdAt:serverTimestamp(), updatedAt:serverTimestamp() });
+      const h = { userId:uid, type:"debit", transactionType:"withdrawal_hold", amount, balanceBefore:fresh, balanceAfter:after, withdrawalRequestId:reqRef.id, reason:"Withdrawal funds reserved on request", status:"held", createdAt:serverTimestamp() };
+      tx.set(histRef, h); tx.set(nestedRef, h);
+      tx.set(notifRef, { type:"wallet_withdrawal_pending", title:"Withdrawal request received", message:`Your withdrawal request ${reqRef.id} for ${fmt(amount)} is pending admin review.`, amount, requestId:reqRef.id, read:false, createdAt:serverTimestamp() });
+      tx.set(auditRef, { action:"wallet_withdrawal_requested", targetUid:uid, requestId:reqRef.id, amount, createdAt:serverTimestamp(), source:"TRIPRIDE_WEB_WALLET" });
+    });
+    show("wdOv",false); loadTx(); toast("Withdrawal request submitted successfully.");
+  } catch(e){ console.error("WITHDRAW", e); toast(String(e.message||"").startsWith("Insufficient wallet") ? e.message : "Could not submit withdrawal request. Please try again."); }
+  finally { wdBusy = false; paintBank(); }
+};
+
+/* ===== withdrawal history (live) ===== */
+function watchWithdrawals(){
+  onSnapshot(query(collection(db,"wallet_withdrawal_requests"), where("userId","==",uid)), s => {
+    const box = $("wdHist"); box.textContent = "";
+    const rows = s.docs.map(d => ({ id:d.id, ...d.data() })).sort((a,b) => (b.createdAt?.toMillis?.()||0) - (a.createdAt?.toMillis?.()||0));
+    if (!rows.length) { box.append(el("div","empty","No withdrawal requests yet.")); return; }
+    rows.forEach(d => {
+      const st = String(d.status||"pending").toLowerCase();
+      const col = ["paid","completed","success"].includes(st) ? "#15803D" : st==="rejected" ? "#B91C1C" : ["processing","approved"].includes(st) ? "#B45309" : "#2563EB";
+      const w = el("div","wr"), top = el("div","top"), p = el("span","pill",st.toUpperCase());
+      p.style.cssText = `color:${col};background:${col}1a`; top.append(el("b",null,fmt(d.amount)), p); w.append(top);
+      w.append(el("small",null,"Request ID: " + (d.requestId || d.id)));
+      w.append(el("small",null, d.createdAt?.toDate ? d.createdAt.toDate().toLocaleString() : "Just submitted"));
+      if (["pending","processing","approved"].includes(st)) w.append(el("small",null,"Processing time depends on admin review and bank processing."));
+      const reason = String(d.adminReason || d.reason || "").trim();
+      if (st==="rejected" && reason) { const r = el("small",null,"Rejection reason: " + reason); r.style.color = "#B91C1C"; w.append(r); }
+      if (String(d.payoutReference||"").trim()) w.append(el("small",null,"Transfer reference: " + d.payoutReference));
+      box.append(w);
+    });
+  }, e => { $("wdHist").textContent = ""; $("wdHist").append(el("div","empty","Unable to load withdrawal history.")); });
+}
+
+/* ===== transactions (backend API) ===== */
+const low = v => String(v ?? "").trim().toLowerCase();
+const isRef = d => low(d.transactionType)==="referral_bonus" || low(d.category)==="referral" || low(d.title).includes("referral") || low(d.description).includes("referral") || (low(d.type)==="credit" && d.referralId != null);
+const refName = d => { for (const k of ["personName","referralPersonName","referredUserName","referredName","referrerName","friendName","fromName","otherPersonName"]) { const n = String(d[k]||"").trim(); if (n) return n; } return ""; };
+const isCredit = d => ["credit","add_money","refund"].includes(low(d.type)) || ["booking_charge_refund","ride_booking_fee_refund","ride_refund"].includes(low(d.transactionType)) || isRef(d);
+function title(d){
+  const tt = low(d.transactionType), cat = low(d.category), svc = String(d.service||"").trim(), raw = String(d.title||"").trim();
+  if (isRef(d)) { const p = refName(d); return p ? "Referral Bonus from " + p : "Referral Bonus"; }
+  if (raw) return raw;
+  if (tt==="rydora_publish_fee" || cat==="rydora_publish_fee") return "RYDORA Ride Publishing Fee";
+  if (tt==="rydora_booking_fee" || cat==="rydora_booking_platform_fee") return "RYDORA Booking Platform Fee";
+  if (tt==="ride_refund" || cat==="ride_refund") return "RYDORA Booking Fee Refund";
+  if (tt==="booking_charge_refund") return svc ? svc + " Booking Charge Refund" : "Booking Charge Refund";
+  if (["credit","add_money"].includes(low(d.type))) return "Money Added to Wallet";
+  if (low(d.type)==="refund") return "Wallet Refund";
+  return "Wallet Transaction";
+}
+function toDate(v){ if (!v) return null; if (v.toDate) return v.toDate(); if (typeof v==="object" && v._seconds!=null) return new Date(v._seconds*1000); if (typeof v==="object" && v.seconds!=null) return new Date(v.seconds*1000); const d = new Date(v); return isNaN(d) ? null : d; }
+function subtitle(d){
+  const tt = low(d.transactionType), svc = String(d.service||"").trim(), desc = String(d.description||"").trim();
+  let s = String(d.type||"").replace(/_/g," ");
+  if (isRef(d)) { const p = refName(d); s = p ? "Referral by " + p : (desc || "Referral reward credited");
+    if (d.referralCode) s += " • Code " + d.referralCode; if (d.balanceAfter != null) s += " • Balance " + fmt(d.balanceAfter); }
+  else if (tt==="booking_charge_refund") s = (svc ? svc + " • " : "") + "Booking cancelled before captain acceptance";
+  else if (["ride_booking_fee_refund","ride_refund"].includes(tt) || low(d.category)==="ride_refund") s = desc || "Booking platform fee credited to TripRide Wallet";
+  else if (["rydora_publish_fee","rydora_booking_fee"].includes(tt)) s = desc || "RYDORA platform payment";
+  else if (svc) s = svc;
+  const dt = toDate(d.createdAt);
+  if (dt) { const p = n => String(n).padStart(2,"0"); s += ` • ${p(dt.getDate())}/${p(dt.getMonth()+1)}/${dt.getFullYear()}  ${p(dt.getHours())}:${p(dt.getMinutes())}`; }
+  if (d.requestId && tt==="booking_charge_refund") s += " • ID " + String(d.requestId).slice(0,12);
+  return s;
+}
+const nameCache = {};
+async function lookupRef(d){
+  const rid = String(d.referralId||"").trim(); if (!rid) return "";
+  try {
+    let other = rid;
+    if (rid === uid) { const r = (await getDoc(doc(db,"referrals",uid))).data() || {}; other = String(r.referrerId || r.referrerUid || r.referrerID || "").trim(); }
+    if (!other) return "";
+    if (nameCache[other]) return nameCache[other];
+    const u = (await getDoc(doc(db,"users",other))).data() || {};
+    return nameCache[other] = String(u.name || u.fullName || u.full_name || u.displayName || "").trim();
+  } catch(_){ return ""; }
+}
+function row(d){
+  const cr = isCredit(d), amt = num(d.amount ?? d.creditAmount ?? d.debitAmount);
+  const r = el("div","tx"), ic = el("span","ic " + (cr ? "c" : "d")); ic.append(el("span","ms", isRef(d) ? "card_giftcard" : cr ? "arrow_downward" : "arrow_upward"));
+  const mid = el("div"), t = el("b",null,title(d)), s = el("small",null,subtitle(d)); mid.append(t,s);
+  r.append(ic, mid, el("span","v " + (cr ? "c" : "d"), (cr ? "+" : "-") + fmt(amt)));
+  if (isRef(d) && !refName(d)) lookupRef(d).then(n => { if (n) { const e = { ...d, personName:n }; t.textContent = title(e); s.textContent = subtitle(e); } });
+  return r;
+}
+async function loadTx(){
+  const box = $("txBox"); box.textContent = ""; box.append(el("div","empty","Loading…"));
+  try {
+    const { ok, d } = await api("wallet/transactions?limit=100");
+    if (!ok || d.success !== true) throw new Error(d.message || "Unable to fetch transactions");
+    let items = d.transactions ?? d.items; const n = d.data;
+    if (items == null && n && !Array.isArray(n)) items = n.transactions ?? n.items;
+    if (items == null && Array.isArray(n)) items = n;
+    if (!Array.isArray(items)) throw new Error("Transaction history response is invalid. Please retry.");
+    items = items.filter(x => x && typeof x === "object").sort((a,b) => (toDate(b.createdAt)?.getTime()||0) - (toDate(a.createdAt)?.getTime()||0));
+    box.textContent = "";
+    if (!items.length) { const e = el("div","empty"); e.append(el("span","ms","receipt_long"), el("b",null,"No transactions yet"), document.createTextNode("Your wallet activity will appear here.")); box.append(e); return; }
+    items.forEach(x => box.append(row(x)));
+  } catch(e){
+    console.error("TX", e); box.textContent = "";
+    const w = el("div","empty"); w.append(el("span","ms","cloud_off"), el("b",null,"Unable to load transactions"), document.createTextNode(String(e.message||e)));
+    const b = el("button","ghost","Retry"); b.style.display = "block"; b.style.margin = "10px auto 0"; b.onclick = loadTx; w.append(b); box.append(w);
+  }
+}
+
+/* ===== start ===== */
+onAuthStateChanged(auth, user => {
+  if (!user) { location.replace(LOGIN_URL); return; }
+  cu = user; uid = user.uid;
+  watchBalance(); watchWithdrawals(); loadTx();
+});
+</script>
+</body>
+</html>
