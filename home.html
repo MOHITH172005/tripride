@@ -277,7 +277,7 @@ video#cam{width:100%;height:240px;background:#000;border-radius:20px;object-fit:
     </aside>
     <section class="pcol">
       <div class="top2">
-        <a class="wal" href="wallet.html"><i class="ib2"><span class="ms">account_balance_wallet</span></i><div><b data-p="Wallet & Payments">Wallet & Payments</b><small><span data-p="Available balance ₹">Available balance ₹</span><span id="walBal">0</span></small></div><span class="ms chev">chevron_right</span></a>
+        <a class="wal" href="wallet.html"><i class="ib2"><span class="ms">account_balance_wallet</span></i><div><b data-p="Wallet & Payments">Wallet & Payments</b><small><span data-p="Available balance ₹">Available balance ₹</span><span id="walBal">0.00</span></small></div><span class="ms chev">chevron_right</span></a>
         <a class="ref" href="referral.html"><i class="ib2"><span class="ms">card_giftcard</span></i><div><b data-p="Refer & Earn">Refer & Earn</b><small>Give ₹25 • Get ₹25 for every successful referral</small></div><span class="ms chev">chevron_right</span></a>
       </div>
       <div id="menus" style="display:grid;gap:16px"></div>
@@ -389,6 +389,7 @@ const T = {
 const $ = id => document.getElementById(id);
 const LS = { get:k=>{try{return localStorage.getItem(k)}catch(_){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(_){}} };
 let lang = "en", uid = null, me = {}, myStatus = null, following = [];
+let walletDoc = null;   // wallets/{uid} snapshot — same source as the Wallet screen
 const tr = k => (T[lang] && T[lang][k]) || T.en[k] || k;
 function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 let tt; function toast(m){ const t=$("toast"); t.textContent=m; t.style.display="block"; clearTimeout(tt); tt=setTimeout(()=>t.style.display="none",4000); }
@@ -462,6 +463,12 @@ function renderHeaderAvatar(){
   const a = $("hAv"); a.textContent = ""; a.style.backgroundImage = "";
   if (!bg(a, me.profilePhoto)) a.append(el("span","ms","person"));
 }
+// Same balance rule as the Wallet screen: wallets/{uid}.balance, else users/{uid}.wallet / walletBalance
+function walletBalance(){
+  const raw = walletDoc && walletDoc.exists() ? walletDoc.data().balance : (me.wallet ?? me.walletBalance);
+  const n = typeof raw === "number" ? raw : parseFloat(raw);
+  return isFinite(n) ? n : 0;
+}
 function updateProfile(){
   const nm = me.name || "Traveler";
   $("pName").textContent = nm;
@@ -469,7 +476,7 @@ function updateProfile(){
   if (!bg(p, me.profilePhoto)) p.textContent = nm.charAt(0).toUpperCase();
   $("pCity").textContent = (me.city && String(me.city).trim()) ? me.city : pt("India");
   $("pVer").classList.toggle("hide", !me.verified);
-  $("walBal").textContent = typeof me.wallet === "number" ? me.wallet : 0;
+  $("walBal").textContent = walletBalance().toFixed(2);
   const rows = [["TripRide ID", me.triprideId||"—"],["Mobile", mask(me.phone||me.phoneNumber)||"—"],["Trust score", me.trustScore ?? "—"],["Verified", me.verified ? "✓ Verified Traveler" : "No"]];
   const c = $("pCard"); c.textContent = "";
   rows.forEach(([k,v]) => { const d = el("div"); d.append(el("span",null,k), el("b",null,String(v))); c.append(d); });
@@ -509,6 +516,9 @@ function watchUser(){
     me = { ...d, triprideId: d.triprideId || me.triprideId || makeId(d) };
     renderHeaderAvatar(); updateProfile(); applyI18n();
   }, e => console.warn("USER WATCH ERROR", e));
+}
+function watchWallet(){
+  onSnapshot(doc(db,"wallets",uid), s => { walletDoc = s; updateProfile(); }, e => console.warn("WALLET WATCH ERROR", e));
 }
 
 /* ---------- profile photo ---------- */
@@ -799,7 +809,7 @@ applyI18n(); getLocation();
 onAuthStateChanged(auth, async user => {
   if (!user) { location.replace(LOGIN_URL); return; }
   uid = user.uid; $("boot").style.display = "none";
-  await loadUser(); watchUser(); watchNotifications(); loadStatuses();
+  await loadUser(); watchUser(); watchWallet(); watchNotifications(); loadStatuses();
 });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState==="visible" && uid) getLocation(); });
 </script>
